@@ -1,0 +1,101 @@
+---
+const clients = [
+    {
+        name: "phobia",
+        image: "https://studio.tailwindui.com/_next/static/media/logo-light.ada2d552.svg",
+    },
+    {
+        name: "FamilyFund",
+        image: "https://studio.tailwindui.com/_next/static/media/logo-light.5c8de99c.svg",
+    },
+    {
+        name: "unseal",
+        image: "https://studio.tailwindui.com/_next/static/media/logo-light.f6ce2960.svg",
+    },
+    {
+        name: "mailsmirk",
+        image: "https://studio.tailwindui.com/_next/static/media/logo-light.249606f6.svg",
+    },
+    {
+        name: "home work",
+        image: "https://studio.tailwindui.com/_next/static/media/logo-light.da1195d8.svg",
+    },
+    {
+        name: "green life",
+        image: "https://studio.tailwindui.com/_next/static/media/logo-light.1704e6d8.svg",
+    },
+    {
+        name: "brightpath",
+        image: "https://studio.tailwindui.com/_next/static/media/logo-light.456aa9d9.svg",
+    },
+    {
+        name: "north adventures",
+        image: "https://studio.tailwindui.com/_next/static/media/logo-light.e19f9c9b.svg",
+    },
+];
+---
+
+<section class="clients region">
+    <div class="wrapper">
+        <div class="flex">
+            <h2 class="title">Samen bouwen we aan sterke online resultaten</h2>
+            <div class="line"></div>
+        </div>
+        <div class="client__list mt-xl" data-layout="quarters">
+            {
+                clients.map((client) => (
+                    <img
+                        alt={client.name}
+                        loading="lazy"
+                        width="184"
+                        height="36"
+                        decoding="async"
+                        data-nimg="1"
+                        src={client.image}
+                        style="color: transparent;"
+                        class="client-image"
+                    />
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .clients {
+        color: var(--color-neutral-0);
+        background: var(--color-neutral-950);
+        border-radius: 2rem;
+    }
+
+    .clients .title {
+        color: var(--color-neutral-100);
+        font-size: var(--font-size-0);
+        margin-top: 0;
+    }
+
+    .flex {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .line {
+        height: 1px;
+        background: var(--color-neutral-700);
+        flex: auto;
+    }
+
+    .client__list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+
+        @media (width > 787px) {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    .client-image {
+        margin: var(--gutter);
+    }
+</style>

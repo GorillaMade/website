@@ -1,0 +1,339 @@
+---
+import { Image } from "astro:assets";
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+export async function getStaticPaths() {
+    const showcases: CollectionEntry<"showcase">[] =
+        await getCollection("showcase");
+
+    return showcases.map((showcase) => ({
+        params: {
+            slug: showcase.id,
+        },
+        props: {
+            showcase,
+        },
+    }));
+}
+interface Props {
+    showcase: CollectionEntry<"showcase">;
+}
+
+const { showcase } = Astro.props;
+
+const {
+    title,
+    client,
+    description,
+    url,
+    year,
+    category,
+    logo,
+    cover,
+    services,
+    quote,
+    quoteAuthor,
+    quoteAuthorFunction,
+} = showcase.data;
+const { Content } = await render(showcase);
+---
+
+<BaseLayout title={`Showcase ${client}`}>
+    <article class="case-study">
+        <header class="case-study__header">
+            <div class="case-study__intro">
+                <span class="case-study__eyebrow"> Case Study </span>
+
+                <h1 class="case-study__title">
+                    {title}
+                </h1>
+
+                <p class="case-study__description">
+                    {description}
+                </p>
+            </div>
+
+            <div class="case-study__details">
+                <dl class="case-study__meta">
+                    <div class="case-study__meta-item">
+                        <dt>Client</dt>
+                        <dd>{client}</dd>
+                    </div>
+
+                    <div class="case-study__meta-item">
+                        <dt>Year</dt>
+                        <dd>{year}</dd>
+                    </div>
+
+                    <div class="case-study__meta-item">
+                        <dt>Services</dt>
+                        <dd>{services.join(", ")}</dd>
+                    </div>
+                </dl>
+            </div>
+
+            <figure class="case-study__cover">
+                {
+                    cover && (
+                        <Image
+                            src={cover}
+                            alt={title}
+                            width={1200}
+                            height={600}
+                            class="cover-image"
+                        />
+                    )
+                }
+            </figure>
+        </header>
+
+        <section class="case-study__content flow">
+            <Content />
+        </section>
+
+        <aside class="case-study__quote">
+            <blockquote>
+                {quote}
+            </blockquote>
+
+            <footer class="case-study__author">
+                <strong>{quoteAuthor}</strong>
+                <span>{quoteAuthorFunction}</span>
+            </footer>
+        </aside>
+
+        <section class="case-study__stats">
+            <div class="wrapper wrapper--l grid">
+                <dl class="case-study__stat">
+                    <dt>Laadtijd</dt>
+                    <dd>0.8s</dd>
+                </dl>
+
+                <dl class="case-study__stat">
+                    <dt>Lighthouse-score</dt>
+                    <dd>98/100</dd>
+                </dl>
+
+                <dl class="case-study__stat">
+                    <dt>Reductie infrastructuurkosten</dt>
+                    <dd>15%</dd>
+                </dl>
+
+                <dl class="case-study__stat">
+                    <dt>Uptime</dt>
+                    <dd>99,9%</dd>
+                </dl>
+            </div>
+        </section>
+    </article>
+</BaseLayout>
+
+<style lang="scss">
+    .case-study {
+        margin-block: 10rem;
+
+        &__header {
+            display: flex;
+            flex-direction: column;
+        }
+
+        &__intro {
+            margin-inline: auto;
+            padding-inline: 5dvw;
+            text-align: center;
+            margin-bottom: 8rem;
+        }
+
+        &__eyebrow {
+            display: block;
+            font-size: var(--fs-0);
+            font-weight: var(--fw-semibold);
+            color: var(--neutral-950);
+        }
+
+        &__title {
+            margin-top: 1.5rem;
+            max-width: 80rem;
+            margin-inline: auto;
+
+            font-size: var(--fs-5);
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            text-wrap: balance;
+        }
+
+        &__description {
+            margin-top: 2rem;
+            max-width: 48rem;
+            margin-inline: auto;
+
+            font-size: var(--fs-1);
+            line-height: 1.5;
+            color: var(--color-neutral-600);
+        }
+
+        &__details {
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        &__meta {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            max-width: var(--content-width-l);
+            margin-inline: auto;
+            margin-block: 0;
+        }
+
+        &__meta-item {
+            padding: 1.5rem;
+            border-left: 1px solid var(--color-border);
+            font-size: var(--fs--1);
+
+            &:is(:last-of-type) {
+                border-right: 1px solid var(--color-border);
+            }
+
+            @media (width < 48rem) {
+                &:is(:not(:first-of-type)) {
+                    border-top: 1px solid var(--color-border);
+                }
+            }
+
+            dt {
+                margin-bottom: var(--space-3xs);
+                font-weight: var(--fw-bold);
+            }
+
+            dd {
+                margin: 0;
+                color: var(--color-neutral-700);
+            }
+        }
+
+        &__cover {
+            background: var(--color-neutral-100);
+            border-block: 1px solid var(--border-subtle);
+
+            img {
+                display: block;
+                width: 100%;
+                height: auto;
+                max-width: var(--content-width-l);
+                margin-inline: auto;
+
+                filter: grayscale(0.35);
+                transition: filter 0.3s ease;
+            }
+
+            &:hover img {
+                filter: grayscale(0);
+            }
+        }
+
+        &__content {
+            max-width: var(--content-width-m);
+            margin-inline: auto;
+            margin-top: 8rem;
+            padding-inline: 5dvw;
+        }
+
+        &__quote {
+            display: grid;
+            grid-template-columns: 20rem 1fr;
+            gap: 2rem;
+
+            max-width: var(--content-width-l);
+            margin-inline: auto;
+            margin-block: 8rem;
+            padding-inline: 5dvw;
+
+            blockquote {
+                font-size: var(--fs-0);
+                line-height: 1.5;
+                color: var(--color-neutral-500);
+                order: 2;
+                font-style: italic;
+
+            }
+        }
+
+        &__author {
+            margin-right: 2rem;
+
+            strong {
+                font-size: var(--fs-1);
+                display: block;
+            }
+
+            span {
+                color: var(--neutral-600);
+                font-size: var(--fs--1);
+            }
+        }
+
+        &__stats {
+            --grid-placement: auto-fit;
+        }
+
+        &__stat {
+            position: relative;
+            padding-left: 2rem;
+            display: flex;
+            flex-direction: column-reverse;
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+
+                width: 1px;
+                height: 1.5rem;
+
+                background: var(--color-neutral-950);
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 2rem;
+                bottom: 0;
+                left: 0;
+
+                width: 1px;
+
+                background: var(--color-neutral-200);
+            }
+
+            dd {
+                font-size: var(--fs-2);
+                font-weight: var(--fw-semibold);
+            }
+
+            dt {
+                font-size: var(--fs--1);
+                margin-top: 0.75rem;
+                color: var(--color-neutral-600);
+            }
+        }
+    }
+
+    @media (max-width: 48rem) {
+        .case-study {
+            &__meta,
+            &__quote {
+                grid-template-columns: 1fr;
+            }
+
+            &__title {
+                font-size: clamp(2.5rem, 10vw, 4rem);
+            }
+
+            &__content {
+                margin-top: 5rem;
+            }
+        }
+    }
+</style>

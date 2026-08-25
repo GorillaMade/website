@@ -1,0 +1,31 @@
+.content-with-aside {
+    --_main-content-min-width: var(--main-content-min-width, 50%);
+    --_sidebar-width: var(--sidebar-width, 23rem);
+    --_content-sidebar-gap: var(--content-sidebar-gap, var(--space-2xl-3xl));
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--_content-sidebar-gap);
+
+    &:not([data-direction="rtl"]) > :not(aside) {
+        flex-basis: 0;
+        flex-grow: 999;
+        min-width: var(--_main-content-min-width);
+    }
+
+    &:not([data-direction="rtl"]) > :is(aside) {
+        flex-basis: var(--_sidebar-width);
+        flex-grow: 1;
+    }
+
+    &[data-direction="rtl"] > :not(aside) {
+        flex-basis: 0;
+        flex-grow: 999;
+        min-width: var(--_main-content-min-width);
+    }
+
+    &[data-direction="rtl"] > :is(aside) {
+        flex-basis: var(--_sidebar-width);
+        flex-grow: 1;
+    }
+}

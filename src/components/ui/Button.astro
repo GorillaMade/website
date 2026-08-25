@@ -1,0 +1,90 @@
+---
+interface Props {
+    href?: string;
+    type?: "button" | "submit" | "reset";
+    variant?: "primary" | "accent";
+    classList?: string | string[];
+    [key: string]: unknown;
+}
+
+const { classList, href, type = "button", variant, ...rest } = Astro.props;
+
+const Tag = href ? "a" : "button";
+---
+
+<Tag
+    class:list={["button", classList]}
+    href={href}
+    type={!href ? type : undefined}
+>
+    <slot />
+</Tag>
+
+<style lang="scss">
+    .button {
+        --_button-foreground: var(--button-foreground, var(--color-neutral-50));
+        --_button-foreground-hover: var(
+            --button-foreground-hover,
+            var(--color-neutral-50)
+        );
+
+        --_button-background: var(
+            --button-background,
+            var(--color-neutral-800)
+        );
+        --_button-background-hover: var(
+            --button-background-hover,
+            var(--color-neutral-950)
+        );
+
+        --_button-font-family: var(--button-font-family, inherit);
+        --_button-font-size: var(--button-font-size, var(--text-s));
+        --_button-font-weight: var(--button-font-weight, var(--fw-semibold));
+
+        --_button-padding: var(
+            --button-padding,
+            var(--space-xs) var(--space-m)
+        );
+
+        --_button-border-width: var(--button-border-width, 2px);
+        --_button-border-style: var(--button-border-style, solid);
+        --_button-border-color: var(--button-border-color, transparent);
+        --_button-border-radius: var(--button-border-radius, var(--radius-m));
+
+        color: var(--_button-foreground);
+        background: var(--_button-background);
+
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-family: var(--_button-font-family);
+        font-size: var(--_button-font-size);
+        font-weight: var(--_button-font-weight);
+        padding: var(--_button-padding);
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-snug);
+
+        border: var(--_button-border-width) var(--_button-border-style)
+            var(--_button-border-color);
+        border-radius: var(--_button-border-radius);
+
+        &:hover,
+        &[data-button-variant]:hover {
+            color: var(--_button-foreground-hover);
+            background: var(--_button-background-hover);
+            scale: 1.025;
+        }
+
+        &:active {
+            scale: 1;
+        }
+    }
+
+    .button--link {
+        --button-foreground: currentColor;
+        --button-foreground-hover: currentColor;
+        --button-background: transparent;
+        --button-background-hover: transparent;
+    }
+</style>

@@ -1,0 +1,92 @@
+/* ============================================================
+   tokens.css — Semantic design tokens
+   ============================================================
+   Maps raw primitives (root.css) to meaningful role names.
+   These are the tokens you use in components.
+
+   Defaults here are light mode. Theme overrides live in
+   theme.css and are applied via @media or [data-theme].
+   ============================================================ */
+
+:root {
+  /* --- Surface --- */
+  --surface: var(--color-neutral-0);
+  --surface-subtle: var(--color-neutral-50);
+  --surface-muted: var(--color-neutral-100);
+  --surface-inverted: var(--color-neutral-950);
+
+  /* --- Text --- */
+  --color-text: var(--color-neutral-900);
+  --color-text-secondary: var(--color-neutral-600);
+  --color-text-muted: var(--color-neutral-400);
+  --color-text-disabled: var(--color-neutral-300);
+  --color-text-inverted: var(--color-neutral-0);
+  --color-text-accent: var(--color-brand-600);
+
+  /* --- Border --- */
+  --color-border: var(--color-neutral-200);
+  --color-border-focus: var(--color-brand-500);
+  --color-border-strong: var(--color-neutral-400);
+
+  /* --- Accent / brand --- */
+  --color-accent: var(--color-brand-500);
+  --color-accent-hover: var(--color-brand-400);
+  --color-accent-text: var(--color-brand-700);
+
+  /* --- States --- */
+  --color-success-bg: var(--state-success-light);
+  --color-success: var(--state-success);
+  --color-success-text: var(--state-success-dark);
+
+  --color-warning-bg: var(--state-warning-light);
+  --color-warning: var(--state-warning);
+  --color-warning-text: var(--state-warning-dark);
+
+  --color-error-bg: var(--state-error-light);
+  --color-error: var(--state-error);
+  --color-error-text: var(--state-error-dark);
+
+  --color-info-bg: var(--state-info-light);
+  --color-info: var(--state-info);
+  --color-info-text: var(--state-info-dark);
+
+  /* --- Typography: roles --- */
+  --font-display: var(--ff-display);
+  --font-body: var(--ff-sans);
+  --font-code: var(--ff-mono);
+
+  /* --- Typography: sizes --- */
+  --text-xs: var(--fs--2); /* captions, labels      */
+  --text-s: var(--fs--1); /* secondary text        */
+  --text-base: var(--fs-0); /* body copy             */
+  --text-m: var(--fs-1); /* lead text             */
+  --text-l: var(--fs-2); /* small headings        */
+  --text-xl: var(--fs-3); /* section headings      */
+  --text-2xl: var(--fs-4); /* page headings         */
+  --text-3xl: var(--fs-5); /* hero / display        */
+
+  /* --- Spacing aliases --- */
+  --gap-xs: var(--space-xs);
+  --gap-s: var(--space-s);
+  --gap-m: var(--space-m);
+  --gap-l: var(--space-l);
+  --gap-xl: var(--space-xl);
+
+  --padding-xs: var(--space-xs);
+  --padding-s: var(--space-s);
+  --padding-m: var(--space-m);
+  --padding-l: var(--space-l);
+  --padding-xl: var(--space-xl);
+
+  --section-gap: var(--space-2xl);
+  --section-gap-l: var(--space-3xl);
+
+  /* --- Layout --- */
+  --content-width-xs: 30rem; /* narrow prose / forms  */
+  --content-width-s: 40rem; /* medium prose          */
+  --content-width-m: 60rem; /* standard content      */
+  --content-width-l: 80rem; /* wide layout           */
+  --content-width-xl: 95rem; /* 1520px — full wrapper */
+
+  --gutter: var(--space-m);
+}

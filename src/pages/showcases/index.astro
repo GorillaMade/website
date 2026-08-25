@@ -1,0 +1,37 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionHeader from "@/components/sections/SectionHeader.astro";
+import CaseStudyList from "@/components/ui/CaseStudyList.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+const showcases: CollectionEntry<"showcase">[] =
+    await getCollection("showcase");
+---
+
+<BaseLayout
+    title="Showcase | Digitale Projecten & Cases"
+    description="Bekijk een selectie van websites, webapplicaties en digitale ervaringen die wij hebben ontworpen en ontwikkeld."
+>
+    <section class="hero region">
+        <div class="wrapper flow">
+            <SectionHeader
+                eyebrow="Showcases"
+                title="Designing Success"
+                subtitle="Een selectie van projecten waarin we bedrijven hebben
+                geholpen groeien door doordachte digitale oplossingen."
+            />
+            <div class="showcases-list mt-l flow">
+                {
+                    showcases.map((showcase) => (
+                        <CaseStudyList showcase={showcase} />
+                    ))
+                }
+            </div>
+        </div>
+    </section>
+</BaseLayout>
+
+<style lang="scss">
+    .grid[data-layout="thirds"] {
+        --grid-placement: auto-fill;
+    }
+</style>

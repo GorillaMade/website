@@ -1,0 +1,262 @@
+/* ============================================================
+   global.css — Entry point
+   ============================================================
+   Import order matters:
+   1. root.css    primitives & Utopia scales
+   2. tokens.css  semantic token defaults (light)
+   3. theme.css   @media + [data-theme] overrides
+
+   In Astro, import this once in your root layout:
+     import '../styles/global.css'
+   ============================================================ */
+
+@import "./root.css";
+@import "./tokens.css";
+@import "./theme.css";
+
+/* ============================================================
+Logo
+   ============================================================ */
+
+.fs--2 {
+    font-size: var(--fs--2);
+}
+
+.fs--1 {
+    font-size: var(--fs--1);
+}
+
+.fs-0 {
+    font-size: var(--fs-0);
+}
+
+.fs-1 {
+    font-size: var(--fs-1);
+}
+
+.fs-2 {
+    font-size: var(--fs-2);
+}
+
+.fs-3 {
+    font-size: var(--fs-3);
+}
+
+.fs-4 {
+    font-size: var(--fs-4);
+}
+
+.fs-5 {
+    font-size: var(--fs-5);
+}
+
+/* ============================================================
+Logo
+   ============================================================ */
+
+.brand {
+    flex-shrink: 0;
+    display: flex;
+    color: var(--color-text);
+    font-family: var(--ff-base);
+    font-size: var(--fs-0);
+    font-weight: var(--fw-bold);
+    text-decoration: none;
+    align-items: center;
+    gap: var(--space-2xs);
+
+    &:is(:hover, :focus-visible) {
+        color: var(--color-text-secondary);
+    }
+
+    @media (width < 975px) {
+        flex: 1;
+    }
+
+    .fw-light {
+        font-weight: var(--fw-light);
+    }
+}
+
+@media (width < 450px) {
+    .brand__name {
+        display: none;
+    }
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+
+.wrapper {
+    max-width: min(
+        var(--wrapper-width, var(--content-width-xl)),
+        100% - (var(--wrapper-gutter, var(--gutter)) * 2)
+    );
+    margin-inline: auto;
+}
+
+.wrapper--xs {
+    --wrapper-width: var(--content-width-xs);
+}
+.wrapper--s {
+    --wrapper-width: var(--content-width-s);
+}
+.wrapper--m {
+    --wrapper-width: var(--content-width-m);
+}
+.wrapper--l {
+    --wrapper-width: var(--content-width-l);
+}
+.wrapper--prose {
+    --wrapper-width: var(--content-width-s);
+}
+
+/*
+  .flow
+  -----
+  Voegt verticale ruimte toe tussen gestapelde child-elementen.
+  Overschrijf --flow-space per-context voor custom ritme.
+*/
+
+.flow > * + * {
+    margin-block-start: var(--flow-space, var(--space-m));
+}
+.flow--l > * + * {
+    --flow-space: var(--space-l);
+}
+.flow--xl > * + * {
+    --flow-space: var(--space-xl);
+}
+
+.region {
+    padding-block: var(--region-space, var(--section-gap));
+}
+
+/*
+  .grid
+  -----
+  Breakpoint-vrij responsive grid op basis van min-itemgrootte.
+  Kolommen ontstaan automatisch zodra er ruimte is.
+  Overschrijf --grid-placement, --grid-min-item-size of --grid-gap inline.
+  Gebruik [data-layout] voor vaste kolomverdelingen.
+*/
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(
+        var(--grid-placement, auto-fill),
+        minmax(min(var(--grid-min-item-size, 16rem), 100%), 1fr)
+    );
+    gap: var(--grid-gap, var(--space-s-m));
+}
+
+.grid {
+    &[data-layout="halves"] {
+        --grid-placement: auto-fit;
+        --grid-min-item-size: clamp(16rem, 50dvw, 32rem);
+    }
+
+    &[data-layout="thirds"] {
+        --grid-placement: auto-fit;
+        --grid-min-item-size: clamp(16rem, 33%, 26rem);
+    }
+
+    &[data-layout="quarters"] {
+        --grid-placement: auto-fit;
+        --grid-min-item-size: clamp(16rem, 25%, 20rem);
+    }
+}
+
+
+/* Post Grid */
+
+.content-grid {
+  --padding-inline: 2rem;
+  --content-max-width: 60ch;
+  --breakout-max-width: 75ch;
+
+  --breakout-size: calc(
+    (var(--breakout-max-width) - var(--content-max-width)) / 2
+  );
+
+  display: grid;
+  grid-template-columns:
+    [full-width-start] minmax(var(--padding-inline), 1fr)
+    [breakout-start] minmax(0, var(--breakout-size))
+    [content-start] min(
+      100% - (var(--padding-inline) * 2),
+      var(--content-max-width)
+    )
+    [content-end]
+    minmax(0, var(--breakout-size)) [breakout-end]
+    minmax(var(--padding-inline), 1fr) [full-width-end];
+}
+
+.content-grid > :not(.breakout, .full-width),
+.full-width > :not(.breakout, .full-width) {
+  grid-column: content;
+}
+
+.content-grid > .breakout {
+  grid-column: breakout;
+}
+
+.content-grid > .full-width {
+  grid-column: full-width;
+
+  display: grid;
+  grid-template-columns: inherit;
+}
+
+/* -----------------------------------------------------------------------------
+ * Animation(s)
+ * -------------------------------------------------------------------------- */
+
+/* Fade In */
+.fade-in {
+    animation: fadeIn linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        scale: 0.4;
+    }
+
+    to {
+        opacity: 1;
+        scale: 1;
+    }
+}
+
+/* Fade in from left */
+.fade-in-left {
+    animation: fadeInLeft linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fade-in,
+    .fade-in-left {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+        scale: 1 !important;
+    }
+}

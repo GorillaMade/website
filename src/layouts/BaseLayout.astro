@@ -1,0 +1,148 @@
+---
+import Header from "@/components/shared/Header.astro";
+import Footer from "@/components/shared/Footer.astro";
+import { Font } from "astro:assets";
+import "@/styles/global.css";
+
+const {
+    title = "GorillaMade | Webdesign & Development Tilburg",
+    description = "GorillaMade ontwikkelt moderne websites, maatwerk webapplicaties en digitale oplossingen voor ondernemers en bedrijven in Tilburg.",
+    image = "/og-image.jpg",
+    url = Astro.url.pathname,
+    noindex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(url, Astro.site);
+---
+
+<html lang="nl" data-theme="light">
+    <head>
+        <!-- Basic -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title} | GorillaMade</title>
+        <meta name="description" content={description} />
+
+        <!-- Canonical -->
+        <link rel="canonical" href={canonicalURL} />
+
+        <!-- Indexing -->
+        <meta
+            name="robots"
+            content={noindex ? "noindex,nofollow" : "index,follow"}
+        />
+
+        <!-- Theme -->
+        <meta name="theme-color" content="#000000" />
+        <Font cssVariable="--ff-display" preload />
+        <Font cssVariable="--ff-body" preload />
+
+        <!-- Favicon -->
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" href="/favicon.ico" />
+
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:image" content={image} />
+        <meta property="og:site_name" content="GorillaMade" />
+        <meta property="og:locale" content="nl_NL" />
+
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={image} />
+    </head>
+
+    <body>
+        <Header />
+
+        <main>
+            <slot />
+        </main>
+
+        <Footer />
+    </body>
+</html>
+
+<style is:global>
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        -webkit-text-size-adjust: 100%;
+        tab-size: 4;
+        scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+
+    body {
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        font-weight: var(--fw-regular);
+        line-height: var(--line-height-normal);
+        color: var(--color-text);
+        background-color: var(--surface);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    img,
+    video,
+    svg {
+        display: block;
+        max-width: 100%;
+    }
+
+    p,
+    li,
+    blockquote {
+        max-width: 68ch;
+    }
+
+    a {
+        color: var(--color-accent-text);
+        text-underline-offset: 0.2em;
+        transition: color var(--duration-fast) var(--ease-default);
+    }
+
+    a:hover {
+        color: var(--color-accent);
+    }
+
+    code,
+    kbd,
+    samp,
+    pre {
+        font-family: var(--font-code);
+        font-size: var(--text-s);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-border-focus);
+        outline-offset: 3px;
+        border-radius: var(--radius-xs);
+    }
+</style>

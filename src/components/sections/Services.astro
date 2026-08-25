@@ -1,0 +1,100 @@
+---
+import SectionHeader from "@/components/sections/SectionHeader.astro";
+
+const services = [
+  {
+    id: 1,
+    title: "Merkstrategie & Identiteit",
+    description: "We geven jouw merk een stevige fundering. Van strategie tot visuele identiteit: helder, herkenbaar en gemaakt om op te vallen tussen de rest van de jungle.",
+  },
+  {
+    id: 2,
+    title: "Website Development",
+    description: "Geen standaard templates en digitale poeha. We bouwen snelle, gebruiksvriendelijke websites die er sterk uitzien en bezoekers in beweging brengen.",
+  },
+  {
+    id: 3,
+    title: "SEO & Online Groei",
+    description: "Zorg dat je niet verdwijnt tussen de bomen. Met een slimme SEO-strategie maken we jouw bedrijf beter vindbaar en trekken we de juiste bezoekers naar je website.",
+  },
+];
+---
+
+<section class="services region">
+    <div class="wrapper flow">
+        <SectionHeader
+            eyebrow="[03 Services]"
+            title="We bouwen aan sterke merken, slimme strategieën en groei die impact maakt."
+        />
+        <div class="services__list">
+            {
+                services.map((service) => (
+                    <div class="service__card fade-in">
+                        <div class="service__card--title">
+                            <h3 class="fs-2 mt-0">{service.title}</h3>
+                        </div>
+                        <div class="service__card--description">
+                            <p>{service.description}</p>
+                        </div>
+                    </div>
+                ))
+            }
+            <a href="/contact" class="cta">Gesprek plannen</a>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .services {
+        background: var(--color-bg-subtle);
+        --flow-space: var(--space-l);
+    }
+
+    .services__list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2xs);
+    }
+
+    .service__card {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-s-l);
+        padding: var(--space-m);
+        background: var(--color-bg);
+        border-radius: var(--radius-m);
+
+        &--title {
+            font-size: var(--fs-2);
+        }
+
+        &--description {
+            color: var(--color-neutral-500);
+            font-size: 1rem;
+            max-width: 450px;
+        }
+    }
+
+    @media (width > 1010px) {
+        .service__card {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+
+            &--title {
+                order: 2;
+            }
+        }
+    }
+
+    .cta {
+        color: var(--color-neutral-0);
+        background: var(--color-neutral-900);
+        padding: var(--space-l);
+        font-size: var(--font-size-1);
+        font-weight: var(--font-weight-semibold);
+        text-align: center;
+        text-decoration: none;
+        border-radius: var(--radius-m);
+    }
+</style>

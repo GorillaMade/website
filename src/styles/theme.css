@@ -1,0 +1,180 @@
+/* ============================================================
+   theme.css — Theme overrides
+   ============================================================
+   Overrides only the semantic tokens from tokens.css.
+   Primitive values (root.css) are never touched here.
+
+   Priority order (highest → lowest):
+   1. [data-theme="dark"] / [data-theme="light"]  ← JS override
+   2. @media prefers-color-scheme                 ← OS preference
+   3. :root defaults in tokens.css                ← light fallback
+
+   Usage in HTML:
+     <html>                   follow OS preference
+     <html data-theme="light"> force light
+     <html data-theme="dark">  force dark
+
+   Toggle with JS:
+     document.documentElement.setAttribute('data-theme', 'dark')
+     document.documentElement.removeAttribute('data-theme')
+   ============================================================ */
+
+/* ============================================================
+   LIGHT — @media
+   ============================================================ */
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --surface: var(--color-neutral-0);
+        --surface-subtle: var(--color-neutral-50);
+        --surface-muted: var(--color-neutral-100);
+        --surface-inverted: var(--color-neutral-950);
+
+        --color-text: var(--color-neutral-900);
+        --color-text-secondary: var(--color-neutral-600);
+        --color-text-muted: var(--color-neutral-400);
+        --color-text-disabled: var(--color-neutral-300);
+        --color-text-inverted: var(--color-neutral-0);
+        --color-text-accent: var(--color-brand-600);
+
+        --color-border: var(--color-neutral-200);
+        --color-border-focus: var(--color-brand-500);
+        --color-border-strong: var(--color-neutral-400);
+
+        --color-accent: var(--color-brand-500);
+        --color-accent-hover: var(--color-brand-400);
+        --color-accent-text: var(--color-brand-700);
+
+        --color-success-bg: var(--state-success-light);
+        --color-success: var(--state-success);
+        --color-success-text: var(--state-success-dark);
+        --color-warning-bg: var(--state-warning-light);
+        --color-warning: var(--state-warning);
+        --color-warning-text: var(--state-warning-dark);
+        --color-error-bg: var(--state-error-light);
+        --color-error: var(--state-error);
+        --color-error-text: var(--state-error-dark);
+        --color-info-bg: var(--state-info-light);
+        --color-info: var(--state-info);
+        --color-info-text: var(--state-info-dark);
+    }
+}
+
+/* ============================================================
+   DARK — @media
+   ============================================================ */
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --surface: var(--color-neutral-950);
+        --surface-subtle: var(--color-neutral-900);
+        --surface-muted: var(--color-neutral-800);
+        --surface-inverted: var(--color-neutral-0);
+
+        --color-text: var(--color-neutral-50);
+        --color-text-secondary: var(--color-neutral-400);
+        --color-text-muted: var(--color-neutral-500);
+        --color-text-disabled: var(--color-neutral-700);
+        --color-text-inverted: var(--color-neutral-950);
+        --color-text-accent: var(--color-brand-400);
+
+        --color-border: var(--color-neutral-800);
+        --color-border-focus: var(--color-brand-400);
+        --color-border-strong: var(--color-neutral-600);
+
+        --color-accent: var(--color-brand-400);
+        --color-accent-hover: var(--color-brand-300);
+        --color-accent-text: var(--color-brand-300);
+
+        --color-success-bg: var(--state-success-dark);
+        --color-success: var(--state-success);
+        --color-success-text: var(--state-success-light);
+        --color-warning-bg: var(--state-warning-dark);
+        --color-warning: var(--state-warning);
+        --color-warning-text: var(--state-warning-light);
+        --color-error-bg: var(--state-error-dark);
+        --color-error: var(--state-error);
+        --color-error-text: var(--state-error-light);
+        --color-info-bg: var(--state-info-dark);
+        --color-info: var(--state-info);
+        --color-info-text: var(--state-info-light);
+    }
+}
+
+/* ============================================================
+   LIGHT — [data-theme] explicit override
+   ============================================================ */
+
+[data-theme="light"] {
+    --surface: var(--color-neutral-0);
+    --surface-subtle: var(--color-neutral-50);
+    --surface-muted: var(--color-neutral-100);
+    --surface-inverted: var(--color-neutral-950);
+
+    --color-text: var(--color-neutral-900);
+    --color-text-secondary: var(--color-neutral-600);
+    --color-text-muted: var(--color-neutral-400);
+    --color-text-disabled: var(--color-neutral-300);
+    --color-text-inverted: var(--color-neutral-0);
+    --color-text-accent: var(--color-brand-600);
+
+    --color-border: var(--color-neutral-200);
+    --color-border-focus: var(--color-brand-500);
+    --color-border-strong: var(--color-neutral-400);
+
+    --color-accent: var(--color-brand-500);
+    --color-accent-hover: var(--color-brand-400);
+    --color-accent-text: var(--color-brand-700);
+
+    --color-success-bg: var(--state-success-light);
+    --color-success: var(--state-success);
+    --color-success-text: var(--state-success-dark);
+    --color-warning-bg: var(--state-warning-light);
+    --color-warning: var(--state-warning);
+    --color-warning-text: var(--state-warning-dark);
+    --color-error-bg: var(--state-error-light);
+    --color-error: var(--state-error);
+    --color-error-text: var(--state-error-dark);
+    --color-info-bg: var(--state-info-light);
+    --color-info: var(--state-info);
+    --color-info-text: var(--state-info-dark);
+}
+
+/* ============================================================
+   DARK — [data-theme] explicit override
+   ============================================================ */
+
+[data-theme="dark"] {
+    --surface: var(--color-neutral-950);
+    --surface-subtle: var(--color-neutral-900);
+    --surface-muted: var(--color-neutral-800);
+    --surface-inverted: var(--color-neutral-0);
+
+    --color-text: var(--color-neutral-50);
+    --color-text-secondary: var(--color-neutral-400);
+    --color-text-muted: var(--color-neutral-500);
+    --color-text-disabled: var(--color-neutral-700);
+    --color-text-inverted: var(--color-neutral-950);
+    --color-text-accent: var(--color-brand-400);
+
+    --color-border: var(--color-neutral-800);
+    --color-border-focus: var(--color-brand-400);
+    --color-border-strong: var(--color-neutral-600);
+
+    --color-accent: var(--color-brand-400);
+    --color-accent-hover: var(--color-brand-300);
+    --color-accent-text: var(--color-brand-300);
+
+    --color-success-bg: var(--state-success-dark);
+    --color-success: var(--state-success);
+    --color-success-text: var(--state-success-light);
+    --color-warning-bg: var(--state-warning-dark);
+    --color-warning: var(--state-warning);
+    --color-warning-text: var(--state-warning-light);
+    --color-error-bg: var(--state-error-dark);
+    --color-error: var(--state-error);
+    --color-error-text: var(--state-error-light);
+    --color-info-bg: var(--state-info-dark);
+    --color-info: var(--state-info);
+    --color-info-text: var(--state-info-light);
+}

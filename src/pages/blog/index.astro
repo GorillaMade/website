@@ -1,0 +1,115 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionHeader from "@/components/sections/SectionHeader.astro";
+import PostCard from "@/components/ui/PostCard.astro";
+
+import { getCollection, type CollectionEntry } from "astro:content";
+
+const posts: CollectionEntry<"blog">[] = await getCollection("blog");
+
+// Unieke categorieën ophalen uit alle posts, voor de filter-knoppen
+const categories = [...new Set(posts.map((post) => post.data.category))].sort();
+---
+
+<BaseLayout
+    title="Blog | Webdesign & Development Bureau"
+    description="Inzichten, tutorials en nieuws over webdesign, development en digitale strategie."
+>
+    <section class="hero region">
+        <div class="wrapper flow">
+            <SectionHeader
+                eyebrow="Blog"
+                title="Digital Stories"
+                subtitle="Inzichten, tutorials en strategieën over design, development
+                en digitale groei."
+            />
+        </div>
+    </section>
+    <section class="region">
+        <div class="wrapper flow" x-data={`{ activeCategory: 'all' }`}>
+            <div class="blog-filter" role="group" aria-label="Filter op categorie">
+                <button
+                    type="button"
+                    class="blog-filter__button"
+                    x-bind:data-active="activeCategory === 'all'"
+                    x-on:click="activeCategory = 'all'"
+                >
+                    Alle
+                </button>
+                {
+                    categories.map((category) => (
+                        <button
+                            type="button"
+                            class="blog-filter__button"
+                            x-bind:data-active={`activeCategory === '${category}'`}
+                            x-on:click={`activeCategory = '${category}'`}
+                        >
+                            {category}
+                        </button>
+                    ))
+                }
+            </div>
+
+            <ul class="post-list grid" data-layout="thirds">
+                {
+                    posts.map((post) => (
+                        <li
+                            x-show={`activeCategory === 'all' || activeCategory === '${post.data.category}'`}
+                            x-transition
+                        >
+                            <PostCard blog={post} />
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+    </section>
+</BaseLayout>
+
+<style lang="scss">
+
+    .hero.region {
+        padding-block-end: 0;
+    }
+
+    .post-list {
+        list-style: none;
+
+        &.grid {
+            --grid-placement: auto-fill;
+        }
+    }
+
+    /* .blog-filter
+       -----
+       Knoppenrij om blogposts te filteren op categorie via Alpine.js state. */
+    .blog-filter {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-xs, 0.5rem);
+        margin-bottom: var(--space-m, 1.5rem);
+    }
+
+    .blog-filter__button {
+        padding: 0.375rem 0.875rem;
+        border-radius: var(--radius-full, 999px);
+        border: 1px solid var(--color-border);
+        background: transparent;
+        color: var(--color-text-muted);
+        font-size: var(--step--1, 0.875rem);
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+        &:hover {
+            border-color: var(--color-accent);
+            color: var(--color-text);
+        }
+
+        &[data-active="true"] {
+            background: var(--surface-inverted);
+            border-color: var(--surface-inverted);
+            color: var(--color-text-inverted);
+        }
+    }
+</style>

@@ -1,0 +1,85 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Button from "@/components/ui/Button.astro";
+
+import Services from "@/components/sections/Services.astro";
+import Clients from "@/components/sections/Clients.astro";
+import Showcases from "@/components/sections/Showcases.astro";
+import Testimonials from "@/components/sections/Testimonials.astro";
+---
+
+<BaseLayout
+    title="GorillaMade | Webdesign, Development & Digitale Oplossingen"
+    description="Creatief webdesign en slimme digitale oplossingen ontwikkeld voor ondernemers die online willen groeien met een moderne en snelle website."
+>
+    <section class="hero region">
+        <div class="wrapper flow">
+            <header class="section-header flow">
+                <span class="section-header__eyebrow">
+                    Geen gebrul, gewoon goed geregeld online
+                </span>
+
+                <h1 class="section-header__title">
+                    <span class="highlight">Slimme</span> websites voor <span
+                        class="highlight">sterke</span
+                    > bedrijven
+                </h1>
+
+                <p class="section-header__subtitle">
+                    GorillaMade ontwerpt en ontwikkelt snelle, professionele
+                    websites die bezoekers omzetten in klanten, zodat jij je
+                    kunt focussen op het runnen van je bedrijf.
+                </p>
+            </header>
+            <div class="flex-group">
+                <Button href="#showcases" ghost>Bekijk showcases</Button>
+                <Button href="/contact" classList="button--link"
+                    >Gesprek plannen</Button
+                >
+            </div>
+        </div>
+    </section>
+    <Clients />
+    <Showcases />
+    <Testimonials />
+    <Services />
+</BaseLayout>
+
+<style lang="scss">
+    .hero {
+        padding-block: var(--space-2xl-3xl);
+
+        .section-header {
+            margin-block-end: var(--padding-xl);
+
+            --flow-space: 1em;
+
+            &__eyebrow {
+                font-size: var(--text-xs);
+                font-weight: var(--fw-semibold);
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: var(--neutral-900);
+            }
+
+            &__title {
+                --flow-space: 1rem;
+                font-size: var(--heading-size, var(--text-3xl));
+                font-weight: var(--fw-extrabold);
+                line-height: 1.15;
+                max-width: 20ch;
+            }
+
+            &__subtitle {
+                font-size: var(--text-m);
+                line-height: 1.68;
+                color: var(--text-secondary);
+                max-width: 50ch;
+            }
+        }
+
+        .highlight {
+            color: var(--color-accent);
+        }
+    }
+</style>

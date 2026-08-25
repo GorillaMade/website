@@ -1,0 +1,27 @@
+---
+import SectionHeader from "@/components/sections/SectionHeader.astro";
+import ShowcaseCard from "@/components/ui/ShowcaseCard.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+const showcases: CollectionEntry<"showcase">[] =
+    await getCollection("showcase");
+---
+
+<section id="showcases" class="showcases region">
+    <div class="wrapper">
+        <SectionHeader
+            eyebrow="[01 Showcases]"
+            title="Digitale successen uit mijn jungle"
+            subtitle="Een kleine selectie uit mijn portfolio"
+        />
+        <div class="grid" data-layout="thirds">
+            {showcases.map((showcase) => <ShowcaseCard showcase={showcase} />)}
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .grid[data-layout="thirds"] {
+        --grid-placement: auto-fill;
+    }
+</style>

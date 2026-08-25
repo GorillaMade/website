@@ -1,0 +1,294 @@
+---
+/**
+ * TestimonialsSection.astro
+ * -----
+ * Haalt quotes op uit de showcases collection (entries met een `quote`-veld)
+ * en toont ze als carousel: 1 testimonial per keer, met prev/next knoppen.
+ */
+import SectionHeader from "@/components/sections/SectionHeader.astro";
+
+import { getCollection, type CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  /** Alleen showcases met `featured: true` tonen */
+  featuredOnly?: boolean;
+  /** Maximaal aantal testimonials tonen (optioneel) */
+  limit?: number;
+}
+
+const {
+  eyebrow = "[02 Testimonials]",
+  title = "Wat klanten over ons zeggen",
+  featuredOnly = false,
+  limit,
+} = Astro.props;
+
+const showcases: CollectionEntry<"showcase">[] = await getCollection("showcase");
+
+let testimonials = showcases.filter((entry) => Boolean(entry.data.quote));
+
+if (featuredOnly) {
+  testimonials = testimonials.filter((entry) => entry.data.featured);
+}
+
+if (limit) {
+  testimonials = testimonials.slice(0, limit);
+}
+
+const total = testimonials.length;
+---
+
+{total > 0 && (
+  <section
+    class="testimonials-section region"
+    x-data={`{ current: 0, total: ${total} }`}
+  >
+    <div class="wrapper flow">
+        <header class="section-header flow">
+            <span class="section-header__eyebrow">{eyebrow}</span>
+
+            <h2 class="section-header__title">
+                {title}
+            </h2>
+        </header>
+
+      <div class="testimonials-section__carousel">
+        <ul class="testimonials-section__list">
+          {testimonials.map((entry, index) => {
+            const { client, logo, quote, quoteAuthor, quoteAuthorFunction } = entry.data;
+            return (
+              <li
+                class="testimonial-card"
+                x-show={`current === ${index}`}
+                x-transition
+              >
+                <blockquote class="testimonial-card__quote">
+                  <p>&ldquo;{quote}&rdquo;</p>
+                </blockquote>
+                <footer class="testimonial-card__footer">
+                  {logo && typeof logo !== "string" && (
+                    <Image
+                      src={logo}
+                      alt={client}
+                      width={120}
+                      height={40}
+                      class="testimonial-card__logo"
+                    />
+                  )}
+                  {logo && typeof logo === "string" && (
+                    <img
+                      src={logo}
+                      alt={client}
+                      width={120}
+                      height={40}
+                      class="testimonial-card__logo"
+                    />
+                  )}
+                  <div class="testimonial-card__author">
+                    {quoteAuthor && (
+                      <span class="testimonial-card__author-name">{quoteAuthor}</span>
+                    )}
+                    {quoteAuthorFunction && (
+                      <span class="testimonial-card__author-function">
+                        {quoteAuthorFunction}
+                      </span>
+                    )}
+                  </div>
+                </footer>
+              </li>
+            );
+          })}
+        </ul>
+
+        {total > 1 && (
+          <div class="testimonials-section__nav">
+            <button
+              type="button"
+              class="testimonials-section__nav-button"
+              aria-label="Vorige testimonial"
+              x-on:click="current = (current - 1 + total) % total"
+            >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M20.3284 11.0001V13.0001L7.50011 13.0001L10.7426 16.2426L9.32842 17.6568L3.67157 12L9.32842 6.34314L10.7426 7.75735L7.49988 11.0001L20.3284 11.0001Z"
+                    fill="currentColor"
+                  />
+                </svg>
+            </button>
+            <span class="testimonials-section__nav-counter">
+              <span x-text="current + 1"></span>/{total}
+            </span>
+            <button
+              type="button"
+              class="testimonials-section__nav-button"
+              aria-label="Volgende testimonial"
+              x-on:click="current = (current + 1) % total"
+            >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15.0378 6.34317L13.6269 7.76069L16.8972 11.0157L3.29211 11.0293L3.29413 13.0293L16.8619 13.0157L13.6467 16.2459L15.0643 17.6568L20.7079 11.9868L15.0378 6.34317Z"
+                    fill="currentColor"
+                  />
+                </svg>
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+)}
+
+<style lang="scss">
+.section-header {
+    margin-block-end: var(--padding-xl);
+    text-align: center;
+
+    --flow-space: 1em;
+
+    &__eyebrow {
+        font-size: var(--text-xs);
+        font-weight: var(--fw-semibold);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--neutral-900);
+    }
+
+    &__title {
+        --flow-space: 1rem;
+        font-size: var(--heading-size, var(--text-2xl));
+        font-weight: var(--fw-extrabold);
+        line-height: 1.15;
+        max-width: auto;
+    }
+}
+
+  /* .testimonials-section
+     -----
+     Carousel met testimonial-cards: 1 zichtbaar per keer, quote afkomstig
+     uit showcases collection. Navigatie via Alpine.js (current index). */
+  .testimonials-section {
+    background: var(--surface-subtle);
+  }
+
+  .testimonials-section__carousel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+  }
+
+  /* Cards stapelen op elkaar zodat x-show ze los toont zonder layout-jump */
+  .testimonials-section__list {
+    display: grid;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      grid-area: 1 / 1;
+    }
+  }
+
+  .testimonial-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-m);
+    text-align: center;
+    max-width: 75ch;
+    margin-inline: auto;
+  }
+
+  .testimonial-card__quote {
+    margin: 0;
+    font-size: var(--fs-1);
+    line-height: 1.5;
+    color: var(--color-text);
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .testimonial-card__footer {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    gap: var(--space-2xs);
+  }
+
+  .testimonial-card__logo {
+    width: auto;
+    height: 2rem;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  .testimonial-card__author {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.125rem;
+  }
+
+  .testimonial-card__author-name {
+    font-size: var(--fs--1);
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .testimonial-card__author-function {
+    font-size: var(--fs--2);
+    color: var(--color-text-muted);
+  }
+
+  .testimonials-section__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-s);
+  }
+
+  .testimonials-section__nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    background: transparent;
+    color: var(--color-text);
+    font-size: var(--fs-0);
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    line-height: var(--line-height-tight);
+
+    &:hover {
+      color: var(--color-text-inverted);
+      border-color: var(--surface-inverted);
+      background: var(--surface-inverted);
+    }
+  }
+
+  .testimonials-section__nav-counter {
+    font-size: var(--fs--1);
+    color: var(--color-text-muted);
+    min-width: 3ch;
+    text-align: center;
+  }
+</style>

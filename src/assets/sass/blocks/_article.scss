@@ -1,0 +1,49 @@
+.article {
+    --_article-gap: var(--article-gap, 5dvw);
+    --_article-content: var(--article-content, 40rem);
+    --_article-popout: var(--article-popout, 62rem);
+    --_article-feature: var(--article-feature, 84rem);
+
+    --_article-full-calc: minmax(var(--_article-gap), 1fr);
+    --_article-feature-calc: minmax(
+        0,
+        calc((var(--_article-feature) - var(--_article-popout)) * 0.5)
+    );
+    --_article-popout-calc: minmax(
+        0,
+        calc((var(--_article-popout) - var(--_article-content)) * 0.5)
+    );
+    --_article-content-calc: min(
+        var(--_article-content),
+        100% - var(--_article-gap) * 2
+    );
+
+    display: grid;
+    grid-template-columns:
+        [full-start] var(--_article-full-calc)
+        [feature-start] var(--_article-feature-calc)
+        [popout-start] var(--_article-popout-calc)
+        [content-start] var(--_article-content-calc) [content-end]
+        var(--_article-popout-calc) [popout-end]
+        var(--_article-feature-calc) [feature-end]
+        var(--_article-full-calc) [full-end];
+}
+
+.article {
+    & > *:not(.full-width, .full, .feature, .popout) {
+        grid-column: content;
+    }
+
+    .popout {
+        grid-column: popout;
+    }
+
+    .feature {
+        grid-column: feature;
+    }
+
+    .full,
+    .full-width {
+        grid-column: full;
+    }
+}

@@ -1,0 +1,165 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ContactForm from "@/components/forms/ContactForm.astro";
+
+const gegevens = {
+    email: "hallo@gorillamade.nl",
+    locatie: "Tilburg, Nederland",
+};
+
+const socials = [
+    {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/company/gorillamade",
+    },
+    {
+        label: "Instagram",
+        href: "https://instagram.com/gorillamade.nl",
+    },
+    {
+        label: "GitHub",
+        href: "https://github.com/GorillaMade",
+    },
+];
+---
+
+<BaseLayout
+    title="Contact — GorillaMade"
+    description="Laten we kennismaken en bespreken hoe GorillaMade jouw bedrijf online kan versterken."
+>
+    <section class="contact section">
+        <div class="wrapper contact__wrapper">
+            <!-- Left -->
+            <div class="contact__content flow">
+                <header class="section-header flow">
+                    <span class="section-header__eyebrow">Contact</span>
+
+                    <h1 class="section-header__title">Laten we kennismaken</h1>
+
+                    <p class="section-header__subtitle">
+                        Klaar voor een professionele website zonder gedoe of op
+                        zoek naar een volledig maatwerk platform? Vertel kort
+                        over jouw project.
+                    </p>
+                </header>
+
+                <div class="contact__gegevens flow">
+                    <div class="contact__gegeven">
+                        <span class="contact__gegeven-label"> E-mail </span>
+
+                        <a
+                            href={`mailto:${gegevens.email}`}
+                            class="contact__gegeven-value"
+                        >
+                            {gegevens.email}
+                        </a>
+                    </div>
+
+                    <div class="contact__gegeven">
+                        <span class="contact__gegeven-label"> Locatie </span>
+
+                        <span class="contact__gegeven-value">
+                            {gegevens.locatie}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="contact__socials">
+                    {
+                        socials.map(({ label, href }) => (
+                            <a
+                                href={href}
+                                class="contact__social"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {label}
+                            </a>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <!-- Right -->
+            <div id="form-container" class="contact__card">
+                <ContactForm />
+            </div>
+        </div>
+    </section>
+</BaseLayout>
+
+<style lang="scss">
+    .contact {
+        padding-block: 6rem;
+
+        &__wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--gap-m);
+            align-items: start;
+
+            @media (max-width: 900px) {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        &__content {
+            max-width: 42rem;
+        }
+
+        &__gegevens {
+            margin-top: 2rem;
+        }
+
+        &__gegeven {
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap-xs);
+
+            &-label {
+                font-size: var(--fs--1);
+                text-transform: uppercase;
+                letter-spacing: var(--tracking-wider);
+                color: var(--color-neutral-700);
+            }
+
+            &-value {
+                font-size: var(--fs-0);
+                font-weight: var(--fw-medium);
+                text-decoration: none;
+                color: inherit;
+                width: fit-content;
+
+                &:is(a):hover {
+                    text-decoration: underline;
+                    text-underline-offset: 3px;
+                }
+            }
+        }
+
+        &__socials {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        &__social {
+            color: var(--color-neutral-500);
+            text-decoration: none;
+            font-size: var(--fs--1);
+            transition: color 0.2s ease;
+
+            &:hover {
+                color: var(--color-primary);
+            }
+        }
+
+        &__card {
+            border: 1px solid var(--color-border);
+            background: var(--color-neutral-900);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+        }
+    }
+</style>

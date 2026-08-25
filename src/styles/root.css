@@ -1,0 +1,211 @@
+/* ============================================================
+   root.css — Design tokens: primitives & Utopia fluid scales
+   ============================================================
+   Raw values. Never reference these directly in components —
+   use the semantic tokens from tokens.css instead.
+   ============================================================ */
+
+/* ============================================================
+   1. PRIMITIVES
+   ============================================================ */
+
+:root {
+  --color-brand-50: oklch(98.69% 0.021403008259500936 95.27742336745216);
+  --color-brand-100: oklch(96.19% 0.058 95.62);
+  --color-brand-200: oklch(92.43% 0.1151 95.75);
+  --color-brand-300: oklch(87.9% 0.1534 91.61);
+  --color-brand-400: oklch(83.69% 0.1644 84.43);
+  --color-brand-500: oklch(76.86% 0.1647 70.08);
+  --color-brand-600: oklch(66.58% 0.1574 58.32);
+  --color-brand-700: oklch(55.53% 0.1455 49);
+  --color-brand-800: oklch(47.32% 0.1247 46.2);
+  --color-brand-900: oklch(41.37% 0.1054 45.9);
+  --color-brand-950: oklch(27.91% 0.0742 45.64);
+
+  /* --- Neutral palette --- */
+  --color-neutral-0: oklch(100% 0.0001 263.3);
+  --color-neutral-50: oklch(98.5% 0.0001 263.3);
+  --color-neutral-100: oklch(96.7% 0.0014 285);
+  --color-neutral-200: oklch(92% 0.0041 285.9);
+  --color-neutral-300: oklch(86.2% 0.0069 286);
+  --color-neutral-400: oklch(71.2% 0.013 286);
+  --color-neutral-500: oklch(55.2% 0.0139 285.9);
+  --color-neutral-600: oklch(44.2% 0.0147 285.7);
+  --color-neutral-700: oklch(37% 0.0119 285.7);
+  --color-neutral-800: oklch(27.4% 0.0055 285.9);
+  --color-neutral-900: oklch(21% 0.0059 285.8);
+  --color-neutral-950: oklch(14.1% 0.0044 285.8);
+
+  /* --- State colors (perceptually balanced in OKLCH) --- */
+  --state-success-light: oklch(91% 0.0666 167.2);
+  --state-success: oklch(58.1% 0.1097 165.8); /* hsl(160,60%,35%) */
+  --state-success-dark: oklch(39.3% 0.0709 166.5);
+
+  --state-warning-light: oklch(96.2% 0.0579 95.6);
+  --state-warning: oklch(70.8% 0.15 71.3); /* hsl(38,90%,45%)  */
+  --state-warning-dark: oklch(46.4% 0.0961 72.9);
+
+  --state-error-light: oklch(93.8% 0.0263 17.5);
+  --state-error: oklch(58.5% 0.1988 23.5); /* hsl(357,68%,53%) */
+  --state-error-dark: oklch(39.5% 0.1384 24.1);
+
+  --state-info-light: oklch(93.2% 0.0317 255.6);
+  --state-info: oklch(54.6% 0.2153 262.9);
+  --state-info-dark: oklch(37.9% 0.1378 265.5);
+
+  /* --- Font families --- */
+  --ff-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --ff-display: "Syne", "Inter", ui-sans-serif, sans-serif;
+  --ff-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
+
+  /* --- Font weights --- */
+  --fw-thin: 100;
+  --fw-extralight: 200;
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+  --fw-black: 900;
+
+  /* --- Line heights --- */
+  --line-height-tight: 1.1;
+  --line-height-snug: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+
+  /* --- Letter spacings --- */
+  --tracking-tight: -0.04em;
+  --tracking-snug: -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.08em;
+  --tracking-widest: 0.16em;
+
+  /* --- Border radius --- */
+  --radius-none: 0;
+  --radius-xs: 2px;
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-l: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-full: 9999px;
+
+  /* --- Shadows --- */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-s: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-m: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-l:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl:
+    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+
+  /* --- Transitions --- */
+  --duration-instant: 0ms;
+  --duration-fast: 100ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 500ms;
+
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- Z-index layers --- */
+  --z-below: -1;
+  --z-base: 0;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+}
+
+/* ============================================================
+   2. FLUID TYPE SCALE — Utopia.fyi
+   Viewport: 360px → 1520px | Base: 18px → 20px
+   Scale:    1.2 (minor third) → 1.25 (major third)
+
+   Step  Min      Max
+   -2    12.50px  12.80px
+   -1    15.00px  16.00px
+    0    18.00px  20.00px
+   +1    21.60px  25.00px
+   +2    25.92px  31.25px
+   +3    31.10px  39.06px
+   +4    37.32px  48.83px
+   +5    44.79px  61.04px
+   ============================================================ */
+
+:root {
+  /* Step -2 | 12.50px → 12.80px */
+  --fs--2: clamp(0.7813rem, 0.7754rem + 0.0259vw, 0.8rem);
+
+  /* Step -1 | 15.00px → 16.00px */
+  --fs--1: clamp(0.9375rem, 0.9181rem + 0.0862vw, 1rem);
+
+  /* Step  0 | 18.00px → 20.00px (base) */
+  --fs-0: clamp(1.125rem, 1.0862rem + 0.1724vw, 1.25rem);
+
+  /* Step +1 | 21.60px → 25.00px */
+  --fs-1: clamp(1.35rem, 1.2841rem + 0.2931vw, 1.5625rem);
+
+  /* Step +2 | 25.92px → 31.25px */
+  --fs-2: clamp(1.62rem, 1.5166rem + 0.4595vw, 1.9531rem);
+
+  /* Step +3 | 31.10px → 39.06px */
+  --fs-3: clamp(1.944rem, 1.7896rem + 0.6861vw, 2.4414rem);
+
+  /* Step +4 | 37.32px → 48.83px */
+  --fs-4: clamp(2.3328rem, 2.1097rem + 0.9917vw, 3.0518rem);
+
+  /* Step +5 | 44.79px → 61.04px */
+  --fs-5: clamp(2.7994rem, 2.4843rem + 1.4005vw, 3.8147rem);
+}
+
+/* ============================================================
+   3. FLUID SPACE SCALE — Utopia.fyi
+   Viewport: 360px → 1520px | Base: 18px → 20px
+
+   Size   Min      Max       Multiplier
+   3xs     4.50px   5.00px   0.25×
+   2xs     9.00px  10.00px   0.5×
+   xs     13.50px  15.00px   0.75×
+   s      18.00px  20.00px   1×  ← base
+   m      27.00px  30.00px   1.5×
+   l      36.00px  40.00px   2×
+   xl     54.00px  60.00px   3×
+   2xl    72.00px  80.00px   4×
+   3xl   108.00px 120.00px   6×
+
+   One-up pairs (min of A → max of B):
+   s-m, m-l, l-xl, xl-2xl, 2xl-3xl
+   ============================================================ */
+
+:root {
+  --space-3xs: clamp(0.2812rem, 0.2716rem + 0.0431vw, 0.3125rem);
+  --space-2xs: clamp(0.5625rem, 0.5431rem + 0.0862vw, 0.625rem);
+  --space-xs: clamp(0.8438rem, 0.8147rem + 0.1293vw, 0.9375rem);
+  --space-s: clamp(1.125rem, 1.0862rem + 0.1724vw, 1.25rem);
+  --space-m: clamp(1.6875rem, 1.6293rem + 0.2586vw, 1.875rem);
+  --space-l: clamp(2.25rem, 2.1724rem + 0.3448vw, 2.5rem);
+  --space-xl: clamp(3.375rem, 3.2586rem + 0.5172vw, 3.75rem);
+  --space-2xl: clamp(4.5rem, 4.3448rem + 0.6897vw, 5rem);
+  --space-3xl: clamp(6.75rem, 6.5172rem + 1.0345vw, 7.5rem);
+
+  /* --- One-up pairs --- */
+  --space-s-m: clamp(1.125rem, 0.8922rem + 1.0345vw, 1.875rem);
+  --space-m-l: clamp(1.6875rem, 1.4353rem + 1.1207vw, 2.5rem);
+  --space-l-xl: clamp(2.25rem, 1.7845rem + 2.069vw, 3.75rem);
+  --space-xl-2xl: clamp(3.375rem, 2.8707rem + 2.2414vw, 5rem);
+  --space-2xl-3xl: clamp(4.5rem, 3.569rem + 4.1379vw, 7.5rem);
+}

@@ -1,0 +1,127 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+    const posts = await getCollection("blog");
+
+    return posts.map((post) => ({
+        params: {
+            slug: post.id,
+        },
+        props: {
+            post,
+        },
+    }));
+}
+
+const { post } = Astro.props;
+const { title, description, category, cover, date } = post.data;
+const { Content } = await render(post);
+
+const formattedDate = date
+    ? date.toLocaleDateString("nl-NL", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+      })
+    : null;
+---
+
+<BaseLayout title={`${title} | Blog`} description={description}>
+    <section class="region">
+        <article class="post content-grid flow">
+            <header class="post-header">
+                <span class="post-header__category" data-category={category}>
+                    {category}
+                </span>
+                <h1 class="post-header__title">{title}</h1>
+                {formattedDate && (
+                    <time class="post-header__date" datetime={date.toISOString()}>
+                        {formattedDate}
+                    </time>
+                )}
+                <p class="post-header__description">{description}</p>
+            </header>
+
+            {cover && typeof cover !== "string" && (
+                <Image
+                    src={cover}
+                    alt={title}
+                    width={1200}
+                    height={675}
+                    class="post-header__cover breakout"
+                />
+            )}
+            {cover && typeof cover === "string" && (
+                <img
+                    src={cover}
+                    alt={title}
+                    width={1200}
+                    height={675}
+                    class="post-header__cover breakout"
+                />
+            )}
+
+            <Content />
+        </article>
+    </section>
+</BaseLayout>
+
+<style lang="scss">
+    .post {
+        line-height: var(--line-height-normal);
+    }
+  /* .post-header
+     -----
+     Kop van een blogpost detailpagina: categorie, titel, datum, summary en cover. */
+  .post-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-l);
+  }
+
+  .post-header__category {
+    align-self: flex-start;
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--radius-s);
+    background: var(--color-neutral-900);
+    color: var(--color-text-inverted);
+    font-size: var(--fs--2);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .post-header__title {
+    font-size: var(--fs-4);
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .post-header__date {
+    font-size: var(--step--1, 0.875rem);
+    color: var(--color-text-muted);
+  }
+
+  .post-header__description {
+    font-size: var(--fs-1);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: var(--line-height-relaxed);
+  }
+
+  .post-header__cover {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--radius-lg, 0.75rem);
+    margin-block: var(--space-m, 1.5rem);
+  }
+</style>
