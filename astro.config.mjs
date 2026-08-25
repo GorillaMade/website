@@ -2,10 +2,13 @@
 import { defineConfig, fontProviders } from "astro/config";
 import alpinejs from "@astrojs/alpinejs";
 
+import netlify from "@astrojs/netlify";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://gorillamade.nl",
   integrations: [alpinejs()],
+
   fonts: [
     {
       provider: fontProviders.google(),
@@ -22,4 +25,6 @@ export default defineConfig({
       styles: ["normal"],
     },
   ],
+
+  adapter: netlify(),
 });
