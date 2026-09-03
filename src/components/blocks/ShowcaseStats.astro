@@ -1,0 +1,80 @@
+---
+/* .case-study__stats
+   -----
+   Statistiekenbalk voor een case study. Elke stat is
+   zelf te vullen met een waarde (`value`) en label (`label`).
+*/
+interface Stat {
+    value: string;
+    label: string;
+}
+
+interface Props {
+    stats: Stat[];
+}
+
+const { stats } = Astro.props;
+---
+
+<section class="case-study__stats">
+    <div class="wrapper wrapper--l grid">
+        {
+            stats.map((stat) => (
+                <dl class="case-study__stat">
+                    <dt>{stat.label}</dt>
+                    <dd>{stat.value}</dd>
+                </dl>
+            ))
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    .case-study {
+        &__stats {
+            --grid-placement: auto-fit;
+        }
+
+        &__stat {
+            position: relative;
+            padding-left: 2rem;
+            display: flex;
+            flex-direction: column-reverse;
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+
+                width: 1px;
+                height: 1.5rem;
+
+                background: var(--color-neutral-950);
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 2rem;
+                bottom: 0;
+                left: 0;
+
+                width: 1px;
+
+                background: var(--color-neutral-200);
+            }
+
+            dd {
+                font-size: var(--fs-2);
+                font-weight: var(--fw-semibold);
+            }
+
+            dt {
+                font-size: var(--fs--1);
+                margin-top: 0.75rem;
+                color: var(--color-neutral-600);
+            }
+        }
+    }
+</style>

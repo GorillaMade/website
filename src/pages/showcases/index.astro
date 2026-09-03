@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import SectionHeader from "@/components/sections/SectionHeader.astro";
-import CaseStudyList from "@/components/ui/CaseStudyList.astro";
+import SectionHeader from "@/components/blocks/SectionHeader.astro";
+import ShowcaseItem from "@/components/blocks/ShowcaseItem.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 const showcases: CollectionEntry<"showcase">[] =
     await getCollection("showcase");
@@ -22,7 +22,7 @@ const showcases: CollectionEntry<"showcase">[] =
             <div class="showcases-list mt-l flow">
                 {
                     showcases.map((showcase) => (
-                        <CaseStudyList showcase={showcase} />
+                        <ShowcaseItem showcase={showcase} />
                     ))
                 }
             </div>

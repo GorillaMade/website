@@ -1,0 +1,215 @@
+---
+import Button from "@/components/ui/Button.astro";
+
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+    showcase: CollectionEntry<"showcase">;
+}
+
+const { showcase } = Astro.props;
+
+const {
+    title,
+    tagline,
+    client,
+    year,
+    logo,
+    description,
+    services,
+    quote,
+    quoteAuthor,
+    quoteAuthorFunction,
+} = showcase.data;
+---
+
+<article class="case-study fade-in">
+    <div class="case-study__info">
+        <div class="case-study__info--brand">
+            <img
+                src={logo?.src}
+                alt={`${client} logo`}
+                width={64}
+                height={64}
+                class="client-logo"
+            />
+            <div>{client}</div>
+        </div>
+        <ul class="case-study__info--meta" role="list">
+            <li>
+                {services.join(", ")}
+            </li>
+            <li>{year}</li>
+        </ul>
+    </div>
+    <div class="case-study__content flow">
+        <h3>{tagline}</h3>
+        <div>{description}</div>
+        <div class="mt-xl">
+            <Button
+                classList="readmore"
+                href={`/showcases/${showcase.id}`}
+                aria-label={`Bekijk case study: ${title}`}
+                >Bekijk case study</Button
+            >
+        </div>
+
+        <div class="quote flow">
+            <blockquote>
+                &OpenCurlyDoubleQuote; {quote} &CloseCurlyDoubleQuote;
+            </blockquote>
+            <figcaption>
+                &ndash; {quoteAuthor}
+                {quoteAuthor && quoteAuthorFunction && ", "}
+                {quoteAuthorFunction}
+            </figcaption>
+        </div>
+    </div>
+</article>
+
+<style lang="scss">
+    .case-study {
+        padding-block: var(--section-gap);
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        column-gap: var(--gap-m);
+        row-gap: var(--gap-m);
+
+        &__info {
+            grid-column: span 3;
+
+            @media (min-width: 64rem) {
+                grid-column: span 1 / span 1;
+            }
+
+            &--brand {
+                display: flex;
+                flex-direction: column;
+                gap: var(--gap-m);
+                font-weight: var(--fw-bold);
+            }
+
+            &--meta {
+                font-size: var(--text-xs);
+                padding: 0;
+                gap: var(--gap-xs);
+                list-style: none;
+
+                li + li {
+                    display: flex;
+                    align-items: center;
+
+                    @media (max-width: 64rem) {
+                        gap: var(--gap-xs);
+                    }
+
+                    &::before {
+                        content: var(--tw-content);
+
+                        @media (min-width: 40rem) and (max-width: 64rem) {
+                            --tw-content: "/";
+                        }
+                    }
+                }
+            }
+
+            @media (min-width: 40rem) and (max-width: 64rem) {
+                display: flex;
+                justify-content: space-between;
+
+                &--meta,
+                &--brand {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: var(--padding-xs);
+                }
+            }
+        }
+
+        &__content {
+            grid-column: span 3;
+            @media (min-width: 64rem) {
+                grid-column: span 2 / span 2;
+                max-width: 42rem;
+            }
+
+            blockquote {
+                color: var(--neutral-600);
+                font-size: var(--text-s);
+                margin: var(--padding-l) 0 0 0;
+            }
+
+            figcaption {
+                font-size: var(--text-s);
+                font-weight: var(--fw-semibold);
+            }
+
+            .quote {
+                position: relative;
+                padding-inline-start: var(--padding-s);
+                overflow: clip;
+                font-size: var(--text-s);
+
+                &::before {
+                    position: absolute;
+                    height: var(--space-s);
+                    width: 1px;
+                    background: var(--color-neutral-950);
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    content: " ";
+                }
+
+                &::after {
+                    position: absolute;
+                    height: 100%;
+                    width: 1px;
+                    background: var(--color-border);
+                    top: var(--space-m);
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    content: " ";
+                }
+            }
+        }
+
+        &::before {
+            position: absolute;
+            height: 1px;
+            width: var(--space-m);
+            background: var(--color-neutral-950);
+            top: 0;
+            left: 0;
+            content: "";
+        }
+
+        &::after {
+            position: absolute;
+            height: 1px;
+            width: 100%;
+            background: var(--color-border);
+            top: 0;
+            right: 0;
+            left: var(--space-l);
+            content: "";
+        }
+    }
+
+    .client-logo,
+    .fills {
+        color: var(--color-text);
+    }
+</style>
+
+<style is:inline>
+    .readmore {
+        --button-font-size: var(--text-xs);
+        --button-font-weight: var(--fw-bold);
+        --button-border-radius: var(--radius-3xl);
+    }
+</style>

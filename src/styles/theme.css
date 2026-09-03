@@ -41,8 +41,8 @@
         --color-border-focus: var(--color-brand-500);
         --color-border-strong: var(--color-neutral-400);
 
-        --color-accent: var(--color-brand-500);
-        --color-accent-hover: var(--color-brand-400);
+        --color-accent: var(--color-brand-400);
+        --color-accent-hover: var(--color-brand-500);
         --color-accent-text: var(--color-brand-700);
 
         --color-success-bg: var(--state-success-light);
@@ -122,8 +122,8 @@
     --color-border-focus: var(--color-brand-500);
     --color-border-strong: var(--color-neutral-400);
 
-    --color-accent: var(--color-brand-500);
-    --color-accent-hover: var(--color-brand-400);
+    --color-accent: var(--color-brand-400);
+    --color-accent-hover: var(--color-brand-500);
     --color-accent-text: var(--color-brand-700);
 
     --color-success-bg: var(--state-success-light);
@@ -161,9 +161,9 @@
     --color-border-focus: var(--color-brand-400);
     --color-border-strong: var(--color-neutral-600);
 
-    --color-accent: var(--color-brand-400);
-    --color-accent-hover: var(--color-brand-300);
-    --color-accent-text: var(--color-brand-300);
+    --color-accent: var(--color-brand-300);
+    --color-accent-hover: var(--color-brand-400);
+    --color-accent-text: var(--color-brand-700);
 
     --color-success-bg: var(--state-success-dark);
     --color-success: var(--state-success);

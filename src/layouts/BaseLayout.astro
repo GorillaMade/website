@@ -1,6 +1,6 @@
 ---
-import Header from "@/components/shared/Header.astro";
-import Footer from "@/components/shared/Footer.astro";
+import SiteHeader from "@/components/shared/Header.astro";
+import SiteFooter from "@/components/shared/Footer.astro";
 import { Font } from "astro:assets";
 import "@/styles/global.css";
 
@@ -59,142 +59,12 @@ const canonicalURL = new URL(url, Astro.site);
     </head>
 
     <body>
-        <Header />
+        <SiteHeader />
 
         <main>
             <slot />
         </main>
 
-        <Footer />
+        <SiteFooter />
     </body>
 </html>
-
-<style is:global>
-    *,
-    *::before,
-    *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-
-    html {
-        -webkit-text-size-adjust: 100%;
-        tab-size: 4;
-        scroll-behavior: smooth;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        html {
-            scroll-behavior: auto;
-        }
-        *,
-        *::before,
-        *::after {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-            scroll-behavior: auto !important;
-        }
-    }
-
-    body {
-        font-family: var(--font-body);
-        font-size: var(--text-base);
-        font-weight: var(--fw-regular);
-        line-height: var(--line-height-normal);
-        color: var(--color-text);
-        background-color: var(--surface);
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-
-    img,
-    video,
-    svg {
-        display: block;
-        max-width: 100%;
-    }
-
-    p,
-    li,
-    blockquote {
-        max-width: 68ch;
-    }
-
-    a {
-        color: var(--color-accent-text);
-        text-underline-offset: 0.2em;
-        transition: color var(--duration-fast) var(--ease-default);
-    }
-
-    a:hover {
-        color: var(--color-accent);
-    }
-
-    code,
-    kbd,
-    samp,
-    pre {
-        font-family: var(--font-code);
-        font-size: var(--text-s);
-    }
-
-    :focus-visible {
-        outline: 2px solid var(--color-border-focus);
-        outline-offset: 3px;
-        border-radius: var(--radius-xs);
-    }
-
-    /* -----------------------------------------------------------------------------
-     * Animation(s)
-     * -------------------------------------------------------------------------- */
-
-    /* Fade In */
-    .fade-in {
-        animation: fadeIn linear;
-        animation-timeline: view();
-        animation-range: entry 0% cover 40%;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            scale: 0.4;
-        }
-
-        to {
-            opacity: 1;
-            scale: 1;
-        }
-    }
-
-    /* Fade in from left */
-    .fade-in-left {
-        animation: fadeInLeft linear;
-        animation-timeline: view();
-        animation-range: entry 0% cover 40%;
-    }
-
-    @keyframes fadeInLeft {
-        from {
-            opacity: 0;
-            transform: translateX(-100px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .fade-in,
-        .fade-in-left {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-            scale: 1 !important;
-        }
-    }
-</style>

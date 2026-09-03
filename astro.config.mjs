@@ -6,6 +6,11 @@ import alpinejs from "@astrojs/alpinejs";
 export default defineConfig({
   site: "https://gorillamade.nl",
   integrations: [alpinejs()],
+  vite: {
+    build: {
+      cssMinify: "esbuild",
+    },
+  },
   fonts: [
     {
       provider: fontProviders.google(),

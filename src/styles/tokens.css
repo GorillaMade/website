@@ -29,8 +29,8 @@
   --color-border-strong: var(--color-neutral-400);
 
   /* --- Accent / brand --- */
-  --color-accent: var(--color-brand-500);
-  --color-accent-hover: var(--color-brand-400);
+  --color-accent: var(--color-brand-400);
+  --color-accent-hover: var(--color-brand-500);
   --color-accent-text: var(--color-brand-700);
 
   /* --- States --- */

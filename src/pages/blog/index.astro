@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import SectionHeader from "@/components/sections/SectionHeader.astro";
-import PostCard from "@/components/ui/PostCard.astro";
+import SectionHeader from "@/components/blocks/SectionHeader.astro";
+import PostCard from "@/components/blocks/PostCard.astro";
 
 import { getCollection, type CollectionEntry } from "astro:content";
 
@@ -27,7 +27,11 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
     </section>
     <section class="region">
         <div class="wrapper flow" x-data={`{ activeCategory: 'all' }`}>
-            <div class="blog-filter" role="group" aria-label="Filter op categorie">
+            <div
+                class="blog-filter"
+                role="group"
+                aria-label="Filter op categorie"
+            >
                 <button
                     type="button"
                     class="blog-filter__button"
@@ -50,7 +54,7 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
                 }
             </div>
 
-            <ul class="post-list grid" data-layout="thirds">
+            <ul class="post-grid grid" data-layout="thirds" role="list">
                 {
                     posts.map((post) => (
                         <li
@@ -67,12 +71,15 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
 </BaseLayout>
 
 <style lang="scss">
-
     .hero.region {
         padding-block-end: 0;
     }
 
-    .post-list {
+    header.section-header {
+        --section-header-margin: 0;
+    }
+
+    .post-grid {
         list-style: none;
 
         &.grid {
@@ -99,7 +106,10 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
         font-size: var(--step--1, 0.875rem);
         font-weight: 600;
         cursor: pointer;
-        transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+        transition:
+            background 0.15s ease,
+            color 0.15s ease,
+            border-color 0.15s ease;
 
         &:hover {
             border-color: var(--color-accent);

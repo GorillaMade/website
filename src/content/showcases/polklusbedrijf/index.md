@@ -18,6 +18,16 @@ quote: "GorillaMade begreep meteen wat we nodig hadden. Het resultaat is een web
 quoteAuthor: "Ricardo Pol"
 quoteAuthorFunction: "eigenaar van Polklusbedrijf"
 
+stats:
+  - label: "Laadtijd"
+    value: "0.8s"
+  - label: "Lighthouse-score"
+    value: "98/100"
+  - label: "Reductie infrastructuurkosten"
+    value: "15%"
+  - label: "Uptime"
+    value: "99,9%"
+
 featured: true
 ---
 

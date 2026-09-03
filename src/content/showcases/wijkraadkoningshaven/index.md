@@ -9,6 +9,7 @@ year: "2025"
 category: "Web Design"
 
 logo: "./wijkraad-logo.svg"
+cover: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 
 services: [ "Design", "Development" ]
 
@@ -16,6 +17,16 @@ quote: "De nieuwe website heeft de communicatie met inwoners enorm verbeterd. We
 
 quoteAuthor: "Team Wijkraad Koningshaven"
 quoteAuthorFunction: "Stichting Wijkraad Koningshaven"
+
+stats:
+  - label: "Laadtijd"
+    value: "0.8s"
+  - label: "Lighthouse-score"
+    value: "98/100"
+  - label: "Reductie infrastructuurkosten"
+    value: "15%"
+  - label: "Uptime"
+    value: "99,9%"
 
 featured: true
 ---

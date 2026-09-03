@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { getCollection, render, type CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import CaseStudyStats from "@/components/blocks/ShowcaseStats.astro";
 export async function getStaticPaths() {
     const showcases: CollectionEntry<"showcase">[] =
         await getCollection("showcase");
@@ -34,6 +35,7 @@ const {
     quote,
     quoteAuthor,
     quoteAuthorFunction,
+    stats,
 } = showcase.data;
 const { Content } = await render(showcase);
 ---
@@ -93,7 +95,7 @@ const { Content } = await render(showcase);
 
         <aside class="case-study__quote">
             <blockquote>
-                {quote}
+                &ldquo;{quote}&rdquo;
             </blockquote>
 
             <footer class="case-study__author">
@@ -102,29 +104,7 @@ const { Content } = await render(showcase);
             </footer>
         </aside>
 
-        <section class="case-study__stats">
-            <div class="wrapper wrapper--l grid">
-                <dl class="case-study__stat">
-                    <dt>Laadtijd</dt>
-                    <dd>0.8s</dd>
-                </dl>
-
-                <dl class="case-study__stat">
-                    <dt>Lighthouse-score</dt>
-                    <dd>98/100</dd>
-                </dl>
-
-                <dl class="case-study__stat">
-                    <dt>Reductie infrastructuurkosten</dt>
-                    <dd>15%</dd>
-                </dl>
-
-                <dl class="case-study__stat">
-                    <dt>Uptime</dt>
-                    <dd>99,9%</dd>
-                </dl>
-            </div>
-        </section>
+        {stats && stats.length > 0 && <CaseStudyStats stats={stats} />}
     </article>
 </BaseLayout>
 
@@ -252,10 +232,9 @@ const { Content } = await render(showcase);
             blockquote {
                 font-size: var(--fs-0);
                 line-height: 1.5;
-                color: var(--color-neutral-500);
+                color: var(--color-text-secondary);
                 order: 2;
                 font-style: italic;
-
             }
         }
 
@@ -270,52 +249,6 @@ const { Content } = await render(showcase);
             span {
                 color: var(--neutral-600);
                 font-size: var(--fs--1);
-            }
-        }
-
-        &__stats {
-            --grid-placement: auto-fit;
-        }
-
-        &__stat {
-            position: relative;
-            padding-left: 2rem;
-            display: flex;
-            flex-direction: column-reverse;
-
-            &::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: 0;
-
-                width: 1px;
-                height: 1.5rem;
-
-                background: var(--color-neutral-950);
-            }
-
-            &::after {
-                content: "";
-                position: absolute;
-                top: 2rem;
-                bottom: 0;
-                left: 0;
-
-                width: 1px;
-
-                background: var(--color-neutral-200);
-            }
-
-            dd {
-                font-size: var(--fs-2);
-                font-weight: var(--fw-semibold);
-            }
-
-            dt {
-                font-size: var(--fs--1);
-                margin-top: 0.75rem;
-                color: var(--color-neutral-600);
             }
         }
     }

@@ -26,6 +26,13 @@ const showcase = defineCollection({
       quoteAuthor: z.string().optional(),
       quoteAuthorFunction: z.string().optional(),
 
+      stats: z.array(
+          z.object({
+              label: z.string(),
+              value: z.string(),
+          })
+      ).optional(),
+
       featured: z.boolean().default(false),
     }),
 });

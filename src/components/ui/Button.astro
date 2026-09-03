@@ -16,6 +16,8 @@ const Tag = href ? "a" : "button";
     class:list={["button", classList]}
     href={href}
     type={!href ? type : undefined}
+    {...variant ? { "data-button-variant": variant } : {}}
+    {...rest}
 >
     <slot />
 </Tag>
@@ -25,7 +27,7 @@ const Tag = href ? "a" : "button";
         --_button-foreground: var(--button-foreground, var(--color-neutral-50));
         --_button-foreground-hover: var(
             --button-foreground-hover,
-            var(--color-neutral-50)
+            var(--color-text-inverted)
         );
 
         --_button-background: var(
@@ -34,7 +36,7 @@ const Tag = href ? "a" : "button";
         );
         --_button-background-hover: var(
             --button-background-hover,
-            var(--color-neutral-950)
+            var(--surface-inverted)
         );
 
         --_button-font-family: var(--button-font-family, inherit);
@@ -68,6 +70,7 @@ const Tag = href ? "a" : "button";
         border: var(--_button-border-width) var(--_button-border-style)
             var(--_button-border-color);
         border-radius: var(--_button-border-radius);
+        cursor: pointer;
 
         &:hover,
         &[data-button-variant]:hover {
@@ -78,6 +81,36 @@ const Tag = href ? "a" : "button";
 
         &:active {
             scale: 1;
+        }
+    }
+
+    .button {
+        &[data-button-variant="primary"] {
+            --button-foreground: var(--color-text-inverted);
+            --button-foreground-hover: var(--color-text-inverted);
+            --button-background: var(--color-neutral-800);
+            --button-background-hover: var(--surface-inverted);
+        }
+
+        &[data-button-variant="accent"] {
+            --button-foreground: var(--color-accent-text);
+            --button-foreground-hover: var(--color-text-inverted);
+            --button-background: var(--color-accent);
+            --button-background-hover: var(--surface-inverted);
+        }
+    }
+
+    .button[data-button-variant] {
+        --button-border-color: var(--_button-background);
+
+        color: var(--_button-foreground);
+        background: var(--_button-background);
+
+        &:hover {
+            --button-border-color: var(--_button-background-hover);
+
+            color: var(--_button-foreground-hover);
+            background: var(--_button-background-hover);
         }
     }
 

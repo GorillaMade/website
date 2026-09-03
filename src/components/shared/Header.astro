@@ -1,4 +1,5 @@
 ---
+import Logo from "@/components/ui/Logo.astro";
 import Hamburger from "@/components/ui/Hamburger.astro";
 import SiteNav from "@/components/shared/SiteNav.astro";
 import Button from "@/components/ui/Button.astro";
@@ -6,28 +7,10 @@ import Button from "@/components/ui/Button.astro";
 
 <header class="site-header">
     <div class="site-header__inner wrapper">
-        <a class="brand" href="/">
-            <svg
-                style="isolation:isolate"
-                height="36"
-                width="35"
-                viewBox="0 0 40 41"
-                ><path
-                    fill="#1f1e26"
-                    stroke="var(--color-neutral-300)"
-                    d="M20.003 38.227C13.093 38.227 4.48 32.435 4.007 25.575 3.971 25.056 4.073 24.233 4.234 23.739 7.708 13.069 8.764 1.773 20.003 1.773S32.452 13.742 35.785 23.741C35.95 24.234 36.039 25.055 35.984 25.572 35.142 33.51 26.913 38.227 20.003 38.227z"
-                ></path><path
-                    fill="#706f73"
-                    d="M20.013 38.225c-9.089.0-9.75-6.208-9.75-8.472.0-2.264 2.69-6.386 2.69-6.386s-4.441-5.58-2.152-7.869c1.753-1.753 5.61 2.017 9.202 2.017C20.02 17.515 20.037 17.515 20.054 17.515H20.079C20.088 17.515 20.096 17.515 20.105 17.515c3.592.0 7.449-3.77 9.202-2.017 2.289 2.289-2.152 7.869-2.152 7.869s2.69 4.122 2.69 6.386C29.845 32.017 29.184 38.225 20.095 38.225H20.054 20.013z"
-                ></path></svg
-            >
-            <span class="brand__name">
-                Gorilla<span class="fw-light">Made</span>
-            </span>
-        </a>
+        <Logo />
         <Hamburger />
         <SiteNav />
-        <Button href="/contact" classList="site-header__cta"
+        <Button href="/contact" variant="accent" classList="site-header__cta"
             >Gesprek plannen</Button
         >
     </div>
@@ -60,7 +43,7 @@ import Button from "@/components/ui/Button.astro";
     }
 </style>
 
-<style is:inline>
+<style is:global>
     .site-header__cta {
         --button-font-size: var(--text-xs);
     }

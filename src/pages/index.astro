@@ -14,18 +14,18 @@ import Testimonials from "@/components/sections/Testimonials.astro";
 >
     <section class="hero region">
         <div class="wrapper flow">
-            <header class="section-header flow">
+            <header class="hero-header flow">
                 <span class="section-header__eyebrow">
                     Geen gebrul, gewoon goed geregeld online
                 </span>
 
-                <h1 class="section-header__title">
+                <h1 class="hero-header__title">
                     <span class="highlight">Slimme</span> websites voor <span
                         class="highlight">sterke</span
                     > bedrijven
                 </h1>
 
-                <p class="section-header__subtitle">
+                <p class="hero-header__subtitle">
                     GorillaMade ontwerpt en ontwikkelt snelle, professionele
                     websites die bezoekers omzetten in klanten, zodat jij je
                     kunt focussen op het runnen van je bedrijf.
@@ -49,10 +49,10 @@ import Testimonials from "@/components/sections/Testimonials.astro";
     .hero {
         padding-block: var(--space-2xl-3xl);
 
-        .section-header {
+        &-header {
             margin-block-end: var(--padding-xl);
 
-            --flow-space: 1em;
+            --flow-space: var(--gap-m);
 
             &__eyebrow {
                 font-size: var(--text-xs);
@@ -64,7 +64,7 @@ import Testimonials from "@/components/sections/Testimonials.astro";
 
             &__title {
                 --flow-space: 1rem;
-                font-size: var(--heading-size, var(--text-3xl));
+                font-size: var(--text-3xl);
                 font-weight: var(--fw-extrabold);
                 line-height: 1.15;
                 max-width: 20ch;
