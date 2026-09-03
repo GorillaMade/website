@@ -54,10 +54,11 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
                 }
             </div>
 
-            <ul class="post-grid grid" data-layout="thirds" role="list">
+            <ul class="post-grid" role="list">
                 {
                     posts.map((post) => (
                         <li
+                            class="post-item"
                             x-show={`activeCategory === 'all' || activeCategory === '${post.data.category}'`}
                             x-transition
                         >
@@ -79,11 +80,54 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
         --section-header-margin: 0;
     }
 
+    @container posts (width > calc(17rem * 2 + 2rem)) {
+        .post-item:nth-child(2n) {
+            --delay-stagger: 1;
+        }
+    }
+
+    @container posts (width > calc(17rem * 3 + 2rem)) {
+        .post-item:nth-child(3n + 1) {
+            --delay-stagger: 0;
+        }
+        .post-item:nth-child(3n + 2) {
+            --delay-stagger: 1;
+        }
+        .post-item:nth-child(3n + 3) {
+            --delay-stagger: 2;
+        }
+    }
+
     .post-grid {
+        --min-col-size: 23rem;
+        --gap: 2rem;
+
         list-style: none;
 
-        &.grid {
-            --grid-placement: auto-fill;
+        container: posts / inline-size;
+
+        display: grid;
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(min(var(--min-col-size), 100%), 1fr)
+        );
+        gap: var(--gap);
+    }
+
+    .post-item {
+        --in-view: false;
+
+        animation: portfolio-item-in-view both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 40%;
+    }
+
+    @keyframes portfolio-item-in-view {
+        from {
+            --in-view: false;
+        }
+        to {
+            --in-view: true;
         }
     }
 

@@ -8,7 +8,7 @@ const { showcase } = Astro.props;
 const { title, client, year, logo, description } = showcase.data;
 ---
 
-<article class="showcase-card flow fade-in">
+<article class="showcase-card flow">
     <img
         class="showcase-card__logo"
         src={logo?.src}
@@ -38,6 +38,18 @@ const { title, client, year, logo, description } = showcase.data;
         border: 1px solid var(--color-border);
         border-radius: var(--radius-xl);
         transition: background var(--duration-slow) var(--ease-in);
+
+        @supports (animation-timeline: view()) {
+            @media (prefers-reduced-motion: no-preference) {
+                animation: card-in 1s both;
+                animation-play-state: paused;
+                animation-delay: calc(var(--delay-stagger, 0s) * 0.25s);
+
+                @container style(--in-view: true) {
+                    animation-play-state: running;
+                }
+            }
+        }
 
         &:is(:hover, :focus-visible) {
             background: var(--surface-subtle);
@@ -91,6 +103,19 @@ const { title, client, year, logo, description } = showcase.data;
             &:is(:hover, :focus-visible) {
                 border-bottom-color: var(--surface-inverted);
             }
+        }
+    }
+
+    @keyframes card-in {
+        from {
+            opacity: 0;
+            translate: 0 2rem;
+            scale: 0.96;
+        }
+        to {
+            opacity: 1;
+            translate: 0 0;
+            scale: 1;
         }
     }
 </style>

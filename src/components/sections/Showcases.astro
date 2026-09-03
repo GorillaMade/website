@@ -14,14 +14,71 @@ const showcases: CollectionEntry<"showcase">[] =
             title="Digitale successen uit mijn jungle"
             subtitle="Een kleine selectie uit mijn portfolio"
         />
-        <div class="grid" data-layout="thirds">
-            {showcases.map((showcase) => <ShowcaseCard showcase={showcase} />)}
-        </div>
+        <ul class="grid portfolio-grid" data-layout="thirds" role="list">
+            {
+                showcases.map((showcase) => (
+                    <li class="portfolio-item">
+                        <ShowcaseCard showcase={showcase} />
+                    </li>
+                ))
+            }
+        </ul>
     </div>
 </section>
 
 <style lang="scss">
     .grid[data-layout="thirds"] {
         --grid-placement: auto-fill;
+    }
+
+    @container portfolio (width > calc(23rem * 2 + 2rem)) {
+        .portfolio-item:nth-child(2n) {
+            --delay-stagger: 1;
+        }
+    }
+
+    @container portfolio (width > calc(23rem * 3 + 2rem)) {
+        .portfolio-item:nth-child(3n + 1) {
+            --delay-stagger: 0;
+        }
+        .portfolio-item:nth-child(3n + 2) {
+            --delay-stagger: 1;
+        }
+        .portfolio-item:nth-child(3n + 3) {
+            --delay-stagger: 2;
+        }
+    }
+
+    .portfolio-grid {
+        --min-col-size: 23rem;
+        --gap: 2rem;
+
+        list-style: none;
+
+        container: portfolio / inline-size;
+
+        display: grid;
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(min(var(--min-col-size), 100%), 1fr)
+        );
+        gap: var(--gap);
+    }
+
+    .portfolio-item {
+        --in-view: false;
+
+        animation: portfolio-item-in-view both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 40%;
+    }
+
+    @keyframes portfolio-item-in-view {
+        from {
+            --in-view: false;
+        }
+        to {
+            --in-view: true;
+        }
     }
 </style>
