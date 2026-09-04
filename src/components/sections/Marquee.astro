@@ -1,0 +1,104 @@
+---
+interface Logo {
+    name: string;
+    image: string;
+}
+
+interface Props {
+    logos: Logo[];
+    title?: string;
+}
+
+const { logos, title = "Sterke merken, sterke resultaten" } = Astro.props;
+---
+
+<section class="clients region">
+    <div class="wrapper">
+        <div class="flex">
+            <h2 class="title">{title}</h2>
+            <div class="line"></div>
+        </div>
+        <div class="marquee">
+            <div class="marquee__track">
+                {
+                    [...Array(2)].map(() =>
+                        logos.map((logo) => (
+                            <span class="marquee__item">
+                                <img
+                                    src={logo.image}
+                                    alt={logo.name}
+                                    loading="lazy"
+                                    decoding="async"
+                                />
+                            </span>
+                        )),
+                    )
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .clients {
+        background: var(--surface-inverted);
+    }
+
+    .clients .title {
+        color: var(--color-neutral-100);
+        font-size: var(--font-size-0);
+        margin-top: 0;
+    }
+
+    .flex {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: var(--space-l);
+    }
+
+    .line {
+        height: 1px;
+        background: var(--color-neutral-700);
+        flex: auto;
+    }
+
+    .marquee {
+        width: 100%;
+        overflow: hidden;
+
+        mask-image: linear-gradient(
+            to right,
+            transparent,
+            black var(--space-l),
+            black calc(100% - var(--space-l)),
+            transparent
+        );
+
+        &__track {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xl);
+            width: max-content;
+            will-change: transform;
+            animation: slide 40s linear infinite;
+        }
+
+        &__item {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+
+            img {
+                height: 2rem;
+                width: auto;
+            }
+        }
+    }
+
+    @keyframes slide {
+        to {
+            transform: translateX(-50%);
+        }
+    }
+</style>

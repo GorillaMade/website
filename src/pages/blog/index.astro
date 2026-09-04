@@ -2,12 +2,12 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SectionHeader from "@/components/blocks/SectionHeader.astro";
 import PostCard from "@/components/blocks/PostCard.astro";
+import CardGrid from "@/components/ui/CardGrid.astro";
+import CardGridItem from "@/components/ui/CardGridItem.astro";
 
 import { getCollection, type CollectionEntry } from "astro:content";
 
 const posts: CollectionEntry<"blog">[] = await getCollection("blog");
-
-// Unieke categorieën ophalen uit alle posts, voor de filter-knoppen
 const categories = [...new Set(posts.map((post) => post.data.category))].sort();
 ---
 
@@ -54,19 +54,18 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
                 }
             </div>
 
-            <ul class="post-grid" role="list">
+            <CardGrid layout="thirds" minItemSize={23} gap={2}>
                 {
                     posts.map((post) => (
-                        <li
-                            class="post-item"
+                        <CardGridItem
                             x-show={`activeCategory === 'all' || activeCategory === '${post.data.category}'`}
-                            x-transition
+                            x-transition=""
                         >
                             <PostCard blog={post} />
-                        </li>
+                        </CardGridItem>
                     ))
                 }
-            </ul>
+            </CardGrid>
         </div>
     </section>
 </BaseLayout>
@@ -80,60 +79,6 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
         --section-header-margin: 0;
     }
 
-    @container posts (width > calc(17rem * 2 + 2rem)) {
-        .post-item:nth-child(2n) {
-            --delay-stagger: 1;
-        }
-    }
-
-    @container posts (width > calc(17rem * 3 + 2rem)) {
-        .post-item:nth-child(3n + 1) {
-            --delay-stagger: 0;
-        }
-        .post-item:nth-child(3n + 2) {
-            --delay-stagger: 1;
-        }
-        .post-item:nth-child(3n + 3) {
-            --delay-stagger: 2;
-        }
-    }
-
-    .post-grid {
-        --min-col-size: 23rem;
-        --gap: 2rem;
-
-        list-style: none;
-
-        container: posts / inline-size;
-
-        display: grid;
-        grid-template-columns: repeat(
-            auto-fit,
-            minmax(min(var(--min-col-size), 100%), 1fr)
-        );
-        gap: var(--gap);
-    }
-
-    .post-item {
-        --in-view: false;
-
-        animation: portfolio-item-in-view both;
-        animation-timeline: view();
-        animation-range: entry 0% entry 40%;
-    }
-
-    @keyframes portfolio-item-in-view {
-        from {
-            --in-view: false;
-        }
-        to {
-            --in-view: true;
-        }
-    }
-
-    /* .blog-filter
-       -----
-       Knoppenrij om blogposts te filteren op categorie via Alpine.js state. */
     .blog-filter {
         display: flex;
         flex-wrap: wrap;

@@ -1,0 +1,38 @@
+---
+// Wrapper-item voor CardGrid. Zet --in-view via een view()-timeline (puur als trigger,
+// geen zichtbare animatie zelf) en registreert zichzelf als style-container zodat
+// Card.astro's @container style(--in-view: true) 'm kan uitlezen.
+interface Props {
+    class?: string;
+    style?: string;
+}
+const { class: className, style, ...rest } = Astro.props;
+---
+
+<li class:list={["card-grid__item", className]} style={style} {...rest}>
+    <slot />
+</li>
+
+<style lang="scss">
+    .card-grid__item {
+        --in-view: false;
+        container-type: normal;
+
+        @supports (animation-timeline: view()) {
+            @media (prefers-reduced-motion: no-preference) {
+                animation: card-grid-item-in-view both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 40%;
+            }
+        }
+    }
+
+    @keyframes card-grid-item-in-view {
+        from {
+            --in-view: false;
+        }
+        to {
+            --in-view: true;
+        }
+    }
+</style>

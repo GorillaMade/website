@@ -1,0 +1,76 @@
+---
+import SiteHeader from "@/components/shared/Header.astro";
+import SiteFooter from "@/components/shared/Footer.astro";
+import { Font } from "astro:assets";
+import "@/styles/global.css";
+
+const props = Astro.props.frontmatter ?? Astro.props;
+
+const {
+    title = "GorillaMade | Webdesign & Development Tilburg",
+    description = "GorillaMade ontwikkelt moderne websites, maatwerk webapplicaties en digitale oplossingen voor ondernemers en bedrijven in Tilburg.",
+    image = "/og-image.jpg",
+    url = Astro.url.pathname,
+    noindex = false,
+} = props;
+
+const canonicalURL = new URL(url, Astro.site);
+---
+
+<html lang="nl" data-theme="light">
+    <head>
+        <!-- Basic -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title} | GorillaMade</title>
+        <meta name="description" content={description} />
+
+        <!-- Canonical -->
+        <link rel="canonical" href={canonicalURL} />
+
+        <!-- Indexing -->
+        <meta
+            name="robots"
+            content={noindex ? "noindex,nofollow" : "index,follow"}
+        />
+
+        <!-- Theme -->
+        <meta name="theme-color" content="#000000" />
+        <Font cssVariable="--ff-display" preload />
+        <Font cssVariable="--ff-body" preload />
+
+        <!-- Favicon -->
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" href="/favicon.ico" />
+
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:image" content={image} />
+        <meta property="og:site_name" content="GorillaMade" />
+        <meta property="og:locale" content="nl_NL" />
+
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={image} />
+    </head>
+
+    <body>
+        <SiteHeader />
+
+        <main>
+            <section class="region">
+                <div class="wrapper wrapper--m flow">
+                    <slot />
+                </div>
+            </section>
+        </main>
+
+        <SiteFooter />
+    </body>
+</html>

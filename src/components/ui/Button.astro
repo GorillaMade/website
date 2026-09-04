@@ -40,7 +40,7 @@ const Tag = href ? "a" : "button";
         );
 
         --_button-font-family: var(--button-font-family, inherit);
-        --_button-font-size: var(--button-font-size, var(--text-s));
+        --_button-font-size: var(--button-font-size, var(--text-xs));
         --_button-font-weight: var(--button-font-weight, var(--fw-semibold));
 
         --_button-padding: var(
@@ -66,6 +66,7 @@ const Tag = href ? "a" : "button";
         text-decoration: none;
         text-transform: uppercase;
         letter-spacing: var(--tracking-snug);
+        transition: all 300ms ease-in-out;
 
         border: var(--_button-border-width) var(--_button-border-style)
             var(--_button-border-color);

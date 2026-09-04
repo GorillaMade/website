@@ -20,6 +20,10 @@ const footerSocials = [
         href: "https://instagram.com/gorillamade.nl",
     },
     {
+        label: "Nostr",
+        href: "https://primal.net/p/npub1s4eztsvantqp72jh2ygzk8t4q9gwva8xkqdj83kha9dupyk23kwqmlya7j",
+    },
+    {
         label: "GitHub",
         href: "https://github.com/GorillaMade",
     },
@@ -43,11 +47,12 @@ const footerLegal = [
                         hebt om te heersen in je online jungle.
                     </p>
                     <br />
-                    KvK 00000000
+                    KvK 97132756
                 </address>
             </div>
 
             <nav class="site-footer__nav" aria-label="Footer navigatie">
+                <h4 class="title">Site navigation</h4>
                 <ul role="list">
                     {
                         footerNav.map((link) => (
@@ -60,6 +65,7 @@ const footerLegal = [
             </nav>
 
             <nav class="site-footer__nav" aria-label="Footer navigatie">
+                <h4 class="title">Volg ons</h4>
                 <ul role="list">
                     {
                         footerSocials.map((link) => (
@@ -94,6 +100,13 @@ const footerLegal = [
     .site-footer {
         // color: var(--color-text-inverted);
         // background: var(--surface-inverted);
+
+        .title {
+            font-size: var(--text-s);
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            margin-block-end: var(--gap-xs);
+        }
 
         &__top {
             display: flex;

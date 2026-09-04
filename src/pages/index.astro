@@ -3,9 +3,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import Button from "@/components/ui/Button.astro";
 
 import Services from "@/components/sections/Services.astro";
-import Clients from "@/components/sections/Clients.astro";
+//import Clients from "@/components/sections/Clients.astro";
+import LogoMarquee from "@/components/sections/Marquee.astro";
 import Showcases from "@/components/sections/Showcases.astro";
 import Testimonials from "@/components/sections/Testimonials.astro";
+
+import { clients } from "@/data/clients";
 ---
 
 <BaseLayout
@@ -15,7 +18,7 @@ import Testimonials from "@/components/sections/Testimonials.astro";
     <section class="hero region">
         <div class="wrapper flow">
             <header class="hero-header flow">
-                <span class="section-header__eyebrow">
+                <span class="hero-header__eyebrow">
                     Geen gebrul, gewoon goed geregeld online
                 </span>
 
@@ -39,7 +42,7 @@ import Testimonials from "@/components/sections/Testimonials.astro";
             </div>
         </div>
     </section>
-    <Clients />
+    <LogoMarquee logos={clients} />
     <Showcases />
     <Testimonials />
     <Services />

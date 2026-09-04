@@ -1,6 +1,8 @@
 ---
 import SectionHeader from "@/components/blocks/SectionHeader.astro";
 import ShowcaseCard from "@/components/blocks/ShowcaseCard.astro";
+import CardGrid from "@/components/ui/CardGrid.astro";
+import CardGridItem from "@/components/ui/CardGridItem.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 
 const showcases: CollectionEntry<"showcase">[] =
@@ -14,71 +16,14 @@ const showcases: CollectionEntry<"showcase">[] =
             title="Digitale successen uit mijn jungle"
             subtitle="Een kleine selectie uit mijn portfolio"
         />
-        <ul class="grid portfolio-grid" data-layout="thirds" role="list">
+        <CardGrid layout="thirds" minItemSize={23} gap={2}>
             {
                 showcases.map((showcase) => (
-                    <li class="portfolio-item">
+                    <CardGridItem>
                         <ShowcaseCard showcase={showcase} />
-                    </li>
+                    </CardGridItem>
                 ))
             }
-        </ul>
+        </CardGrid>
     </div>
 </section>
-
-<style lang="scss">
-    .grid[data-layout="thirds"] {
-        --grid-placement: auto-fill;
-    }
-
-    @container portfolio (width > calc(23rem * 2 + 2rem)) {
-        .portfolio-item:nth-child(2n) {
-            --delay-stagger: 1;
-        }
-    }
-
-    @container portfolio (width > calc(23rem * 3 + 2rem)) {
-        .portfolio-item:nth-child(3n + 1) {
-            --delay-stagger: 0;
-        }
-        .portfolio-item:nth-child(3n + 2) {
-            --delay-stagger: 1;
-        }
-        .portfolio-item:nth-child(3n + 3) {
-            --delay-stagger: 2;
-        }
-    }
-
-    .portfolio-grid {
-        --min-col-size: 23rem;
-        --gap: 2rem;
-
-        list-style: none;
-
-        container: portfolio / inline-size;
-
-        display: grid;
-        grid-template-columns: repeat(
-            auto-fit,
-            minmax(min(var(--min-col-size), 100%), 1fr)
-        );
-        gap: var(--gap);
-    }
-
-    .portfolio-item {
-        --in-view: false;
-
-        animation: portfolio-item-in-view both;
-        animation-timeline: view();
-        animation-range: entry 0% entry 40%;
-    }
-
-    @keyframes portfolio-item-in-view {
-        from {
-            --in-view: false;
-        }
-        to {
-            --in-view: true;
-        }
-    }
-</style>

@@ -1,0 +1,70 @@
+---
+interface Props {
+    class?: string;
+    layout?: "halves" | "thirds" | "quarters";
+    minItemSize?: number;
+    gap?: number;
+}
+const {
+    class: className,
+    layout,
+    minItemSize: minItemSizeProp = 23,
+    gap: gapProp = 1.5,
+} = Astro.props;
+
+const minItemSize = Number(minItemSizeProp);
+const gap = Number(gapProp);
+
+if (Number.isNaN(minItemSize) || Number.isNaN(gap)) {
+    throw new Error(
+        `CardGrid: minItemSize en gap moeten numeriek zijn (rem), ontving minItemSize=${minItemSizeProp}, gap=${gapProp}`,
+    );
+}
+
+const twoColBreak = (minItemSize * 2 + gap).toFixed(3);
+const threeColBreak = (minItemSize * 3 + gap * 2).toFixed(3);
+---
+
+<ul
+    class:list={["grid card-grid", className]}
+    data-layout={layout}
+    role="list"
+    style={`--card-grid-min: ${minItemSize}rem; --card-grid-gap: ${gap}rem;`}
+>
+    <slot />
+</ul>
+
+<style lang="scss">
+    .card-grid {
+        container: card-grid / inline-size;
+        list-style: none;
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(min(var(--card-grid-min), 100%), 1fr)
+        );
+        gap: var(--card-grid-gap);
+    }
+</style>
+
+<style
+    is:global
+    set:html={`
+    @container card-grid (width > ${twoColBreak}rem) {
+        .card-grid__item:nth-child(2n) {
+            --delay-stagger: 1;
+        }
+    }
+
+    @container card-grid (width > ${threeColBreak}rem) {
+        .card-grid__item:nth-child(3n + 1) {
+            --delay-stagger: 0;
+        }
+        .card-grid__item:nth-child(3n + 2) {
+            --delay-stagger: 1;
+        }
+        .card-grid__item:nth-child(3n + 3) {
+            --delay-stagger: 2;
+        }
+    }
+`}
+></style>

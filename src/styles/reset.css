@@ -44,6 +44,11 @@ svg {
     max-width: 100%;
 }
 
+ul:not([role="list"]),
+ol:not([role="list"]) {
+    list-style-position: inside;
+}
+
 p,
 li,
 blockquote {

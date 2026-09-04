@@ -1,22 +1,14 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import Card from "@/components/ui/Card.astro";
-
 interface Props {
     showcase: CollectionEntry<"showcase">;
-    style?: string;
 }
 
-const { showcase, style } = Astro.props;
+const { showcase } = Astro.props;
 const { title, client, year, logo, description } = showcase.data;
 ---
 
-<Card
-    variant="showcase"
-    href={`/showcases/${showcase.id}`}
-    class="showcase-card flow"
-    style={style}
->
+<article class="showcase-card flow">
     <img
         class="showcase-card__logo"
         src={logo?.src}
@@ -34,11 +26,35 @@ const { title, client, year, logo, description } = showcase.data;
     </ul>
     <h3 class="showcase-card__title">{title}</h3>
     <p class="showcase-card__description">{description}</p>
-    <span class="showcase-card__link">Bekijk case</span>
-</Card>
+    <a href={`/showcases/${showcase.id}`} class="showcase-card__link"
+        >Bekijk case</a
+    >
+</article>
 
 <style lang="scss">
     .showcase-card {
+        color: var(--color-text);
+        padding: var(--padding-m);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-xl);
+        transition: background var(--duration-slow) var(--ease-in);
+
+        @supports (animation-timeline: view()) {
+            @media (prefers-reduced-motion: no-preference) {
+                animation: card-in 1s both;
+                animation-play-state: paused;
+                animation-delay: calc(var(--delay-stagger, 0s) * 0.25s);
+
+                @container style(--in-view: true) {
+                    animation-play-state: running;
+                }
+            }
+        }
+
+        &:is(:hover, :focus-visible) {
+            background: var(--surface-subtle);
+        }
+
         &__meta {
             display: flex;
             color: var(--color-text-secondary);
@@ -74,6 +90,7 @@ const { title, client, year, logo, description } = showcase.data;
             font-size: var(--text-s);
             font-weight: var(--fw-medium);
             color: var(--surface-inverted);
+            text-decoration: none;
             border-bottom: 1px solid transparent;
             transition: border-color 0.15s ease;
             padding-bottom: 1px;
@@ -82,10 +99,23 @@ const { title, client, year, logo, description } = showcase.data;
                 content: "→";
                 margin-left: 0.375rem;
             }
+
+            &:is(:hover, :focus-visible) {
+                border-bottom-color: var(--surface-inverted);
+            }
         }
     }
 
-    .showcase-card:is(:hover, :focus-visible) .showcase-card__link {
-        border-bottom-color: var(--surface-inverted);
+    @keyframes card-in {
+        from {
+            opacity: 0;
+            translate: 0 2rem;
+            scale: 0.96;
+        }
+        to {
+            opacity: 1;
+            translate: 0 0;
+            scale: 1;
+        }
     }
 </style>
