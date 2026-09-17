@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "gorillamade",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -9,15 +9,18 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "styles:build": "sass --no-source-map src/sass/base.scss:src/styles/base.css src/sass/patterns.scss:src/styles/patterns.css src/sass/utilities.scss:src/styles/utilities.css src/sass/global.scss:src/styles/global.css",
+    "styles:watch": "sass --watch src/sass/base.scss:src/styles/base.css src/sass/patterns.scss:src/styles/patterns.css src/sass/utilities.scss:src/styles/utilities.css src/sass/global.scss:src/styles/global.css"
   },
   "dependencies": {
     "@astrojs/alpinejs": "^1.0.0",
-    "astro": "^7.2.8",
-    "sass": "^1.103.1"
+    "@types/alpinejs": "^3.13.11",
+    "alpinejs": "^3.17.3",
+    "astro": "^7.3.2",
+    "sass": "^1.104.1"
   },
   "allowScripts": {
-    "esbuild": true,
-    "@parcel/watcher@2.6.0": true
+    "esbuild": true
   }
 }

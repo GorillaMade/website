@@ -1,0 +1,133 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+import Heading from "@/components/Typography/Heading.astro";
+import Paragraph from "@/components/Typography/Paragraph.astro";
+import SectionLabel from "@/components/section/SectionLabel.astro";
+import Person from "@/components/section/Person.astro";
+import CallToAction from "@/components/section/CTA.astro";
+
+import { frontmatter } from "@/content/pages/about-us.md";
+
+const { seo, hero, about, person, values, cta } = frontmatter;
+---
+
+<BaseLayout title={seo.title} description={seo.description}>
+    <section class="about-hero section" data-theme={hero.theme || undefined}>
+        <div class="wrapper flow">
+            <SectionLabel number={hero.id} label={hero.label} />
+
+            <div class="about-hero__content">
+                <Heading tag="h1" variant="display">
+                    {hero.title}
+                </Heading>
+
+                <Paragraph variant="large" maxWidth={40}>
+                    {hero.text}
+                </Paragraph>
+            </div>
+        </div>
+    </section>
+
+    <Person {...person} />
+
+    <section class="about-story section" data-theme={about.theme || undefined}>
+        <div class="wrapper with-aside">
+            <aside>
+                <SectionLabel number={about.id} label={about.label} />
+            </aside>
+            <div class="about-story__content flow">
+                <Heading tag="h2" variant="h1">
+                    {about.title}
+                </Heading>
+
+                {about.paragraphs.map((paragraph) => (
+                    <Paragraph maxWidth={50}>{paragraph}</Paragraph>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <section
+        class="about-values section"
+        data-theme={values.theme || undefined}
+    >
+        <div class="wrapper flow">
+            <header class="section__header flow">
+                <SectionLabel number={values.id} label={values.label} />
+
+                <Heading tag="h2" variant="h1">
+                    {values.title}
+                </Heading>
+            </header>
+
+            <div class="about-values__grid grid" data-layout="thirds">
+                {values.items.map((item, index) => (
+                    <article class="about-value flow">
+                        <span class="about-value__number">
+                            {String(index + 1).padStart(2, "0")}
+                        </span>
+
+                        <Heading tag="h3" variant="h3">
+                            {item.title}
+                        </Heading>
+
+                        <Paragraph>{item.text}</Paragraph>
+                    </article>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <CallToAction {...cta} />
+</BaseLayout>
+
+<style lang="scss">
+    .about-hero__content {
+        display: grid;
+        gap: var(--space-l);
+
+        @media (width > 48rem) {
+            grid-template-columns:
+                minmax(0, 2fr)
+                minmax(18rem, 1fr);
+            align-items: center;
+        }
+    }
+
+    .about-story {
+        &__content {
+            width: 100%;
+            max-width: var(--container-s);
+
+            --flow-space: var(--space-m);
+        }
+
+        .with-aside {
+            --with-aside-width: 12rem;
+            --with-aside-main-min-width: 65%;
+            --with-aside-gap: var(--space-xl-2xl);
+        }
+    }
+
+    .about-values__grid {
+        --grid-gap: var(--space-l);
+    }
+
+    .about-value {
+        padding-block-start: var(--space-m);
+
+        border-top: 1px solid var(--border-default);
+
+        --flow-space: var(--space-s);
+    }
+
+    .about-value__number {
+        display: block;
+
+        color: var(--text-muted);
+
+        font-size: var(--text-small);
+        font-variant-numeric: tabular-nums;
+    }
+</style>

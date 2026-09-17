@@ -1,0 +1,58 @@
+---
+import { getCollection } from "astro:content";
+
+import SectionLabel from "@/components/section/SectionLabel.astro";
+import Heading from "@/components/Typography/Heading.astro";
+import Card from "@/components/Card.astro";
+import Button from "@/components/Button.astro";
+
+type Theme = "light" | "dark" | "secondary" | "brand";
+
+interface Props {
+    id: string;
+    label: string;
+    title: string;
+    theme?: Theme;
+    limit?: number;
+}
+
+const { id, label, title, theme, limit = 3 } = Astro.props;
+
+// Haal alle uitgelichte case studies op.
+const showcases = await getCollection("showcase", ({ data }) => data.featured);
+
+// Beperk het aantal cases dat op deze sectie wordt getoond.
+const items = showcases.slice(0, limit);
+---
+
+<section class="showcases section" data-theme={theme || undefined}>
+    <div class="wrapper flow">
+        <div class="repel">
+            <header class="section__header">
+                <SectionLabel number={id} label={label} />
+
+                <Heading tag="h2" variant="h1">
+                    {title}
+                </Heading>
+            </header>
+
+            <Button href="/case-studies" variant="outline">
+                Alle case studies
+            </Button>
+        </div>
+
+        {items.length > 0 && (
+            <div class="showcases__grid grid" data-layout="thirds">
+                {items.map((item, index) => (
+                    <Card entry={item} index={index + 1} />
+                ))}
+            </div>
+        )}
+    </div>
+</section>
+
+<style lang="scss">
+    .grid[data-layout="halves"] {
+        --grid-placement: auto-fill;
+    }
+</style>

@@ -1,114 +1,52 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import SectionHeader from "@/components/blocks/SectionHeader.astro";
-import PostCard from "@/components/blocks/PostCard.astro";
-import CardGrid from "@/components/ui/CardGrid.astro";
-import CardGridItem from "@/components/ui/CardGridItem.astro";
+import Heading from "@/components/Typography/Heading.astro";
+import Paragraph from "@/components/Typography/Paragraph.astro";
+import Card from "@/components/Card.astro";
 
-import { getCollection, type CollectionEntry } from "astro:content";
+import CTA from "@/components/section/CTA.astro";
 
-const posts: CollectionEntry<"blog">[] = await getCollection("blog");
+import { getCollection } from "astro:content";
+const posts = await getCollection("blog");
+
+// Unieke categorieën ophalen uit alle posts, voor de filter-knoppen
 const categories = [...new Set(posts.map((post) => post.data.category))].sort();
 ---
 
 <BaseLayout
-    title="Blog | Webdesign & Development Bureau"
-    description="Inzichten, tutorials en nieuws over webdesign, development en digitale strategie."
+    title="Blog | GorillaMade Webdesign & Development"
+    description="Inzichten, tips en verhalen over webdesign, development en digitale groei — geschreven door GorillaMade voor ondernemers die meer uit hun website willen halen."
 >
-    <section class="hero region">
+    <section class="hero section">
         <div class="wrapper flow">
-            <SectionHeader
-                eyebrow="Blog"
-                title="Digital Stories"
-                subtitle="Inzichten, tutorials en strategieën over design, development
-                en digitale groei."
-            />
+            <Heading tag="h1" variant="display">
+                Digital Stories
+            </Heading>
+            <Paragraph variant="large" maxWidth={65}>
+                Inzichten, tutorials en strategieën over design, development en
+                digitale groei.
+            </Paragraph>
         </div>
     </section>
-    <section class="region">
-        <div class="wrapper flow" x-data={`{ activeCategory: 'all' }`}>
-            <div
-                class="blog-filter"
-                role="group"
-                aria-label="Filter op categorie"
-            >
-                <button
-                    type="button"
-                    class="blog-filter__button"
-                    x-bind:data-active="activeCategory === 'all'"
-                    x-on:click="activeCategory = 'all'"
-                >
-                    Alle
-                </button>
-                {
-                    categories.map((category) => (
-                        <button
-                            type="button"
-                            class="blog-filter__button"
-                            x-bind:data-active={`activeCategory === '${category}'`}
-                            x-on:click={`activeCategory = '${category}'`}
-                        >
-                            {category}
-                        </button>
-                    ))
-                }
-            </div>
-
-            <CardGrid layout="thirds" minItemSize={23} gap={2}>
-                {
-                    posts.map((post) => (
-                        <CardGridItem
-                            x-show={`activeCategory === 'all' || activeCategory === '${post.data.category}'`}
-                            x-transition=""
-                        >
-                            <PostCard blog={post} />
-                        </CardGridItem>
-                    ))
-                }
-            </CardGrid>
+    <section class="section">
+        <div class="wrapper">
+            <ul class="grid" role="list" data-layout="thirds">
+                {posts.map((post, index) => (
+                    <li
+                        x-show={`activeCategory === 'all' || activeCategory === '${post.data.category}'`}
+                        x-transition
+                    >
+                        <Card entry={post} index={index + 1} />
+                    </li>
+                ))}
+            </ul>
         </div>
     </section>
+    <CTA />
 </BaseLayout>
 
 <style lang="scss">
-    .hero.region {
-        padding-block-end: 0;
-    }
-
-    header.section-header {
-        --section-header-margin: 0;
-    }
-
-    .blog-filter {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--space-xs, 0.5rem);
-        margin-bottom: var(--space-m, 1.5rem);
-    }
-
-    .blog-filter__button {
-        padding: 0.375rem 0.875rem;
-        border-radius: var(--radius-full, 999px);
-        border: 1px solid var(--color-border);
-        background: transparent;
-        color: var(--color-text-muted);
-        font-size: var(--step--1, 0.875rem);
-        font-weight: 600;
-        cursor: pointer;
-        transition:
-            background 0.15s ease,
-            color 0.15s ease,
-            border-color 0.15s ease;
-
-        &:hover {
-            border-color: var(--color-accent);
-            color: var(--color-text);
-        }
-
-        &[data-active="true"] {
-            background: var(--surface-inverted);
-            border-color: var(--surface-inverted);
-            color: var(--color-text-inverted);
-        }
+    .grid[data-layout="halves"] {
+        --grid-placement: auto-fill;
     }
 </style>

@@ -1,169 +1,167 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import ContactForm from "@/components/forms/ContactForm.astro";
 
-const gegevens = {
-    email: "hallo@gorillamade.nl",
-    locatie: "Tilburg, Nederland",
-};
+import SectionLabel from "@/components/section/SectionLabel.astro";
+import Heading from "@/components/Typography/Heading.astro";
+import Paragraph from "@/components/Typography/Paragraph.astro";
+import ContactForm from "@/components/form/ContactForm.astro";
 
-const socials = [
-    {
-        label: "LinkedIn",
-        href: "https://www.linkedin.com/company/gorillamade",
-    },
-    {
-        label: "Instagram",
-        href: "https://instagram.com/gorillamade.nl",
-    },
-    {
-        label: "Nostr",
-        href: "https://primal.net/p/npub1s4eztsvantqp72jh2ygzk8t4q9gwva8xkqdj83kha9dupyk23kwqmlya7j",
-    },
-    {
-        label: "GitHub",
-        href: "https://github.com/GorillaMade",
-    },
-];
+import { frontmatter } from "@/content/pages/contact.md";
+
+const { seo, hero, contact } = frontmatter;
 ---
 
-<BaseLayout
-    title="Contact — GorillaMade"
-    description="Laten we kennismaken en bespreken hoe GorillaMade jouw bedrijf online kan versterken."
->
-    <section class="contact section">
-        <div class="wrapper contact__wrapper">
-            <!-- Left -->
-            <div class="contact__content flow">
-                <header class="section-header flow">
-                    <span class="section-header__eyebrow">Contact</span>
+<BaseLayout title={seo.title} description={seo.description}>
+    <section class="contact-hero section" data-theme={hero.theme || undefined}>
+        <div class="wrapper flow">
+            <SectionLabel number={hero.id} label={hero.label} />
 
-                    <h1 class="section-header__title">Laten we kennismaken</h1>
+            <div class="contact-hero__content">
+                <Heading tag="h1" variant="display">
+                    {hero.title}
+                </Heading>
 
-                    <p class="section-header__subtitle">
-                        Klaar voor een professionele website zonder gedoe of op
-                        zoek naar een volledig maatwerk platform? Vertel kort
-                        over jouw project.
-                    </p>
-                </header>
+                <Paragraph variant="large" maxWidth={40}>
+                    {hero.text}
+                </Paragraph>
+            </div>
+        </div>
+    </section>
 
-                <div class="contact__gegevens flow">
-                    <div class="contact__gegeven">
-                        <span class="contact__gegeven-label"> E-mail </span>
+    <section class="contact section" data-theme={contact.theme || undefined}>
+        <div class="wrapper with-aside contact__layout">
+            <main class="contact__main">
+                <ContactForm
+                    services={contact.services}
+                    buttonLabel={contact.buttonLabel}
+                />
+            </main>
 
-                        <a
-                            href={`mailto:${gegevens.email}`}
-                            class="contact__gegeven-value"
-                        >
-                            {gegevens.email}
-                        </a>
-                    </div>
+            <aside class="contact__aside flow">
+                <div class="contact__block flow">
+                    <SectionLabel number="02" label="Direct contact" />
 
-                    <div class="contact__gegeven">
-                        <span class="contact__gegeven-label"> Locatie </span>
-
-                        <span class="contact__gegeven-value">
-                            {gegevens.locatie}
-                        </span>
-                    </div>
-                </div>
-
-                <div class="contact__socials">
-                    {
-                        socials.map(({ label, href }) => (
-                            <a
-                                href={href}
-                                class="contact__social"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {label}
+                    <div class="contact__details">
+                        {contact.email && (
+                            <a href={`mailto:${contact.email}`}>
+                                {contact.email}
                             </a>
-                        ))
-                    }
-                </div>
-            </div>
+                        )}
 
-            <!-- Right -->
-            <div id="form-container" class="contact__card">
-                <ContactForm />
-            </div>
+                        {contact.location && <span>{contact.location}</span>}
+                    </div>
+                </div>
+
+                {contact.expectations?.length > 0 && (
+                    <div class="contact__block flow">
+                        <Heading tag="h2" variant="h4">
+                            Wat kun je verwachten?
+                        </Heading>
+
+                        <ol class="contact__expectations">
+                            {contact.expectations.map((item, index) => (
+                                <li>
+                                    <span>
+                                        {String(index + 1).padStart(2, "0")}
+                                    </span>
+
+                                    <p>{item}</p>
+                                </li>
+                            ))}
+                        </ol>
+                    </div>
+                )}
+            </aside>
         </div>
     </section>
 </BaseLayout>
 
 <style lang="scss">
-    .contact {
-        padding-block: 6rem;
+    .contact-hero__content {
+        display: grid;
+        gap: var(--space-l);
 
-        &__wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--gap-m);
-            align-items: start;
-
-            @media (max-width: 900px) {
-                grid-template-columns: 1fr;
-            }
+        @media (width > 48rem) {
+            grid-template-columns:
+                minmax(0, 2fr)
+                minmax(18rem, 1fr);
+            align-items: center;
         }
+    }
 
-        &__content {
-            max-width: 42rem;
-        }
+    .contact__layout {
+        --with-aside-width: 18rem;
+        --with-aside-main-min-width: 60%;
+        --with-aside-gap: var(--space-xl-2xl);
 
-        &__gegevens {
-            margin-top: 2rem;
-        }
+        align-items: flex-start;
+    }
 
-        &__gegeven {
-            display: flex;
-            flex-direction: column;
-            gap: var(--gap-xs);
+    .contact__main {
+        width: 100%;
+    }
 
-            &-label {
-                font-size: var(--fs--1);
-                text-transform: uppercase;
-                letter-spacing: var(--tracking-wider);
-                color: var(--color-neutral-700);
-            }
+    .contact__aside {
+        --flow-space: var(--space-xl);
+    }
 
-            &-value {
-                font-size: var(--fs-0);
-                font-weight: var(--fw-medium);
-                text-decoration: none;
-                color: inherit;
-                width: fit-content;
+    .contact__block {
+        --flow-space: var(--space-m);
+    }
 
-                &:is(a):hover {
-                    text-decoration: underline;
-                    text-underline-offset: 3px;
-                }
-            }
-        }
+    .contact__details {
+        display: grid;
+        gap: var(--space-xs);
 
-        &__socials {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
+        color: var(--text-secondary);
 
-        &__social {
-            color: var(--color-neutral-500);
+        a {
+            color: var(--text-primary);
             text-decoration: none;
-            font-size: var(--fs--1);
-            transition: color 0.2s ease;
 
             &:hover {
-                color: var(--color-primary);
+                text-decoration: underline;
+                text-underline-offset: 0.2em;
+            }
+        }
+    }
+
+    .contact__expectations {
+        display: grid;
+
+        margin: var(--space-m) 0 0 0;
+        padding: 0;
+
+        list-style: none;
+
+        li {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: var(--space-s);
+
+            padding-block: var(--space-s);
+
+            border-top: 1px solid var(--border-default);
+
+            &:last-child {
+                border-bottom: 1px solid var(--border-default);
             }
         }
 
-        &__card {
-            border: 1px solid var(--color-border);
-            background: var(--surface-inverted);
-            border-radius: var(--radius-xl);
-            padding: 2rem;
+        span {
+            color: var(--text-muted);
+
+            font-size: var(--text-small);
+            font-variant-numeric: tabular-nums;
+        }
+
+        p {
+            margin: 0;
+
+            color: var(--text-primary);
+
+            font-size: var(--text-small);
+            line-height: var(--lh-body);
         }
     }
 </style>

@@ -3,7 +3,9 @@ title: "Waarom maatwerk webdevelopment het verschil kan maken"
 date: 2026-08-22
 description: "Ontdek wanneer maatwerk webdevelopment de juiste keuze is en waarom een website die rond jouw bedrijf wordt gebouwd beter kan presteren."
 category: "Development"
-cover: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1374&auto=format&fit=crop"
+image:
+  src: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1374&auto=format&fit=crop"
+  alt: "Waarom maatwerk webdevelopment het verschil kan maken"
 author:
   name: "Timothy"
   avatar: "../../assets/image/author.avif"

@@ -3,7 +3,9 @@ title: "5 tekenen dat jouw bedrijf toe is aan een nieuwe website"
 date: 2026-08-23
 description: "Twijfel je of jouw huidige website nog goed genoeg is? Dit zijn vijf duidelijke signalen dat het tijd kan zijn voor vernieuwing."
 category: "Webdesign"
-cover: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1374&auto=format&fit=crop"
+image:
+  src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1374&auto=format&fit=crop"
+  alt: "5 tekenen dat jouw bedrijf toe is aan een nieuwe website"
 author:
   name: "Timothy"
   avatar: "../../assets/image/author.avif"

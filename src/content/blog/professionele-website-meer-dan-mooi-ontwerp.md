@@ -3,7 +3,9 @@ title: "Waarom een professionele website meer is dan alleen een mooi ontwerp"
 date: 2026-08-25
 description: "Een moderne website moet niet alleen mooi zijn, maar ook snel, gebruiksvriendelijk en gericht op resultaat."
 category: "Webdesign"
-cover: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=1374&auto=format&fit=crop"
+image: 
+  src: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?q=80&w=1374&auto=format&fit=crop"
+  alt: "Waarom een professionele website meer is dan alleen een mooi ontwerp"
 author:
   name: "Timothy"
   avatar: "../../assets/image/author.avif"

@@ -3,7 +3,9 @@ title: "Wat maakt een website succesvol? 6 elementen die het verschil maken"
 date: 2026-08-21
 description: "Een succesvolle website ontstaat door de juiste combinatie van strategie, design, techniek en een sterke gebruikerservaring."
 category: "Tips & Inzichten"
-cover: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1374&auto=format&fit=crop"
+image:
+  src: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1374&auto=format&fit=crop"
+  alt: "Wat maakt een website succesvol? 6 elementen die het verschil maken"
 author:
   name: "Timothy"
   avatar: "../../assets/image/author.avif"

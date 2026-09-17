@@ -1,0 +1,146 @@
+---
+import SectionLabel from "@/components/section/SectionLabel.astro";
+import Heading from "@/components/Typography/Heading.astro";
+import Paragraph from "@/components/Typography/Paragraph.astro";
+
+interface Service {
+    title: string;
+    description: string;
+    href: string;
+}
+
+interface Props {
+    id: string;
+    label?: string;
+    title: string;
+    theme?: string;
+    items: Service[];
+}
+
+const { id, label = "Services", title, items, theme } = Astro.props;
+---
+
+<section class="services section" data-theme={theme || undefined}>
+    <div class="wrapper flow">
+        <div class="services__header flow">
+            <SectionLabel number={id} label={label} />
+
+            <Heading tag="h2" variant="h1">
+                {title}
+            </Heading>
+        </div>
+
+        <div class="services__list">
+            {items.map((service, index) => (
+                <a href={service.href} class="service">
+                    <span class="service__number">
+                        {String(index + 1).padStart(2, "0")}
+                    </span>
+
+                    <div class="service__title">
+                        <Heading tag="h3" variant="h3">
+                            {service.title}
+                        </Heading>
+                    </div>
+
+                    <div class="service__description">
+                        <Paragraph>{service.description}</Paragraph>
+                    </div>
+
+                    <span aria-hidden="true">
+                        <svg
+                            class="service__arrow"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M5 12h14M13 6l6 6-6 6"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+                        </svg>
+                    </span>
+                </a>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .services__header {
+        display: grid;
+        gap: var(--space-3xs);
+        margin-bottom: var(--space-xl);
+    }
+
+    .services__label {
+        display: flex;
+        gap: var(--space-s);
+        text-transform: uppercase;
+    }
+
+    .services__list {
+        border-top: 1px solid var(--border-default);
+    }
+
+    .service {
+        display: grid;
+        grid-template-columns: 4rem 1.5fr 2fr auto;
+        align-items: center;
+        gap: var(--space-l);
+
+        padding-block: var(--space-xl);
+
+        border-bottom: 1px solid var(--border-default);
+
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .service__number {
+        align-self: center;
+
+        font-size: var(--fs-0);
+    }
+
+    .service__description {
+        max-width: 30rem;
+        :global(.text) {
+            color: var(--text-secondary);
+        }
+    }
+
+    .service__arrow {
+        display: grid;
+        place-items: center;
+        color: var(--text-primary);
+        width: 2rem;
+        height: 2rem;
+        transform: rotate(-45deg);
+        transition: transform var(--duration-normal) var(--ease-ease-out);
+    }
+
+    .service:hover .service__arrow {
+        transform: rotate(0deg);
+    }
+
+    @media (max-width: 48rem) {
+        .services__header {
+            grid-template-columns: 1fr;
+        }
+
+        .service {
+            grid-template-columns: 2.5rem 1fr auto;
+            gap: var(--space-m);
+
+            padding-block: var(--space-l);
+        }
+
+        .service__description {
+            grid-column: 2 / -1;
+        }
+    }
+</style>

@@ -1,0 +1,225 @@
+---
+import { Image } from "astro:assets";
+
+import SectionLabel from "@/components/section/SectionLabel.astro";
+import Heading from "@/components/Typography/Heading.astro";
+import Paragraph from "@/components/Typography/Paragraph.astro";
+import Button from "@/components/Button.astro";
+
+type Theme = "light" | "dark" | "secondary" | "brand";
+
+interface Props {
+    id: string;
+    label: string;
+    title: string;
+    text?: string;
+    theme?: Theme;
+
+    person: {
+        name: string;
+        role: string;
+        bio?: string;
+
+        image?: {
+            src: ImageMetadata | string;
+            alt: string;
+        };
+
+        linkedin?: string;
+    };
+}
+
+const { id, label, title, text, theme, person } = Astro.props;
+---
+
+<section class="person section" data-theme={theme || undefined}>
+    <div class="wrapper">
+        <div class="person__layout with-aside">
+            <div class="person__media">
+                {person.image &&
+                    (typeof person.image.src === "string" ? (
+                        <img
+                            src={person.image.src}
+                            alt={person.image.alt}
+                            loading="lazy"
+                        />
+                    ) : (
+                        <Image
+                            src={person.image.src}
+                            alt={person.image.alt}
+                            widths={[640, 960, 1280]}
+                            sizes="(min-width: 64rem) 42vw, 100vw"
+                            loading="lazy"
+                        />
+                    ))}
+            </div>
+
+            <aside class="person__content flow">
+                <SectionLabel number={id} label={label} />
+
+                <div class="person__intro flow">
+                    <Heading tag="h2" variant="h1">
+                        {title}
+                    </Heading>
+
+                    {text && (
+                        <Paragraph variant="large" maxWidth={40}>
+                            {text}
+                        </Paragraph>
+                    )}
+                </div>
+
+                <div class="person__details">
+                    <div>
+                        <h3 class="person__name">{person.name}</h3>
+
+                        <p class="person__role">{person.role}</p>
+                    </div>
+
+                    {person.bio && <p class="person__bio">{person.bio}</p>}
+                </div>
+
+                {person.linkedin && (
+                    <div class="person__actions">
+                        <Button
+                            href={person.linkedin}
+                            variant="outline"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            LinkedIn
+                            <span aria-hidden="true">↗</span>
+                        </Button>
+                    </div>
+                )}
+            </aside>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .person {
+        overflow: hidden;
+    }
+
+    /*
+     * Layout
+     */
+
+    .person__layout {
+        --with-aside-width: min(100%, 34rem);
+        --with-aside-main-min-width: 50%;
+        --with-aside-gap: var(--space-xl-2xl);
+
+        align-items: center;
+    }
+
+    /*
+     * Portrait
+     */
+
+    .person__media {
+        position: relative;
+
+        overflow: hidden;
+
+        aspect-ratio: 4 / 5;
+
+        background-color: var(--surface-subtle);
+        border-radius: var(--radius-s);
+
+        :global(img) {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: transform var(--duration-slow) var(--ease-ease-out);
+        }
+
+        &:hover :global(img) {
+            transform: scale(1.025);
+        }
+    }
+
+    /*
+     * Content
+     */
+
+    .person__content {
+        --flow-space: var(--space-l);
+    }
+
+    .person__intro {
+        --flow-space: var(--space-m);
+    }
+
+    /*
+     * Person details
+     */
+
+    .person__details {
+        display: grid;
+        gap: var(--space-m);
+
+        padding-block-start: var(--space-l);
+
+        border-top: 1px solid var(--border-default);
+    }
+
+    .person__name {
+        margin: 0;
+
+        color: var(--text-primary);
+
+        font-size: var(--fs-1);
+        font-weight: var(--fw-semibold);
+        line-height: var(--lh-tight);
+        letter-spacing: var(--ls-tight);
+    }
+
+    .person__role {
+        margin: var(--space-3xs) 0 0;
+
+        color: var(--text-secondary);
+
+        font-size: var(--text-small);
+        line-height: var(--lh-body);
+    }
+
+    .person__bio {
+        max-width: 40rem;
+        margin: 0;
+
+        color: var(--text-secondary);
+
+        font-size: var(--text-base);
+        line-height: var(--lh-body);
+    }
+
+    /*
+     * Actions
+     */
+
+    .person__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-s);
+    }
+
+    /*
+     * Reduced motion
+     */
+
+    @media (prefers-reduced-motion: reduce) {
+        .person__media :global(img) {
+            transition: none;
+        }
+
+        .person__media:hover :global(img) {
+            transform: none;
+        }
+    }
+</style>

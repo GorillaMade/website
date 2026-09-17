@@ -1,0 +1,348 @@
+---
+import { getCollection } from "astro:content";
+
+import SectionLabel from "@/components/section/SectionLabel.astro";
+import Heading from "@/components/Typography/Heading.astro";
+
+type Theme = "light" | "dark" | "secondary" | "brand";
+
+interface Props {
+    id: string;
+    label: string;
+    title?: string;
+    theme?: Theme;
+    featuredOnly?: boolean;
+    limit?: number;
+}
+
+const { id, label, title, theme, featuredOnly = false, limit } = Astro.props;
+
+// Haal case studies op die een testimonial bevatten.
+const caseStudies = await getCollection("showcase");
+
+let testimonials = caseStudies.filter((entry) => Boolean(entry.data.quote));
+
+// Toon optioneel alleen testimonials van featured cases.
+if (featuredOnly) {
+    testimonials = testimonials.filter((entry) => entry.data.featured);
+}
+
+// Beperk optioneel het aantal testimonials.
+if (limit !== undefined) {
+    testimonials = testimonials.slice(0, limit);
+}
+
+const total = testimonials.length;
+---
+
+{total > 0 && (
+    <section
+        class="testimonials section"
+        data-theme={theme || undefined}
+        x-data={`{ current: 0, total: ${total} }`}
+    >
+        <div class="wrapper">
+            <header class="section__header">
+                <SectionLabel number={id} label={label} />
+
+                {title && (
+                    <Heading tag="h2" variant="h2">
+                        {title}
+                    </Heading>
+                )}
+            </header>
+
+            <div class="testimonials__carousel">
+                <ul class="testimonials__list">
+                    {testimonials.map((entry, index) => {
+                        const { quote, quoteAuthor, quoteAuthorFunction } =
+                            entry.data;
+
+                        return (
+                            <li
+                                class="testimonial"
+                                x-show={`current === ${index}`}
+                                x-transition:enter="testimonial-enter"
+                                x-transition:enter-start="testimonial-enter-start"
+                                x-transition:enter-end="testimonial-enter-end"
+                                x-transition:leave="testimonial-leave"
+                                x-transition:leave-start="testimonial-leave-start"
+                                x-transition:leave-end="testimonial-leave-end"
+                            >
+                                <blockquote class="testimonial__quote">
+                                    “{quote}”
+                                </blockquote>
+
+                                {(quoteAuthor || quoteAuthorFunction) && (
+                                    <footer class="testimonial__author">
+                                        {quoteAuthor && (
+                                            <span class="testimonial__name">
+                                                {quoteAuthor}
+                                            </span>
+                                        )}
+
+                                        {quoteAuthorFunction && (
+                                            <span class="testimonial__function">
+                                                {quoteAuthorFunction}
+                                            </span>
+                                        )}
+                                    </footer>
+                                )}
+                            </li>
+                        );
+                    })}
+                </ul>
+
+                {total > 1 && (
+                    <div class="testimonials__nav">
+                        <div class="testimonials__counter">
+                            <span x-text="String(current + 1).padStart(2, '0')">
+                                01
+                            </span>
+
+                            <span
+                                class="testimonials__counter-line"
+                                aria-hidden="true"
+                            />
+
+                            <span>{String(total).padStart(2, "0")}</span>
+                        </div>
+
+                        <div class="testimonials__buttons">
+                            <button
+                                type="button"
+                                class="testimonials__button"
+                                aria-label="Vorige testimonial"
+                                x-on:click="current = (current - 1 + total) % total"
+                            >
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path
+                                        d="M19 12H5M11 18l-6-6 6-6"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
+                            </button>
+
+                            <button
+                                type="button"
+                                class="testimonials__button"
+                                aria-label="Volgende testimonial"
+                                x-on:click="current = (current + 1) % total"
+                            >
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path
+                                        d="M5 12h14M13 6l6 6-6 6"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    </section>
+)}
+
+<style lang="scss">
+    .testimonials {
+        overflow: hidden;
+    }
+
+    .testimonials__carousel {
+        display: grid;
+        gap: var(--space-xl);
+    }
+
+    .testimonials__list {
+        display: grid;
+
+        margin: 0;
+        padding: 0;
+
+        list-style: none;
+
+        > li {
+            grid-area: 1 / 1;
+        }
+    }
+
+    .testimonial {
+        display: grid;
+        gap: var(--space-l);
+
+        max-width: var(--container-l);
+    }
+
+    .testimonial__quote {
+        margin: 0;
+
+        color: var(--text-primary);
+
+        font-size: var(--fs-2);
+        font-weight: var(--fw-medium);
+        line-height: var(--lh-snug);
+        letter-spacing: var(--ls-tight);
+    }
+
+    .testimonial__author {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-3xs);
+    }
+
+    .testimonial__name {
+        color: var(--text-primary);
+        font-weight: var(--fw-semibold);
+    }
+
+    .testimonial__function {
+        color: var(--text-secondary);
+        font-size: var(--text-small);
+    }
+
+    .testimonials__nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding-block-start: var(--space-m);
+
+        border-top: 1px solid var(--border-default);
+    }
+
+    .testimonials__counter {
+        display: flex;
+        align-items: center;
+        gap: var(--space-s);
+
+        color: var(--text-secondary);
+
+        font-size: var(--text-small);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .testimonials__counter-line {
+        inline-size: var(--space-xl);
+        block-size: 1px;
+
+        background-color: var(--border-strong);
+    }
+
+    .testimonials__buttons {
+        display: flex;
+        gap: var(--space-xs);
+    }
+
+    .testimonials__button {
+        display: grid;
+        place-items: center;
+
+        inline-size: var(--space-xl);
+        block-size: var(--space-xl);
+        padding: 0;
+
+        color: var(--text-primary);
+        background-color: transparent;
+
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-full);
+
+        cursor: pointer;
+
+        transition:
+            color var(--duration-fast) var(--ease-ease-out),
+            background-color var(--duration-fast) var(--ease-ease-out),
+            border-color var(--duration-fast) var(--ease-ease-out),
+            transform var(--duration-fast) var(--ease-ease-out);
+
+        svg {
+            inline-size: var(--space-m);
+            block-size: var(--space-m);
+        }
+
+        &:hover {
+            color: var(--text-inverse);
+            background-color: var(--surface-strong);
+            border-color: var(--surface-strong);
+            transform: scale(1.05);
+        }
+
+        &:focus-visible {
+            outline: var(--focus-width) solid var(--focus-ring);
+            outline-offset: var(--focus-offset);
+        }
+    }
+
+    :global(.testimonial-enter) {
+        transition:
+            opacity var(--duration-normal) var(--ease-ease-out),
+            transform var(--duration-normal) var(--ease-ease-out);
+    }
+
+    :global(.testimonial-enter-start) {
+        opacity: 0;
+        transform: translateY(var(--space-xs));
+    }
+
+    :global(.testimonial-enter-end) {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    :global(.testimonial-leave) {
+        transition:
+            opacity var(--duration-fast) var(--ease-ease-out),
+            transform var(--duration-fast) var(--ease-ease-out);
+    }
+
+    :global(.testimonial-leave-start) {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    :global(.testimonial-leave-end) {
+        opacity: 0;
+        transform: translateY(calc(var(--space-xs) * -1));
+    }
+
+    @media (max-width: 48rem) {
+        .testimonial__quote {
+            font-size: var(--fs-1);
+        }
+
+        .testimonials__nav {
+            margin-block-start: var(--space-m);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        :global(.testimonial-enter),
+        :global(.testimonial-leave) {
+            transition: opacity var(--duration-fast) linear;
+        }
+
+        :global(.testimonial-enter-start),
+        :global(.testimonial-enter-end),
+        :global(.testimonial-leave-start),
+        :global(.testimonial-leave-end) {
+            transform: none;
+        }
+
+        .testimonials__button {
+            transition: none;
+
+            &:hover {
+                transform: none;
+            }
+        }
+    }
+</style>

@@ -1,10 +1,15 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import { getCollection, render } from "astro:content";
 import { Image } from "astro:assets";
+import { getCollection, render, type CollectionEntry } from "astro:content";
+
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Heading from "@/components/Typography/Heading.astro";
+import Paragraph from "@/components/Typography/Paragraph.astro";
+import Button from "@/components/Button.astro";
+import CTA from "@/components/section/CTA.astro";
 
 export async function getStaticPaths() {
-    const posts = await getCollection("blog");
+    const posts: CollectionEntry<"blog">[] = await getCollection("blog");
 
     return posts.map((post) => ({
         params: {
@@ -16,112 +21,302 @@ export async function getStaticPaths() {
     }));
 }
 
+interface Props {
+    post: CollectionEntry<"blog">;
+}
+
 const { post } = Astro.props;
-const { title, description, category, cover, date } = post.data;
+
+const { title, date, description, category, image, author } = post.data;
+
 const { Content } = await render(post);
 
-const formattedDate = date
-    ? date.toLocaleDateString("nl-NL", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-      })
-    : null;
+const formattedDate = date.toLocaleDateString("nl-NL", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+});
+
+const shortDate = date.toLocaleDateString("nl-NL", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+});
 ---
 
-<BaseLayout title={`${title} | Blog`} description={description}>
-    <section class="region">
-        <article class="post content-grid flow">
-            <header class="post-header">
-                <span class="post-header__category" data-category={category}>
-                    {category}
-                </span>
-                <h1 class="post-header__title">{title}</h1>
-                {formattedDate && (
-                    <time class="post-header__date" datetime={date.toISOString()}>
-                        {formattedDate}
-                    </time>
-                )}
-                <p class="post-header__description">{description}</p>
-            </header>
+<BaseLayout title={`${title} | GorillaMade`} description={description}>
+    <article class="article">
+        <!-- HERO -->
 
-            {cover && typeof cover !== "string" && (
-                <Image
-                    src={cover}
-                    alt={title}
-                    width={1200}
-                    height={675}
-                    class="post-header__cover breakout"
-                />
-            )}
-            {cover && typeof cover === "string" && (
-                <img
-                    src={cover}
-                    alt={title}
-                    width={1200}
-                    height={675}
-                    class="post-header__cover breakout"
-                />
-            )}
+        <header class="article__hero section">
+            <div class="wrapper">
+                <div class="article__intro">
+                    <Heading tag="h1" variant="display">
+                        {title}
+                    </Heading>
 
-            <Content />
-        </article>
-    </section>
+                    <Paragraph
+                        variant="large"
+                        maxWidth={60}
+                        class="·article__description"
+                    >
+                        {description}
+                    </Paragraph>
+                </div>
+            </div>
+        </header>
+
+        <!-- IMAGE -->
+
+        {image && (
+            <div class="wrapper">
+                <figure class="article__image">
+                    {typeof image.src === "string" ? (
+                        <img
+                            src={image.src}
+                            alt={image.alt}
+                            width="1800"
+                            height="1000"
+                            fetchpriority="high"
+                        />
+                    ) : (
+                        <Image
+                            src={image.src}
+                            alt={image.alt}
+                            width={1800}
+                            height={1000}
+                            fetchpriority="high"
+                        />
+                    )}
+                </figure>
+            </div>
+        )}
+
+        <!-- ARTICLE -->
+
+        <section class="article__body section">
+            <div class="wrapper article__grid">
+                <!-- AUTHOR -->
+
+                <aside class="article__aside">
+                    <div class="article__author">
+                        <span class="article__aside-label">
+                            Geschreven door
+                        </span>
+
+                        <strong>{author.name}</strong>
+                    </div>
+
+                    <div class="article__date">
+                        <span class="article__aside-label">Gepubliceerd</span>
+
+                        <span>{shortDate}</span>
+                    </div>
+
+                    <div class="article__category">
+                        <span class="article__aside-label">Categorie</span>
+
+                        <span>{category}</span>
+                    </div>
+                </aside>
+
+                <!-- MARKDOWN -->
+
+                <div class="article__content flow">
+                    <Content />
+                </div>
+            </div>
+        </section>
+    </article>
+    <CTA />
 </BaseLayout>
 
 <style lang="scss">
-    .post {
-        line-height: var(--line-height-normal);
+    /*
+     * HERO
+     */
+
+    .article__hero {
+        padding-block-end: var(--space-xl);
     }
-  /* .post-header
-     -----
-     Kop van een blogpost detailpagina: categorie, titel, datum, summary en cover. */
-  .post-header {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-    margin-bottom: var(--space-l);
-  }
 
-  .post-header__category {
-    align-self: flex-start;
-    padding: 0.25rem 0.625rem;
-    border-radius: var(--radius-s);
-    background: var(--color-neutral-900);
-    color: var(--color-text-inverted);
-    font-size: var(--fs--2);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
+    .article__meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-m);
 
-  .post-header__title {
-    font-size: var(--fs-4);
-    font-weight: 700;
-    line-height: 1.1;
-    margin: 0;
-    color: var(--color-text);
-  }
+        padding-block-end: var(--space-s);
 
-  .post-header__date {
-    font-size: var(--step--1, 0.875rem);
-    color: var(--color-text-muted);
-  }
+        border-bottom: 1px solid var(--border-default);
 
-  .post-header__description {
-    font-size: var(--fs-1);
-    line-height: 1.5;
-    color: var(--color-text-secondary);
-    margin: 0;
-    line-height: var(--line-height-relaxed);
-  }
+        font-size: var(--fs--1);
+        font-weight: var(--fw-semibold);
+        line-height: 1;
+        letter-spacing: var(--ls-wider);
+        text-transform: uppercase;
+    }
 
-  .post-header__cover {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border-radius: var(--radius-lg, 0.75rem);
-    margin-block: var(--space-m, 1.5rem);
-  }
+    .article__meta span:last-child {
+        color: var(--text-muted);
+    }
+
+    .article__intro {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-l);
+        padding-block-start: var(--space-xl);
+        align-items: center;
+        text-align: center;
+    }
+
+    /*
+     * HERO IMAGE
+     */
+
+    .article__image {
+        margin: 0;
+        overflow: clip;
+        aspect-ratio: 16/8;
+        background: var(--surface-subtle);
+        border-radius: var(--radius-l);
+    }
+
+    .article__image :global(img) {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /*
+     * BODY
+     */
+
+    .article__grid {
+        display: grid;
+        grid-template-columns:
+            minmax(10rem, 0.7fr)
+            minmax(0, 2fr)
+            minmax(0, 0.7fr);
+
+        gap: var(--space-xl);
+    }
+
+    /*
+     * ASIDE
+     */
+
+    .article__aside {
+        align-self: start;
+        position: sticky;
+        top: var(--space-l);
+        display: grid;
+        gap: var(--space-l);
+        font-size: var(--fs--1);
+    }
+
+    .article__author,
+    .article__date,
+    .article__category {
+        display: grid;
+        gap: var(--space-3xs);
+    }
+
+    .article__aside-label {
+        color: var(--text-muted);
+        font-size: var(--fs--1);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+    .article__author strong {
+        font-weight: var(--fw-semibold);
+    }
+
+    /*
+     * CONTENT
+     */
+
+    .article__content {
+        grid-column: 2;
+
+        width: 100%;
+        max-width: var(--container-m);
+
+        --flow-space: var(--space-m);
+    }
+
+    .article__content :global(p) {
+        font-size: var(--fs-0);
+        line-height: var(--lh-relaxed);
+    }
+
+    .article__content :global(a) {
+        color: inherit;
+
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.2em;
+    }
+
+    .article__content :global(ul),
+    .article__content :global(ol) {
+        display: grid;
+        gap: var(--space-xs);
+
+        padding-inline-start: 1.25rem;
+    }
+
+    .article__content :global(blockquote) {
+        margin-block: var(--space-xl);
+        margin-inline: 0;
+
+        padding-inline-start: var(--space-l);
+
+        border-left: 2px solid var(--border-default);
+
+        font-size: var(--fs-2);
+        line-height: var(--lh-snug);
+    }
+
+    /*
+     * MOBILE
+     */
+
+    @media (max-width: 48rem) {
+        .article__meta {
+            align-items: flex-start;
+        }
+
+        .article__image {
+            aspect-ratio: 4 / 3;
+        }
+
+        .article__grid {
+            grid-template-columns: 1fr;
+            gap: var(--space-xl);
+        }
+
+        .article__aside {
+            position: static;
+            grid-template-columns: repeat(3, 1fr);
+            padding-block-end: var(--space-l);
+            border-bottom: 1px solid var(--border-default);
+        }
+
+        .article__content {
+            grid-column: auto;
+        }
+    }
+
+    @media (max-width: 32rem) {
+        .article__aside {
+            grid-template-columns: 1fr;
+            gap: var(--space-m);
+        }
+
+        .article__cta-link {
+            grid-template-columns: 1fr;
+        }
+    }
 </style>

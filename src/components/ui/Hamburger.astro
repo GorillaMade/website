@@ -1,4 +1,11 @@
-<button class="hamburger" type="button" aria-label="Toggle navigation">
+<button
+    class="hamburger"
+    type="button"
+    aria-label="Toggle navigation"
+    :aria-expanded="open"
+    @click="open = !open"
+    :class="{ 'open': open }"
+>
     <span class="bar bar--1"></span>
     <span class="bar bar--2"></span>
     <span class="bar bar--3"></span>
@@ -13,7 +20,7 @@
 
         --_hamburger-bar-color: var(
             --hamburger-bar-color,
-            var(--surface-inverted)
+            var(--color-neutral-900)
         );
         --_hamburger-bar-width: var(--hamburger-bar-width, 36px);
         --_hamburger-bar-height: var(--hamburger-bar-height, 6px);

@@ -1,0 +1,43 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Heading from "@/components/Typography/Heading.astro";
+import Paragraph from "@/components/Typography/Paragraph.astro";
+import Card from "@/components/Card.astro";
+import CTA from "@/components/section/CTA.astro";
+
+import { getCollection } from "astro:content";
+const showcases = await getCollection("showcase");
+---
+
+<BaseLayout
+    title="Projecten | GorillaMade Webdesign & Development"
+    description="Bekijk een selectie van projecten waarin GorillaMade ondernemers hielp aan een snelle, moderne website die daadwerkelijk bijdraagt aan hun online groei."
+>
+    <section class="hero section">
+        <div class="wrapper flow">
+            <Heading tag="h1" variant="display">
+                Case Studies
+            </Heading>
+            <Paragraph variant="large" maxWidth={65}>
+                Een selectie van projecten waarin we bedrijven hebben geholpen
+                groeien door doordachte digitale oplossingen.
+            </Paragraph>
+        </div>
+    </section>
+    <section class="section">
+        <div class="wrapper">
+            <div class="grid" data-layout="halves">
+                {showcases.map((showcase, index) => (
+                    <Card entry={showcase} index={index + 1} />
+                ))}
+            </div>
+        </div>
+    </section>
+    <CTA />
+</BaseLayout>
+
+<style lang="scss">
+    .grid[data-layout="halves"] {
+        --grid-placement: auto-fill;
+    }
+</style>

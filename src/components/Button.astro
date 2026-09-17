@@ -1,0 +1,187 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
+type ButtonSize = "small" | "medium" | "large";
+
+interface Props extends HTMLAttributes<"button"> {
+    /** Render the button as a link when an href is provided. */
+    href?: string;
+
+    /** Visual button style. */
+    variant?: ButtonVariant;
+
+    /** Controls the button size. */
+    size?: ButtonSize;
+
+    /** Makes the button fill the available width. */
+    fullWidth?: boolean;
+
+    /** Disables the button. Only applies when rendered as a button. */
+    disabled?: boolean;
+
+    class?: string;
+}
+
+const {
+    href,
+    variant = "primary",
+    size = "medium",
+    fullWidth = false,
+    disabled = false,
+    class: className,
+    ...rest
+} = Astro.props;
+
+const Tag = href ? "a" : "button";
+---
+
+<Tag
+    class:list={["button", className]}
+    data-variant={variant}
+    data-size={size}
+    data-full-width={fullWidth || undefined}
+    href={href}
+    disabled={!href ? disabled : undefined}
+    aria-disabled={href && disabled ? "true" : undefined}
+    {...rest}
+>
+    <span class="button__label">
+        <slot />
+    </span>
+</Tag>
+
+<style lang="scss">
+    // -----------------------------------------------------------------------------
+    // Button
+    // -----------------------------------------------------------------------------
+    // Provides a reusable interactive button style using semantic action tokens.
+    //
+    // Public custom properties:
+    // --button-background
+    // --button-background-hover
+    // --button-background-active
+    // --button-color
+    // --button-border-color
+    // --button-padding-block
+    // --button-padding-inline
+    // --button-radius
+    // --button-gap
+    //
+    // Variants:
+    // data-variant="primary"
+    // data-variant="secondary"
+    // data-variant="outline"
+    // data-variant="ghost"
+    //
+    // Sizes:
+    // data-size="small"
+    // data-size="medium"
+    // data-size="large"
+    // -----------------------------------------------------------------------------
+
+    .button {
+        --_button-background: var(--button-background, var(--action-primary));
+
+        --_button-background-hover: var(
+            --button-background-hover,
+            var(--action-primary-hover)
+        );
+
+        --_button-background-active: var(
+            --button-background-active,
+            var(--action-primary-active)
+        );
+
+        --_button-color: var(--button-color, var(--action-primary-text));
+
+        --_button-border-color: var(--button-border-color, transparent);
+
+        --_button-padding-block: var(--button-padding-block, var(--space-s));
+
+        --_button-padding-inline: var(--button-padding-inline, var(--space-m));
+
+        --_button-radius: var(--button-radius, var(--radius-s));
+
+        --_button-gap: var(--button-gap, var(--space-2xs));
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--_button-gap);
+
+        padding-block: var(--_button-padding-block);
+        padding-inline: var(--_button-padding-inline);
+
+        color: var(--_button-color);
+        background-color: var(--_button-background);
+
+        border: 1px solid var(--_button-border-color);
+        border-radius: var(--_button-radius);
+
+        font: inherit;
+        font-weight: var(--fw-semibold);
+        line-height: 1;
+        text-align: center;
+        text-decoration: none;
+
+        cursor: pointer;
+
+        transition:
+            color var(--duration-fast) var(--ease-out),
+            background-color var(--duration-fast) var(--ease-out),
+            border-color var(--duration-fast) var(--ease-out);
+
+        &:hover {
+            background-color: var(--_button-background-hover);
+        }
+
+        &:active {
+            background-color: var(--_button-background-active);
+        }
+
+        &:disabled,
+        &[aria-disabled="true"] {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+    }
+
+    // -----------------------------------------------------------------------------
+    // Variants
+    // -----------------------------------------------------------------------------
+
+    .button[data-variant="secondary"] {
+        --button-background: var(--action-secondary);
+        --button-background-hover: var(--action-secondary-hover);
+        --button-background-active: var(--action-secondary-active);
+        --button-color: var(--action-secondary-text);
+    }
+
+    .button[data-variant="outline"] {
+        --button-background: var(--action-outline);
+        --button-background-hover: var(--action-outline-hover);
+        --button-background-active: var(--action-outline-active);
+        --button-color: var(--action-outline-text);
+        --button-border-color: var(--action-outline-border);
+    }
+
+    .button[data-variant="ghost"] {
+        --button-background: var(--action-ghost);
+        --button-background-hover: var(--action-ghost-hover);
+        --button-background-active: var(--action-ghost-active);
+        --button-color: var(--action-ghost-text);
+    }
+
+    // -----------------------------------------------------------------------------
+    // Sizes
+    // -----------------------------------------------------------------------------
+
+    .button[data-size="small"] {
+        font-size: var(--text-small);
+    }
+
+    .button[data-size="large"] {
+        font-size: var(--text-large);
+    }
+</style>

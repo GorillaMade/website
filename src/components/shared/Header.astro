@@ -1,25 +1,25 @@
 ---
-import Logo from "@/components/ui/Logo.astro";
+import Brand from "@/components/ui/Brand.astro";
+import SiteNav from "@/components/shared/Nav.astro";
 import Hamburger from "@/components/ui/Hamburger.astro";
-import SiteNav from "@/components/shared/SiteNav.astro";
-import Button from "@/components/ui/Button.astro";
+import Button from "@/components/Button.astro";
 ---
 
-<header class="site-header">
+<header class="site-header" x-data="{ open: false }">
     <div class="site-header__inner wrapper">
-        <Logo />
+        <Brand />
         <Hamburger />
         <SiteNav />
-        <Button href="/contact" variant="accent" classList="site-header__cta"
-            >Gesprek plannen</Button
-        >
+        <Button href="/contact" data-variant="primary" data-size="small">
+            Gesprek plannen
+        </Button>
     </div>
 </header>
 
 <style lang="scss">
     .site-header {
-        padding-block: 1rem;
-        background: var(--color-bg);
+        padding-block: var(--space-s-m);
+        background: var(--surface-page);
 
         &__inner {
             display: flex;
@@ -33,33 +33,4 @@ import Button from "@/components/ui/Button.astro";
             }
         }
     }
-
-    @media (width < 975px) {
-        .site-header__cta {
-            order: 1;
-            margin-left: auto;
-            margin-right: 1rem;
-        }
-    }
 </style>
-
-<style is:global>
-    .site-header__cta {
-        --button-font-size: var(--text-xs);
-    }
-</style>
-
-<script>
-    // HAMBURGER TOGGLE
-    document.addEventListener("DOMContentLoaded", () => {
-        const hamburger = document.querySelector(".hamburger");
-        const nav = document.querySelector(".site-nav");
-
-        if (hamburger && nav) {
-            hamburger.addEventListener("click", () => {
-                hamburger.classList.toggle("open");
-                nav.classList.toggle("open");
-            });
-        }
-    });
-</script>

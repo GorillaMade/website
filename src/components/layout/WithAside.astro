@@ -1,0 +1,63 @@
+---
+interface Props {
+    aside?: "left" | "right";
+    class?: string;
+}
+
+const { aside = "left", class: className } = Astro.props;
+---
+
+<div class:list={["with-aside", className]} data-aside={aside}>
+    <aside class="with-aside__aside">
+        <slot name="aside" />
+    </aside>
+
+    <div class="with-aside__content">
+        <slot />
+    </div>
+</div>
+
+<style lang="scss">
+    // -----------------------------------------------------------------------------
+    // With Aside
+    // -----------------------------------------------------------------------------
+    // A layout that places main content and an aside next to each other until there
+    // is not enough horizontal space available, then stacks them vertically.
+    // -----------------------------------------------------------------------------
+
+    .with-aside {
+        --_main-content-min-width: var(--main-content-min-width, 50%);
+
+        --_sidebar-width: var(--sidebar-width, 23rem);
+
+        --_content-sidebar-gap: var(
+            --content-sidebar-gap,
+            var(--space-2xl-3xl)
+        );
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--_content-sidebar-gap);
+
+        > :not(aside) {
+            flex-basis: 0;
+            flex-grow: 999;
+            min-width: var(--_main-content-min-width);
+        }
+
+        > aside {
+            flex-basis: var(--_sidebar-width);
+            flex-grow: 1;
+        }
+
+        &[data-aside="right"] {
+            > aside {
+                order: 2;
+            }
+
+            > :not(aside) {
+                order: 1;
+            }
+        }
+    }
+</style>

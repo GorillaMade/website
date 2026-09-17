@@ -3,7 +3,9 @@ title: "Hoe een snelle website meer klanten kan opleveren"
 date: 2026-08-24
 description: "Ontdek waarom de snelheid van jouw website een belangrijke rol speelt in gebruikservaring, conversies en online succes."
 category: "Development"
-cover: "https://images.unsplash.com/photo-1551650975-87deedd944c3?q=80&w=1374&auto=format&fit=crop"
+image: 
+  src: "https://images.unsplash.com/photo-1551650975-87deedd944c3?q=80&w=1374&auto=format&fit=crop"
+  alt: "Hoe een snelle website meer klanten kan opleveren"
 author:
   name: "Timothy"
   avatar: "../../assets/image/author.avif"

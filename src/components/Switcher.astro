@@ -1,0 +1,81 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type SwitcherTag = "div" | "section" | "article" | "ul";
+
+type SwitcherAlignment = "flex-start" | "center" | "flex-end" | "stretch";
+
+interface Props extends HTMLAttributes<"div"> {
+    /** HTML element used to render the switcher. */
+    tag?: SwitcherTag;
+
+    /** Gap between the switcher items. */
+    gap?: string;
+
+    /** Vertical alignment of the switcher items. */
+    align?: SwitcherAlignment;
+
+    /** Width at which the items switch from columns to rows. */
+    targetWidth?: string;
+}
+
+const {
+    tag: Tag = "div",
+    gap,
+    align,
+    targetWidth,
+    class: className,
+    style: styleProp,
+    ...rest
+} = Astro.props;
+
+const styles = [
+    gap && `--switcher-gap: ${gap}`,
+    align && `--switcher-vertical-alignment: ${align}`,
+    targetWidth && `--switcher-target-container-width: ${targetWidth}`,
+    styleProp,
+]
+    .filter(Boolean)
+    .join("; ");
+---
+
+<Tag class:list={["switcher", className]} style={styles || undefined} {...rest}>
+    <slot />
+</Tag>
+
+<style lang="scss">
+    // -----------------------------------------------------------------------------
+    // Switcher
+    // -----------------------------------------------------------------------------
+    // A layout that places 2 items next to each other until there is not enough
+    // horizontal space available.
+    // -----------------------------------------------------------------------------
+
+    .switcher {
+        --_switcher-gap: var(--switcher-gap, var(--space-l-xl));
+        --_switcher-vertical-alignment: var(
+            --switcher-vertical-alignment,
+            flex-start
+        );
+        --_switcher-target-container-width: var(
+            --switcher-target-container-width,
+            40rem
+        );
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--_switcher-gap);
+        align-items: var(--_switcher-vertical-alignment);
+
+        > * {
+            flex-grow: 1;
+            flex-basis: calc(
+                (var(--_switcher-target-container-width) - 100%) * 999
+            );
+        }
+
+        > :nth-child(n + 3) {
+            flex-basis: 100%;
+        }
+    }
+</style>

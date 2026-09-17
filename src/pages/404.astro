@@ -1,0 +1,151 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+import Heading from "@/components/Typography/Heading.astro";
+import Paragraph from "@/components/Typography/Paragraph.astro";
+import Button from "@/components/Button.astro";
+
+import { frontmatter } from "@/content/pages/404.md";
+
+const { seo, error } = frontmatter;
+---
+
+<BaseLayout title={seo.title} description={seo.description}>
+    <section class="error-page section" data-theme={error.theme || undefined}>
+        <div class="error-page__content flow">
+            <Heading tag="h1" variant="display">
+                {error.title}
+            </Heading>
+
+            <Paragraph variant="large" maxWidth={38}>
+                {error.text}
+            </Paragraph>
+
+            <div class="error-page__actions">
+                <Button href={error.primaryButton.href}>
+                    {error.primaryButton.label}
+                </Button>
+
+                <Button href={error.secondaryButton.href} variant="outline">
+                    {error.secondaryButton.label}
+                </Button>
+            </div>
+        </div>
+
+        <div class="error-page__graphic" aria-hidden="true">
+            <span>{error.code}</span>
+            <span>{error.code}</span>
+            <span>{error.code}</span>
+        </div>
+    </section>
+</BaseLayout>
+
+<style lang="scss">
+    .error-page {
+        position: relative;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        min-height: 100svh;
+        padding: var(--space-m) var(--gutter) var(--space-l);
+
+        overflow: hidden;
+
+        background-color: var(--surface-page);
+        color: var(--text-primary);
+    }
+
+    /*
+     * Content
+     */
+
+    .error-page__content {
+        position: relative;
+        z-index: var(--layer-raised);
+
+        width: min(100%, var(--container-m));
+
+        padding-block: var(--section-medium) var(--section-large);
+
+        --flow-space: var(--space-l);
+    }
+
+    .error-page__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-s);
+
+        padding-block-start: var(--space-xs);
+    }
+
+    /*
+     * Decorative 404
+     */
+
+    .error-page__graphic {
+        position: absolute;
+        right: calc(var(--space-l) * -1);
+        bottom: calc(var(--space-xl) * -1);
+
+        display: grid;
+
+        color: var(--text-primary);
+
+        font-family: var(--font-heading);
+        font-size: clamp(7rem, 18vw, 18rem);
+        font-weight: var(--fw-black);
+        line-height: 0.62;
+        letter-spacing: var(--ls-tighter);
+
+        opacity: 0.035;
+
+        pointer-events: none;
+        user-select: none;
+
+        transform: rotate(-8deg);
+        transform-origin: bottom right;
+
+        span:nth-child(2) {
+            color: var(--text-brand);
+        }
+    }
+
+    /*
+     * Small screens
+     */
+
+    @media (width <= 48rem) {
+        .error-page {
+            min-height: 100svh;
+        }
+
+        .error-page__content {
+            margin-block: auto;
+            padding-block: var(--section-medium);
+        }
+
+        .error-page__graphic {
+            right: calc(var(--space-m) * -1);
+            bottom: var(--space-m);
+
+            font-size: clamp(7rem, 34vw, 11rem);
+        }
+    }
+
+    @media (width <= 36rem) {
+        .error-page__label {
+            display: none;
+        }
+
+        .error-page__actions {
+            flex-direction: column;
+            align-items: stretch;
+
+            :global(.button) {
+                width: 100%;
+            }
+        }
+    }
+</style>

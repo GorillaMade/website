@@ -1,0 +1,299 @@
+---
+import { Image } from "astro:assets";
+
+import SectionLabel from "@/components/section/SectionLabel.astro";
+import Heading from "@/components/Typography/Heading.astro";
+import Paragraph from "@/components/Typography/Paragraph.astro";
+
+type Theme = "light" | "dark" | "secondary" | "brand";
+
+interface TeamMember {
+    name: string;
+    role: string;
+    bio?: string;
+    image?: {
+        src: ImageMetadata | string;
+        alt: string;
+    };
+    linkedin?: string;
+}
+
+interface Props {
+    id: string;
+    label: string;
+    title: string;
+    text?: string;
+    theme?: Theme;
+    members?: TeamMember[];
+}
+
+const { id, label, title, text, theme, members = [] } = Astro.props;
+---
+
+{members.length > 0 && (
+    <section class="team section" data-theme={theme || undefined}>
+        <div class="wrapper flow">
+            <header class="section__header flow">
+                <SectionLabel number={id} label={label} />
+
+                <div class="team__intro">
+                    <Heading tag="h2" variant="h1">
+                        {title}
+                    </Heading>
+
+                    {text && <Paragraph maxWidth={40}>{text}</Paragraph>}
+                </div>
+            </header>
+
+            <ul class="team__grid grid" data-layout="team">
+                {members.map((member) => (
+                    <li class="team-member">
+                        {member.image && (
+                            <div class="team-member__media">
+                                {typeof member.image.src === "string" ? (
+                                    <img
+                                        src={member.image.src}
+                                        alt={member.image.alt}
+                                        loading="lazy"
+                                    />
+                                ) : (
+                                    <Image
+                                        src={member.image.src}
+                                        alt={member.image.alt}
+                                        widths={[480, 720, 960]}
+                                        sizes="(min-width: 64rem) 33vw, (min-width: 40rem) 50vw, 100vw"
+                                        loading="lazy"
+                                    />
+                                )}
+                            </div>
+                        )}
+
+                        <div class="team-member__content">
+                            <div class="team-member__heading">
+                                <div>
+                                    <h3 class="team-member__name">
+                                        {member.name}
+                                    </h3>
+
+                                    <p class="team-member__role">
+                                        {member.role}
+                                    </p>
+                                </div>
+
+                                {member.linkedin && (
+                                    <a
+                                        class="team-member__linkedin"
+                                        href={member.linkedin}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={`LinkedIn van ${member.name}`}
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true"
+                                        >
+                                            <path
+                                                d="M7 9v8M7 6.5v.01M11 17v-4.5a3.5 3.5 0 0 1 7 0V17M11 9v8"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.5"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            />
+                                        </svg>
+                                    </a>
+                                )}
+                            </div>
+
+                            {member.bio && (
+                                <p class="team-member__bio">{member.bio}</p>
+                            )}
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </section>
+)}
+
+<style lang="scss">
+    .team {
+        overflow: hidden;
+    }
+
+    /*
+     * Intro
+     */
+
+    .team__intro {
+        display: grid;
+        gap: var(--space-m);
+
+        @media (width > 48rem) {
+            grid-template-columns:
+                minmax(0, 2fr)
+                minmax(16rem, 1fr);
+            align-items: end;
+        }
+    }
+
+    /*
+     * Grid
+     *
+     * De daadwerkelijke grid-layout wordt geregeld
+     * door de globale .grid utility.
+     */
+
+    .team__grid {
+        --grid-gap: var(--space-l);
+
+        margin: 0;
+        padding: 0;
+
+        list-style: none;
+    }
+
+    /*
+     * Team member
+     */
+
+    .team-member {
+        min-width: 0;
+    }
+
+    .team-member__media {
+        position: relative;
+
+        overflow: hidden;
+
+        aspect-ratio: 4 / 5;
+
+        background-color: var(--surface-subtle);
+        border-radius: var(--radius-s);
+
+        :global(img) {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: transform var(--duration-slow) var(--ease-ease-out);
+        }
+    }
+
+    /*
+     * Content
+     */
+
+    .team-member__content {
+        display: grid;
+        gap: var(--space-s);
+
+        padding-block-start: var(--space-m);
+    }
+
+    .team-member__heading {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: var(--space-s);
+    }
+
+    .team-member__name {
+        margin: 0;
+
+        color: var(--text-primary);
+
+        font-size: var(--fs-1);
+        font-weight: var(--fw-semibold);
+        line-height: var(--lh-tight);
+        letter-spacing: var(--ls-tight);
+    }
+
+    .team-member__role {
+        margin: var(--space-3xs) 0 0;
+
+        color: var(--text-secondary);
+
+        font-size: var(--text-small);
+        line-height: var(--lh-body);
+    }
+
+    .team-member__bio {
+        max-width: 36rem;
+        margin: 0;
+
+        color: var(--text-secondary);
+
+        font-size: var(--text-small);
+        line-height: var(--lh-body);
+    }
+
+    /*
+     * LinkedIn
+     */
+
+    .team-member__linkedin {
+        display: grid;
+        flex: 0 0 auto;
+        place-items: center;
+
+        width: var(--space-xl);
+        height: var(--space-xl);
+
+        color: var(--text-primary);
+        background-color: transparent;
+
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-full);
+
+        transition:
+            color var(--duration-fast) var(--ease-ease-out),
+            background-color var(--duration-fast) var(--ease-ease-out),
+            border-color var(--duration-fast) var(--ease-ease-out);
+
+        svg {
+            width: var(--space-m);
+            height: var(--space-m);
+        }
+
+        &:hover {
+            color: var(--text-inverse);
+            background-color: var(--surface-strong);
+            border-color: var(--surface-strong);
+        }
+
+        &:focus-visible {
+            outline: var(--focus-width) solid var(--focus-ring);
+            outline-offset: var(--focus-offset);
+        }
+    }
+
+    /*
+     * Interaction
+     */
+
+    .team-member:hover {
+        .team-member__media :global(img) {
+            transform: scale(1.025);
+        }
+    }
+
+    /*
+     * Reduced motion
+     */
+
+    @media (prefers-reduced-motion: reduce) {
+        .team-member__media :global(img) {
+            transition: none;
+        }
+
+        .team-member:hover {
+            .team-member__media :global(img) {
+                transform: none;
+            }
+        }
+    }
+</style>

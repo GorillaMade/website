@@ -1,0 +1,83 @@
+---
+import SectionLabel from "@/components/section/SectionLabel.astro";
+import Paragraph from "@/components/Typography/Paragraph.astro";
+import Button from "@/components/Button.astro";
+
+type Theme = "light" | "dark" | "secondary" | "brand";
+
+interface Props {
+    id: string;
+    label: string;
+    text: string;
+    theme?: Theme;
+
+    button?: {
+        label: string;
+        href: string;
+        variant?: string;
+    };
+}
+
+const { id, label, text, theme, button } = Astro.props;
+---
+
+<section class="story section" data-theme={theme || undefined}>
+    <div class="wrapper with-aside story__layout" data-direction="reverse">
+        <main class="story__content flow">
+            <Paragraph variant="h3" maxWidth={65} class="story__text">
+                {text}
+            </Paragraph>
+
+            {button && (
+                <div class="story__actions">
+                    <Button href={button.href} variant={button.variant}>
+                        {button.label}
+                    </Button>
+                </div>
+            )}
+        </main>
+
+        <aside class="story__aside">
+            <SectionLabel number={id} label={label} />
+        </aside>
+    </div>
+</section>
+
+<style lang="scss">
+    .story {
+        overflow: hidden;
+
+        &__layout {
+            --with-aside-width: 12rem;
+            --with-aside-main-min-width: 65%;
+            --with-aside-gap: var(--space-xl-2xl);
+
+            align-items: flex-start;
+        }
+
+        &__content {
+            width: 100%;
+            max-width: var(--container-m);
+
+            --flow-space: var(--space-l);
+        }
+
+        &__text {
+            color: var(--text-primary);
+
+            font-weight: var(--fw-medium);
+            line-height: var(--lh-snug);
+            letter-spacing: var(--ls-normal);
+
+            text-wrap: pretty;
+        }
+
+        &__actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-s);
+
+            padding-block-start: var(--space-xs);
+        }
+    }
+</style>

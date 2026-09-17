@@ -1,6 +1,6 @@
 ---
-import SiteHeader from "@/components/shared/Header.astro";
-import SiteFooter from "@/components/shared/Footer.astro";
+import Header from "@/components/shared/Header.astro";
+import Footer from "@/components/shared/Footer.astro";
 import { Font } from "astro:assets";
 import "@/styles/global.css";
 
@@ -35,8 +35,8 @@ const canonicalURL = new URL(url, Astro.site);
 
         <!-- Theme -->
         <meta name="theme-color" content="#000000" />
-        <Font cssVariable="--ff-display" preload />
-        <Font cssVariable="--ff-body" preload />
+        <Font cssVariable="--font-anybody" preload />
+        <Font cssVariable="--font-geist" preload />
 
         <!-- Favicon -->
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -59,12 +59,20 @@ const canonicalURL = new URL(url, Astro.site);
     </head>
 
     <body>
-        <SiteHeader />
+        <Header />
 
         <main>
             <slot />
         </main>
 
-        <SiteFooter />
+        <Footer />
     </body>
 </html>
+
+<style lang="scss" is:global>
+    .section__header {
+        display: grid;
+        gap: var(--space-l);
+        margin-block-end: var(--space-xl);
+    }
+</style>

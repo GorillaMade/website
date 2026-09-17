@@ -1,0 +1,68 @@
+---
+import Heading from "@/components/Typography/Heading.astro";
+import Paragraph from "@/components/Typography/Paragraph.astro";
+
+interface Props {
+    theme: string;
+    title: string;
+    text: string;
+}
+
+const { title, text, theme } = Astro.props;
+---
+
+<section class="statement section" data-theme={theme}>
+    <div class="wrapper statement__inner">
+        <Heading tag="h2" variant="display">
+            {title}
+        </Heading>
+
+        <div class="statement__content">
+            <Paragraph variant="large" maxWidth={32}>
+                {text}
+            </Paragraph>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .statement {
+        padding-block: clamp(var(--space-xl), 8vw, var(--space-3xl));
+
+        &__inner {
+            display: grid;
+            grid-template-columns: minmax(0, 1.7fr) minmax(20rem, 1fr);
+            gap: clamp(var(--space-l), 5vw, var(--space-2xl));
+            align-items: center;
+        }
+
+        &__inner > :global(.text-style-display) {
+            max-width: 11ch;
+            text-wrap: balance;
+        }
+
+        &__content {
+            padding-block-end: 0.35em;
+        }
+
+        &__content :global(.text) {
+            color: var(--text-secondary);
+            line-height: var(--lh-relaxed);
+        }
+
+        @media (max-width: 48rem) {
+            &__inner {
+                grid-template-columns: 1fr;
+                gap: var(--space-l);
+            }
+
+            &__inner > :global(.text-style-display) {
+                max-width: 10ch;
+            }
+
+            &__content {
+                padding-block-end: 0;
+            }
+        }
+    }
+</style>

@@ -1,0 +1,52 @@
+---
+interface Props {
+    number?: string | number;
+    label: string;
+}
+
+const { number, label } = Astro.props;
+
+const formattedNumber =
+    typeof number === "number" ? String(number).padStart(2, "0") : number;
+---
+
+<div class="section-label">
+    {formattedNumber && (
+        <span class="section-label__number">{formattedNumber}</span>
+    )}
+
+    <span class="section-label__line" aria-hidden="true"></span>
+
+    <span class="section-label__text">{label}</span>
+</div>
+
+<style lang="scss">
+    .section-label {
+        display: flex;
+        align-items: center;
+        gap: var(--space-s);
+
+        width: fit-content;
+
+        color: var(--text-primary);
+        font-size: var(--fs--2);
+        font-weight: var(--fw-semibold);
+        line-height: 1;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .section-label__number {
+        font-variant-numeric: tabular-nums;
+        color: var(--text-secondary);
+    }
+
+    .section-label__line {
+        width: clamp(2rem, 4vw, 4rem);
+        height: 1px;
+
+        background: var(--border-strong);
+
+        opacity: 0.3;
+    }
+</style>

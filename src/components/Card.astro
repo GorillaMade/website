@@ -1,0 +1,355 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+
+type CardEntry = CollectionEntry<"showcase"> | CollectionEntry<"blog">;
+
+interface Props {
+    entry: CardEntry;
+    index?: number;
+    theme?: string;
+}
+
+const { entry, index, theme } = Astro.props;
+
+const isShowcase = entry.collection === "showcase";
+
+const href = isShowcase ? `/case-studies/${entry.id}` : `/blog/${entry.id}`;
+
+const { title, description, category, image } = entry.data;
+
+const meta = isShowcase
+    ? entry.data.year
+    : entry.data.date.toLocaleDateString("nl-NL", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+      });
+
+const formattedIndex =
+    index !== undefined ? String(index).padStart(2, "0") : undefined;
+---
+
+<article class="card" data-theme={theme}>
+    <a href={href} class="card__link">
+        {image && (
+            <div class="card__media">
+                {typeof image.src === "string" ? (
+                    <img src={image.src} alt={image.alt} loading="lazy" />
+                ) : (
+                    <Image
+                        src={image.src}
+                        alt={image.alt}
+                        width={1200}
+                        height={800}
+                        loading="lazy"
+                    />
+                )}
+            </div>
+        )}
+
+        <div class="card__content">
+            <div class="card__meta">
+                <div class="card__meta-start">
+                    {formattedIndex && (
+                        <span class="card__index">{formattedIndex}</span>
+                    )}
+
+                    <span class="card__category">{category}</span>
+                </div>
+
+                <span class="card__meta-end">{meta}</span>
+            </div>
+
+            <div class="card__divider" aria-hidden="true"></div>
+
+            <div class="card__body">
+                <div class="card__heading">
+                    <h3 class="card__title">{title}</h3>
+
+                    <svg
+                        class="card__arrow"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M5 12h14M13 6l6 6-6 6"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                    </svg>
+                </div>
+
+                {!isShowcase && description && (
+                    <p class="card__description">{description}</p>
+                )}
+            </div>
+        </div>
+    </a>
+</article>
+
+<style lang="scss">
+    .card {
+        overflow: clip;
+
+        background-color: var(--surface-page);
+        color: var(--text-primary);
+
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-m);
+
+        transition:
+            border-color var(--duration-normal) var(--ease-ease-out),
+            box-shadow var(--duration-slow) var(--ease-ease-out);
+    }
+
+    .card__link {
+        display: grid;
+
+        color: inherit;
+        text-decoration: none;
+
+        outline: none;
+
+        &:focus-visible {
+            outline: var(--focus-width) solid var(--focus-color);
+            outline-offset: var(--focus-offset);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Media
+    // -------------------------------------------------------------------------
+
+    .card__media {
+        position: relative;
+        overflow: hidden;
+
+        aspect-ratio: 16 / 9;
+
+        background-color: var(--surface-subtle);
+    }
+
+    .card__media :global(img) {
+        display: block;
+
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+
+        transition: transform var(--duration-slow) var(--ease-ease-out);
+    }
+
+    // -------------------------------------------------------------------------
+    // Content
+    // -------------------------------------------------------------------------
+
+    .card__content {
+        display: grid;
+        gap: var(--space-m);
+
+        padding: var(--space-m) var(--space-m) var(--space-l);
+    }
+
+    // -------------------------------------------------------------------------
+    // Meta
+    // -------------------------------------------------------------------------
+
+    .card__meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-m);
+
+        color: var(--text-secondary);
+
+        font-family: var(--font-body);
+        font-size: var(--text-small);
+        font-weight: var(--fw-body);
+        line-height: var(--lh-none);
+
+        letter-spacing: var(--ls-wider);
+        text-transform: uppercase;
+    }
+
+    .card__meta-start {
+        display: flex;
+        align-items: center;
+        gap: var(--space-s);
+
+        min-width: 0;
+    }
+
+    .card__index {
+        flex-shrink: 0;
+
+        color: var(--text-muted);
+
+        font-variant-numeric: tabular-nums;
+    }
+
+    .card__category {
+        overflow: hidden;
+
+        color: var(--text-primary);
+
+        font-weight: var(--fw-strong);
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .card__meta-end {
+        flex-shrink: 0;
+
+        color: var(--text-muted);
+
+        font-variant-numeric: tabular-nums;
+    }
+
+    // -------------------------------------------------------------------------
+    // Divider
+    // -------------------------------------------------------------------------
+
+    .card__divider {
+        width: 100%;
+        height: 1px;
+
+        background-color: var(--border-default);
+
+        transition: background-color var(--duration-normal) var(--ease-ease-out);
+    }
+
+    // -------------------------------------------------------------------------
+    // Body
+    // -------------------------------------------------------------------------
+
+    .card__body {
+        display: grid;
+        gap: var(--space-s);
+    }
+
+    .card__heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-m);
+    }
+
+    // -------------------------------------------------------------------------
+    // Title
+    // -------------------------------------------------------------------------
+
+    .card__title {
+        margin: 0;
+
+        color: var(--text-primary);
+
+        font-family: var(--font-heading);
+        font-size: var(--heading-h4);
+        font-weight: var(--fw-heading);
+        line-height: var(--lh-heading);
+        letter-spacing: var(--ls-heading);
+
+        text-wrap: balance;
+    }
+
+    // -------------------------------------------------------------------------
+    // Arrow
+    // -------------------------------------------------------------------------
+
+    .card__arrow {
+        flex: 0 0 auto;
+
+        width: 1.5rem;
+        height: 1.5rem;
+
+        margin-block-start: var(--space-3xs);
+
+        color: var(--text-muted);
+
+        transform: rotate(-45deg);
+
+        transition:
+            color var(--duration-normal) var(--ease-ease-out),
+            transform var(--duration-normal) var(--ease-ease-out);
+    }
+
+    // -------------------------------------------------------------------------
+    // Description
+    // -------------------------------------------------------------------------
+
+    .card__description {
+        max-width: 55ch;
+        margin: 0;
+
+        color: var(--text-secondary);
+
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        font-weight: var(--fw-body);
+        line-height: var(--lh-body);
+        letter-spacing: var(--ls-body);
+
+        text-wrap: pretty;
+    }
+
+    // -------------------------------------------------------------------------
+    // Hover
+    // -------------------------------------------------------------------------
+
+    @media (hover: hover) {
+        .card:hover {
+            border-color: var(--border-strong);
+            box-shadow: var(--shadow-l);
+        }
+
+        .card__link:hover {
+            .card__media :global(img) {
+                transform: scale(1.025);
+            }
+
+            .card__divider {
+                background-color: var(--border-strong);
+            }
+
+            .card__arrow {
+                color: var(--text-brand);
+                transform: rotate(0deg);
+            }
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Mobile
+    // -------------------------------------------------------------------------
+
+    @media (max-width: 48rem) {
+        .card__content {
+            gap: var(--space-s);
+
+            padding: var(--space-s) var(--space-s) var(--space-m);
+        }
+
+        .card__heading {
+            gap: var(--space-s);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Reduced motion
+    // -------------------------------------------------------------------------
+
+    @media (prefers-reduced-motion: reduce) {
+        .card,
+        .card__media :global(img),
+        .card__divider,
+        .card__arrow {
+            transition: none;
+        }
+    }
+</style>
