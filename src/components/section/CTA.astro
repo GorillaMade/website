@@ -3,9 +3,12 @@ import Heading from "@/components/Typography/Heading.astro";
 import Paragraph from "@/components/Typography/Paragraph.astro";
 import Button from "@/components/Button.astro";
 
+type Theme = "light" | "dark" | "secondary" | "brand";
+
 interface Props {
     title?: string;
     text?: string;
+    theme?: Theme;
     button?: {
         label: string;
         href: string;
@@ -15,6 +18,7 @@ interface Props {
 const {
     title = "Klaar om iets sterks te bouwen?",
     text = "Heb je een idee of project? Vertel me erover.",
+    theme = "brand",
     button = {
         label: "Start een project",
         href: "/contact",
@@ -22,77 +26,46 @@ const {
 } = Astro.props;
 ---
 
-<section class="cta section" data-theme="brand">
-    <div class="wrapper cta__inner">
-        <div class="cta__title">
-            <Heading tag="h2" variant="display">
+<section class="cta section" data-theme={theme}>
+    <div class="wrapper with-aside cta__layout">
+        <div class="cta__heading">
+            <Heading tag="h2" variant="display" class="cta__title">
                 {title}
             </Heading>
         </div>
 
-        <div class="cta__content">
+        <aside class="cta__content flow">
             <Paragraph variant="large" maxWidth={32}>
                 {text}
             </Paragraph>
 
-            <Button href={button.href}>{button.label}</Button>
-        </div>
+            <div>
+                <Button href={button.href}>{button.label}</Button>
+            </div>
+        </aside>
     </div>
 </section>
 
 <style lang="scss">
-    .cta {
-        &__inner {
-            display: grid;
-            grid-template-columns:
-                minmax(0, 1.7fr)
-                minmax(18rem, 0.7fr);
+    .cta__layout {
+        --with-aside-width: min(100%, 22rem);
+        --with-aside-main-min-width: 60%;
+        --with-aside-gap: var(--space-xl-2xl);
 
-            gap: clamp(var(--space-xl), 6vw, var(--space-3xl));
+        align-items: flex-end;
+    }
 
-            align-items: end;
-        }
+    .cta__heading {
+        width: 100%;
+        max-width: var(--container-m);
+    }
 
-        &__title {
-            max-width: 50rem;
-        }
+    .cta__title {
+        max-width: 15ch;
+        text-wrap: balance;
+    }
 
-        &__title :global(.text-style-display) {
-            max-width: 10ch;
-
-            text-wrap: balance;
-        }
-
-        &__content {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: var(--space-l);
-
-            padding-block-end: 0.35em;
-        }
-
-        &__content :global(.text) {
-            color: var(--text-secondary);
-        }
-
-        @media (max-width: 48rem) {
-            &__inner {
-                grid-template-columns: 1fr;
-                gap: var(--space-xl);
-            }
-
-            &__title {
-                max-width: 40rem;
-            }
-
-            &__title :global(.text-style-display) {
-                max-width: 9ch;
-            }
-
-            &__content {
-                padding-block-end: 0;
-            }
-        }
+    .cta__content {
+        --flow-space: var(--space-l);
     }
 </style>

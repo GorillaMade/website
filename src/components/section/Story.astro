@@ -10,11 +10,9 @@ interface Props {
     label: string;
     text: string;
     theme?: Theme;
-
     button?: {
         label: string;
         href: string;
-        variant?: string;
     };
 }
 
@@ -22,62 +20,53 @@ const { id, label, text, theme, button } = Astro.props;
 ---
 
 <section class="story section" data-theme={theme || undefined}>
-    <div class="wrapper with-aside story__layout" data-direction="reverse">
-        <main class="story__content flow">
+    <div class="wrapper with-aside story__layout">
+        <aside>
+            <SectionLabel number={id} label={label} />
+        </aside>
+        <div class="story__content flow">
             <Paragraph variant="h3" maxWidth={65} class="story__text">
                 {text}
             </Paragraph>
 
             {button && (
                 <div class="story__actions">
-                    <Button href={button.href} variant={button.variant}>
+                    <Button href={button.href} variant="outline">
                         {button.label}
                     </Button>
                 </div>
             )}
-        </main>
-
-        <aside class="story__aside">
-            <SectionLabel number={id} label={label} />
-        </aside>
+        </div>
     </div>
 </section>
 
 <style lang="scss">
     .story {
         overflow: hidden;
+    }
 
-        &__layout {
-            --with-aside-width: 12rem;
-            --with-aside-main-min-width: 65%;
-            --with-aside-gap: var(--space-xl-2xl);
+    .story__layout {
+        --with-aside-width: 12rem;
+        --with-aside-main-min-width: 65%;
+        --with-aside-gap: var(--space-xl-2xl);
 
-            align-items: flex-start;
-        }
+        align-items: flex-start;
+    }
 
-        &__content {
-            width: 100%;
-            max-width: var(--container-m);
+    .story__content {
+        width: 100%;
+        max-width: var(--container-m);
 
-            --flow-space: var(--space-l);
-        }
+        --flow-space: var(--space-l);
+    }
 
-        &__text {
-            color: var(--text-primary);
+    .story__text {
+        font-weight: var(--fw-medium);
+        line-height: var(--lh-snug);
+        text-wrap: pretty;
+    }
 
-            font-weight: var(--fw-medium);
-            line-height: var(--lh-snug);
-            letter-spacing: var(--ls-normal);
-
-            text-wrap: pretty;
-        }
-
-        &__actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-s);
-
-            padding-block-start: var(--space-xs);
-        }
+    .story__actions {
+        padding-block-start: var(--space-xs);
     }
 </style>

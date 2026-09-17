@@ -5,20 +5,18 @@ seo:
 
 hero:
   id: "01"
-  label: "Webdesign & development · Tilburg"
   theme: "dark"
+  label: "Webdesign & development · Tilburg"
   title: "Een website die lokaal groei aanjaagt."
   text: "Premium websites voor Tilburgse ondernemers die meer klanten, meer zichtbaarheid en minder gedoe willen."
 
   primaryButton:
-    label: "Start een project"
-    href: "/contact"
-    variant: "primary"
+      label: "Start een project"
+      href: "/contact"
 
   secondaryButton:
-    label: "Bekijk mijn werk"
-    href: "/case-studies"
-    variant: "ghost"
+      label: "Bekijk mijn werk"
+      href: "/case-studies"
 
 showcases:
   id: "02"
@@ -95,7 +93,7 @@ faq:
         answer: "Nee. GorillaMade is gevestigd in Tilburg, maar werkt ook met ondernemers buiten de regio."
 
 cta:
-  theme: "primary"
+  theme: "brand"
   title: "Klaar om iets sterks te bouwen?"
   text: "Heb je een idee of project? Vertel me erover."
   button:

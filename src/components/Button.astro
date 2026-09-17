@@ -2,22 +2,23 @@
 import type { HTMLAttributes } from "astro/types";
 
 type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
+
 type ButtonSize = "small" | "medium" | "large";
 
 interface Props extends HTMLAttributes<"button"> {
-    /** Render the button as a link when an href is provided. */
+    /** Rendert als link wanneer href aanwezig is. */
     href?: string;
 
-    /** Visual button style. */
+    /** Visuele variant. */
     variant?: ButtonVariant;
 
-    /** Controls the button size. */
+    /** Grootte van de button. */
     size?: ButtonSize;
 
-    /** Makes the button fill the available width. */
+    /** Vult de beschikbare breedte. */
     fullWidth?: boolean;
 
-    /** Disables the button. Only applies when rendered as a button. */
+    /** Schakelt de button uit. */
     disabled?: boolean;
 
     class?: string;
@@ -52,35 +53,11 @@ const Tag = href ? "a" : "button";
 </Tag>
 
 <style lang="scss">
-    // -----------------------------------------------------------------------------
-    // Button
-    // -----------------------------------------------------------------------------
-    // Provides a reusable interactive button style using semantic action tokens.
-    //
-    // Public custom properties:
-    // --button-background
-    // --button-background-hover
-    // --button-background-active
-    // --button-color
-    // --button-border-color
-    // --button-padding-block
-    // --button-padding-inline
-    // --button-radius
-    // --button-gap
-    //
-    // Variants:
-    // data-variant="primary"
-    // data-variant="secondary"
-    // data-variant="outline"
-    // data-variant="ghost"
-    //
-    // Sizes:
-    // data-size="small"
-    // data-size="medium"
-    // data-size="large"
-    // -----------------------------------------------------------------------------
-
     .button {
+        // ---------------------------------------------------------------------
+        // Private component tokens
+        // ---------------------------------------------------------------------
+
         --_button-background: var(--button-background, var(--action-primary));
 
         --_button-background-hover: var(
@@ -105,13 +82,23 @@ const Tag = href ? "a" : "button";
 
         --_button-gap: var(--button-gap, var(--space-2xs));
 
+        // ---------------------------------------------------------------------
+        // Layout
+        // ---------------------------------------------------------------------
+
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: var(--_button-gap);
 
+        min-height: 2.75rem;
+
         padding-block: var(--_button-padding-block);
         padding-inline: var(--_button-padding-inline);
+
+        // ---------------------------------------------------------------------
+        // Appearance
+        // ---------------------------------------------------------------------
 
         color: var(--_button-color);
         background-color: var(--_button-background);
@@ -119,11 +106,20 @@ const Tag = href ? "a" : "button";
         border: 1px solid var(--_button-border-color);
         border-radius: var(--_button-radius);
 
+        // ---------------------------------------------------------------------
+        // Typography
+        // ---------------------------------------------------------------------
+
         font: inherit;
         font-weight: var(--fw-semibold);
-        line-height: 1;
+        line-height: var(--lh-none);
+
         text-align: center;
         text-decoration: none;
+
+        // ---------------------------------------------------------------------
+        // Interaction
+        // ---------------------------------------------------------------------
 
         cursor: pointer;
 
@@ -140,16 +136,30 @@ const Tag = href ? "a" : "button";
             background-color: var(--_button-background-active);
         }
 
+        &:focus-visible {
+            outline: var(--focus-width) solid var(--focus-ring);
+
+            outline-offset: var(--focus-offset);
+        }
+
         &:disabled,
         &[aria-disabled="true"] {
             cursor: not-allowed;
             opacity: 0.5;
         }
+
+        &[aria-disabled="true"] {
+            pointer-events: none;
+        }
+
+        &[data-full-width] {
+            width: 100%;
+        }
     }
 
-    // -----------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Variants
-    // -----------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     .button[data-variant="secondary"] {
         --button-background: var(--action-secondary);
@@ -173,15 +183,35 @@ const Tag = href ? "a" : "button";
         --button-color: var(--action-ghost-text);
     }
 
-    // -----------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     // Sizes
-    // -----------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     .button[data-size="small"] {
+        --button-padding-block: var(--space-xs);
+        --button-padding-inline: var(--space-s);
+
+        min-height: 2.375rem;
+
         font-size: var(--text-small);
     }
 
     .button[data-size="large"] {
+        --button-padding-block: var(--space-m);
+        --button-padding-inline: var(--space-l);
+
+        min-height: 3.25rem;
+
         font-size: var(--text-large);
+    }
+
+    // -------------------------------------------------------------------------
+    // Reduced motion
+    // -------------------------------------------------------------------------
+
+    @media (prefers-reduced-motion: reduce) {
+        .button {
+            transition: none;
+        }
     }
 </style>

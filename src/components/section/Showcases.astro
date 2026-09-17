@@ -14,45 +14,58 @@ interface Props {
     title: string;
     theme?: Theme;
     limit?: number;
+
+    button?: {
+        label: string;
+        href: string;
+    };
 }
 
-const { id, label, title, theme, limit = 3 } = Astro.props;
+const {
+    id,
+    label,
+    title,
+    theme,
+    limit = 3,
+    button = {
+        label: "Alle case studies",
+        href: "/case-studies",
+    },
+} = Astro.props;
 
-// Haal alle uitgelichte case studies op.
 const showcases = await getCollection("showcase", ({ data }) => data.featured);
 
-// Beperk het aantal cases dat op deze sectie wordt getoond.
 const items = showcases.slice(0, limit);
 ---
 
-<section class="showcases section" data-theme={theme || undefined}>
-    <div class="wrapper flow">
-        <div class="repel">
-            <header class="section__header">
-                <SectionLabel number={id} label={label} />
+{items.length > 0 && (
+    <section class="showcases section" data-theme={theme || undefined}>
+        <div class="wrapper flow">
+            <div class="repel">
+                <header class="section__header">
+                    <SectionLabel number={id} label={label} />
 
-                <Heading tag="h2" variant="h1">
-                    {title}
-                </Heading>
-            </header>
+                    <Heading tag="h2" variant="h1">
+                        {title}
+                    </Heading>
+                </header>
 
-            <Button href="/case-studies" variant="outline">
-                Alle case studies
-            </Button>
-        </div>
+                <Button href={button.href} variant="outline">
+                    {button.label}
+                </Button>
+            </div>
 
-        {items.length > 0 && (
-            <div class="showcases__grid grid" data-layout="thirds">
+            <div class="grid" data-layout="thirds">
                 {items.map((item, index) => (
                     <Card entry={item} index={index + 1} />
                 ))}
             </div>
-        )}
-    </div>
-</section>
+        </div>
+    </section>
+)}
 
 <style lang="scss">
-    .grid[data-layout="halves"] {
+    .grid[data-layout="thirds"] {
         --grid-placement: auto-fill;
     }
 </style>

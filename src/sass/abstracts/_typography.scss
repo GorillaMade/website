@@ -10,13 +10,15 @@
 // -----------------------------------------------------------------------------
 
 $-ff-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-$-ff-serif: var(--font-anybody), ui-sans-serif, system-ui, sans-serif;
+$-ff-display: var(--font-anybody), ui-sans-serif, system-ui, sans-serif;
+$-ff-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
 $-ff-mono:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
 
 $font-families: (
     "sans": $-ff-sans,
+    "display": $-ff-display,
     "serif": $-ff-serif,
     "mono": $-ff-mono,
 );

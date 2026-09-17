@@ -18,7 +18,7 @@ person:
   theme: "light"
 
   person:
-      name: "Tjay"
+      name: "Timothy"
       role: "Founder · Designer & Developer"
       bio: "Van strategie en design tot development en oplevering: ik combineer de verschillende disciplines zodat het eindresultaat als één geheel voelt."
       image:

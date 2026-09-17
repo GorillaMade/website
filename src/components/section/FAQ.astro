@@ -29,7 +29,7 @@ const { id, label, title, text, theme, items = [] } = Astro.props;
                 <aside class="faq__intro flow">
                     <SectionLabel number={id} label={label} />
 
-                    <div class="faq__heading flow">
+                    <div class="flow">
                         <Heading tag="h2" variant="h1">
                             {title}
                         </Heading>
@@ -63,8 +63,10 @@ const { id, label, title, text, theme, items = [] } = Astro.props;
                                 </span>
                             </summary>
 
-                            <div class="faq-item__content">
-                                <Paragraph>{item.answer}</Paragraph>
+                            <div class="faq-item__answer">
+                                <Paragraph maxWidth={42}>
+                                    {item.answer}
+                                </Paragraph>
                             </div>
                         </details>
                     ))}
@@ -75,14 +77,6 @@ const { id, label, title, text, theme, items = [] } = Astro.props;
 )}
 
 <style lang="scss">
-    .faq {
-        overflow: hidden;
-    }
-
-    /*
-     * Layout
-     */
-
     .faq__layout {
         --with-aside-width: 24rem;
         --with-aside-main-min-width: 55%;
@@ -95,31 +89,13 @@ const { id, label, title, text, theme, items = [] } = Astro.props;
         --flow-space: var(--space-l);
     }
 
-    .faq__heading {
-        --flow-space: var(--space-m);
-    }
-
-    /*
-     * FAQ list
-     */
-
     .faq__items {
         border-top: 1px solid var(--border-default);
     }
 
     .faq-item {
         border-bottom: 1px solid var(--border-default);
-
-        transition: border-color var(--duration-fast) var(--ease-ease-out);
-
-        &[open] {
-            border-color: var(--border-strong);
-        }
     }
-
-    /*
-     * Question
-     */
 
     .faq-item__summary {
         display: grid;
@@ -132,7 +108,6 @@ const { id, label, title, text, theme, items = [] } = Astro.props;
         color: var(--text-primary);
 
         cursor: pointer;
-
         list-style: none;
 
         &::-webkit-details-marker {
@@ -140,23 +115,17 @@ const { id, label, title, text, theme, items = [] } = Astro.props;
         }
 
         &::marker {
-            display: none;
             content: "";
-        }
-
-        &:hover {
-            .faq-item__question {
-                color: var(--text-brand);
-            }
-
-            .faq-item__icon {
-                border-color: var(--border-strong);
-            }
         }
 
         &:focus-visible {
             outline: var(--focus-width) solid var(--focus-ring);
+
             outline-offset: var(--focus-offset);
+        }
+
+        &:hover .faq-item__question {
+            color: var(--text-brand);
         }
     }
 
@@ -173,61 +142,42 @@ const { id, label, title, text, theme, items = [] } = Astro.props;
         line-height: var(--lh-snug);
         letter-spacing: var(--ls-tight);
 
-        transition: color var(--duration-fast) var(--ease-ease-out);
+        transition: color var(--duration-fast) var(--ease-out);
     }
-
-    /*
-     * Icon
-     */
 
     .faq-item__icon {
         display: grid;
         place-items: center;
 
         width: var(--space-xl);
-        height: var(--space-xl);
+        aspect-ratio: 1;
 
         border: 1px solid var(--border-default);
         border-radius: var(--radius-full);
 
         transition:
-            color var(--duration-fast) var(--ease-ease-out),
-            background-color var(--duration-fast) var(--ease-ease-out),
-            border-color var(--duration-fast) var(--ease-ease-out),
-            transform var(--duration-normal) var(--ease-ease-out);
+            color var(--duration-fast) var(--ease-out),
+            background-color var(--duration-fast) var(--ease-out),
+            border-color var(--duration-fast) var(--ease-out),
+            transform var(--duration-normal) var(--ease-out);
 
         svg {
             width: var(--space-m);
-            height: var(--space-m);
         }
     }
 
-    .faq-item[open] {
-        .faq-item__icon {
-            color: var(--action-primary-text);
-            background-color: var(--action-primary);
-            border-color: var(--action-primary);
+    .faq-item[open] .faq-item__icon {
+        color: var(--action-primary-text);
+        background-color: var(--action-primary);
+        border-color: var(--action-primary);
 
-            transform: rotate(45deg);
-        }
+        transform: rotate(45deg);
     }
 
-    /*
-     * Answer
-     */
-
-    .faq-item__content {
-        max-width: var(--container-s);
-
+    .faq-item__answer {
         padding: 0 calc(var(--space-xl) + var(--space-m)) var(--space-l)
             calc(var(--space-m) + 2ch);
-
-        color: var(--text-secondary);
     }
-
-    /*
-     * Mobile
-     */
 
     @media (width <= 36rem) {
         .faq-item__summary {
@@ -239,21 +189,12 @@ const { id, label, title, text, theme, items = [] } = Astro.props;
             display: none;
         }
 
-        .faq-item__question {
-            font-size: var(--text-base);
-        }
-
-        .faq-item__content {
+        .faq-item__answer {
             padding: 0 calc(var(--space-xl) + var(--space-s)) var(--space-m) 0;
         }
     }
 
-    /*
-     * Reduced motion
-     */
-
     @media (prefers-reduced-motion: reduce) {
-        .faq-item,
         .faq-item__question,
         .faq-item__icon {
             transition: none;

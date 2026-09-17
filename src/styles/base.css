@@ -90,7 +90,8 @@ textarea {
 /* @link https://utopia.fyi/type/calculator?c=320,16,1.2,1280,19,1.333,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
 /* @link https://utopia.fyi/space/calculator?c=320,16,1.2,1280,19,1.333,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
 :root {
-  --ff-sans: ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  --ff-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  --ff-display: var(--font-anybody), ui-sans-serif, system-ui, sans-serif;
   --ff-serif: ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
   --ff-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
   --fs--2: clamp(0.6683rem, 0.7032rem - 0.0436vw, 0.6944rem);
@@ -211,7 +212,7 @@ textarea {
 
 :root {
   --font-body: var(--ff-sans);
-  --font-heading: var(--ff-sans);
+  --font-heading: var(--ff-display);
   --text-small: var(--fs--1);
   --text-base: var(--fs-0);
   --text-large: var(--fs-1);

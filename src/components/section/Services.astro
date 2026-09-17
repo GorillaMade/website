@@ -3,6 +3,8 @@ import SectionLabel from "@/components/section/SectionLabel.astro";
 import Heading from "@/components/Typography/Heading.astro";
 import Paragraph from "@/components/Typography/Paragraph.astro";
 
+type Theme = "light" | "dark" | "secondary" | "brand";
+
 interface Service {
     title: string;
     description: string;
@@ -13,41 +15,39 @@ interface Props {
     id: string;
     label?: string;
     title: string;
-    theme?: string;
-    items: Service[];
+    theme?: Theme;
+    items?: Service[];
 }
 
-const { id, label = "Services", title, items, theme } = Astro.props;
+const { id, label = "Services", title, theme, items = [] } = Astro.props;
 ---
 
-<section class="services section" data-theme={theme || undefined}>
-    <div class="wrapper flow">
-        <div class="services__header flow">
-            <SectionLabel number={id} label={label} />
+{items.length > 0 && (
+    <section class="services section" data-theme={theme || undefined}>
+        <div class="wrapper flow">
+            <header class="services__header flow">
+                <SectionLabel number={id} label={label} />
 
-            <Heading tag="h2" variant="h1">
-                {title}
-            </Heading>
-        </div>
+                <Heading tag="h2" variant="h1">
+                    {title}
+                </Heading>
+            </header>
 
-        <div class="services__list">
-            {items.map((service, index) => (
-                <a href={service.href} class="service">
-                    <span class="service__number">
-                        {String(index + 1).padStart(2, "0")}
-                    </span>
+            <div class="services__list">
+                {items.map((service, index) => (
+                    <a href={service.href} class="service">
+                        <span class="service__number">
+                            {String(index + 1).padStart(2, "0")}
+                        </span>
 
-                    <div class="service__title">
-                        <Heading tag="h3" variant="h3">
+                        <Heading tag="h3" variant="h3" class="service__title">
                             {service.title}
                         </Heading>
-                    </div>
 
-                    <div class="service__description">
-                        <Paragraph>{service.description}</Paragraph>
-                    </div>
+                        <div class="service__description">
+                            <Paragraph>{service.description}</Paragraph>
+                        </div>
 
-                    <span aria-hidden="true">
                         <svg
                             class="service__arrow"
                             viewBox="0 0 24 24"
@@ -62,24 +62,22 @@ const { id, label = "Services", title, items, theme } = Astro.props;
                                 stroke-linejoin="round"
                             />
                         </svg>
-                    </span>
-                </a>
-            ))}
+                    </a>
+                ))}
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+)}
 
 <style lang="scss">
-    .services__header {
-        display: grid;
-        gap: var(--space-3xs);
-        margin-bottom: var(--space-xl);
+    .services {
+        --flow-space: var(--space-xl);
     }
 
-    .services__label {
-        display: flex;
-        gap: var(--space-s);
-        text-transform: uppercase;
+    .services__header {
+        --flow-space: var(--space-m);
+
+        max-width: var(--container-m);
     }
 
     .services__list {
@@ -88,59 +86,95 @@ const { id, label = "Services", title, items, theme } = Astro.props;
 
     .service {
         display: grid;
-        grid-template-columns: 4rem 1.5fr 2fr auto;
+        grid-template-columns:
+            3rem
+            minmax(10rem, 1fr)
+            minmax(16rem, 1.5fr)
+            auto;
+
         align-items: center;
         gap: var(--space-l);
 
-        padding-block: var(--space-xl);
+        padding-block: var(--space-l);
+
+        color: var(--text-primary);
 
         border-bottom: 1px solid var(--border-default);
 
-        color: inherit;
         text-decoration: none;
+
+        transition: border-color var(--duration-fast) var(--ease-out);
+
+        &:hover {
+            border-color: var(--border-strong);
+
+            .service__title {
+                color: var(--text-brand);
+            }
+
+            .service__arrow {
+                color: var(--text-brand);
+                transform: rotate(0);
+            }
+        }
+
+        &:focus-visible {
+            outline: var(--focus-width) solid var(--focus-ring);
+
+            outline-offset: var(--focus-offset);
+        }
     }
 
     .service__number {
-        align-self: center;
+        align-self: start;
 
-        font-size: var(--fs-0);
+        color: var(--text-muted);
+
+        font-size: var(--text-small);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .service__title {
+        transition: color var(--duration-fast) var(--ease-out);
     }
 
     .service__description {
-        max-width: 30rem;
-        :global(.text) {
-            color: var(--text-secondary);
-        }
+        max-width: 32rem;
+
+        color: var(--text-secondary);
     }
 
     .service__arrow {
-        display: grid;
-        place-items: center;
-        color: var(--text-primary);
-        width: 2rem;
-        height: 2rem;
+        width: var(--space-l);
+        height: var(--space-l);
+
         transform: rotate(-45deg);
-        transition: transform var(--duration-normal) var(--ease-ease-out);
+
+        transition:
+            color var(--duration-fast) var(--ease-out),
+            transform var(--duration-normal) var(--ease-out);
     }
 
-    .service:hover .service__arrow {
-        transform: rotate(0deg);
-    }
-
-    @media (max-width: 48rem) {
-        .services__header {
-            grid-template-columns: 1fr;
-        }
-
+    @media (width <= 48rem) {
         .service {
-            grid-template-columns: 2.5rem 1fr auto;
-            gap: var(--space-m);
+            grid-template-columns:
+                2rem
+                minmax(0, 1fr)
+                auto;
 
-            padding-block: var(--space-l);
+            gap: var(--space-s) var(--space-m);
         }
 
         .service__description {
             grid-column: 2 / -1;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .service,
+        .service__title,
+        .service__arrow {
+            transition: none;
         }
     }
 </style>
