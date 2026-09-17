@@ -1,28 +1,27 @@
 ---
-title: "Projectnaam"
-tagline: "Van verouderde website naar een overtuigende digitale ervaring."
-description: "Nieuwe website voor ..."
+title: "Professioneel ontwerp dat meegroeit met het bouwbedrijf"
+tagline: "Vakmanschap dat voor zichzelf spreekt"
+description: "Een allround klusbedrijf gespecialiseerd in renovatie, onderhoud en hoogwaardige afwerking voor woningen en bedrijfspanden."
 
-client: "Klantnaam"
-year: "2026"
-category: "Webdesign & Development"
-
-services:
-    - Webdesign
-    - Development
-    - Hosting
+client: "KlessensBouw"
+url: "https://klessensbouw.nl/"
+year: "2025"
+category: "Web Design"
 
 image:
-    src: "https://images.unsplash.com/photo-1678690832311-bb6e361989ca?q=80&w=1824&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    alt: "Website van Projectnaam"
+  src: "https://images.unsplash.com/photo-1678690832311-bb6e361989ca?q=80&w=1524&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  alt: "Polklusbedrijf"
 
 cover:
-    src: "https://images.unsplash.com/photo-1678690832311-bb6e361989ca?q=80&w=1824&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-    alt: "Detail van het ontwerp"
+  src: "https://images.unsplash.com/photo-1629752187687-3d3c7ea3a21b?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  alt: "Detail van het ontwerp"
 
-quote: "GorillaMade heeft precies vertaald wat we nodig hadden."
-quoteAuthor: "Voornaam Achternaam"
-quoteAuthorFunction: "Eigenaar"
+services: [ "Design", "Development" ]
+
+quote: "De website past precies bij mijn bedrijf: duidelijk, betrouwbaar en professioneel. Heel blij met de samenwerking en het eindresultaat!"
+
+quoteAuthor: "Dorus Klessens"
+quoteAuthorFunction: "eigenaar van KlessensBouw"
 
 results:
     - value: "0.8s"
@@ -33,6 +32,9 @@ results:
 
     - value: "+24%"
       label: "Conversie"
+
+featured: true
+featuredQuote: true
 ---
 
 ## Het probleem
@@ -51,18 +53,15 @@ een aanvraag stuurt.
 
 ## Strategie & aanpak
 
-### Heldere positionering
-
+**Heldere positionering** <br />
 De kernboodschap is teruggebracht tot wat voor potentiële klanten
 daadwerkelijk belangrijk is.
 
-### Conversiegerichte structuur
-
+**Conversiegerichte structuur** <br />
 De pagina's zijn opgebouwd rond duidelijke informatiehiërarchie en
 logische vervolgstappen.
 
-### Lichtgewicht development
-
+**Lichtgewicht development** <br />
 De technische implementatie is bewust compact gehouden om snelheid,
 stabiliteit en onderhoudbaarheid te behouden.
 

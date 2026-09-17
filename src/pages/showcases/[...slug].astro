@@ -1,0 +1,330 @@
+---
+import { Image } from "astro:assets";
+import { getCollection, render, type CollectionEntry } from "astro:content";
+
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+import Heading from "@/components/Typography/Heading.astro";
+import Paragraph from "@/components/Typography/Paragraph.astro";
+
+import SectionLabel from "@/components/section/SectionLabel.astro";
+import CTA from "@/components/section/CTA.astro";
+
+import Results from "@/components/showcase/Results.astro";
+import Testimonial from "@/components/showcase/Testimonial.astro";
+
+export async function getStaticPaths() {
+    const showcases: CollectionEntry<"showcase">[] =
+        await getCollection("showcase");
+
+    return showcases.map((showcase) => ({
+        params: {
+            slug: showcase.id,
+        },
+        props: {
+            showcase,
+        },
+    }));
+}
+
+interface Props {
+    showcase: CollectionEntry<"showcase">;
+}
+
+const { showcase } = Astro.props;
+
+const {
+    title,
+    tagline,
+    description,
+    client,
+    year,
+    image,
+    services,
+    quote,
+    quoteAuthor,
+    quoteAuthorFunction,
+    results,
+} = showcase.data;
+
+const { Content } = await render(showcase);
+
+// SEO.
+const canonicalURL = Astro.url.href;
+
+const imageURL = image
+    ? typeof image.src === "string"
+        ? new URL(image.src, Astro.site).href
+        : new URL(image.src.src, Astro.site).href
+    : new URL("/og-image.jpg", Astro.site).href;
+
+// Structured data.
+const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "@id": `${canonicalURL}#case-study`,
+
+    name: title,
+    headline: title,
+    description,
+    url: canonicalURL,
+    image: imageURL,
+
+    inLanguage: "nl-NL",
+
+    creator: {
+        "@type": "Organization",
+        "@id": `${Astro.site}#organization`,
+        name: "GorillaMade",
+    },
+
+    about: {
+        "@type": "Organization",
+        name: client,
+    },
+
+    keywords: services,
+
+    isPartOf: {
+        "@id": `${Astro.site}#website`,
+    },
+};
+---
+
+<BaseLayout
+    title={title}
+    description={description}
+    image={imageURL}
+    structuredData={structuredData}
+>
+    <article class="case-study">
+        <!-- Header -->
+        <header class="case-study__header section">
+            <div class="wrapper flow">
+                <SectionLabel label="Case Study" />
+
+                <div class="case-study__intro flow">
+                    <Heading tag="h1" variant="display">
+                        {title}
+                    </Heading>
+
+                    <Paragraph variant="large">{tagline}</Paragraph>
+                </div>
+            </div>
+        </header>
+
+        <!-- Project details -->
+        <section class="case-study__details" aria-label="Projectdetails">
+            <div class="wrapper">
+                <dl class="case-study__meta">
+                    <div class="case-study__meta-item">
+                        <dt>Client</dt>
+                        <dd>{client}</dd>
+                    </div>
+
+                    <div class="case-study__meta-item">
+                        <dt>Jaar</dt>
+                        <dd>{year}</dd>
+                    </div>
+
+                    <div class="case-study__meta-item">
+                        <dt>Services</dt>
+                        <dd>{services.join(", ")}</dd>
+                    </div>
+                </dl>
+            </div>
+        </section>
+
+        <!-- Main visual -->
+        {image && (
+            <figure class="case-study__image">
+                {typeof image.src === "string" ? (
+                    <img
+                        src={image.src}
+                        alt={image.alt}
+                        width="1800"
+                        height="1000"
+                        loading="eager"
+                    />
+                ) : (
+                    <Image
+                        src={image.src}
+                        alt={image.alt}
+                        width={1800}
+                        height={1000}
+                    />
+                )}
+            </figure>
+        )}
+
+        <!-- Case story -->
+        <section class="case-study__story section">
+            <div
+                class="wrapper with-aside case-study__story-layout"
+                data-direction="reverse"
+            >
+                <div class="case-study__content prose flow">
+                    <Content />
+                </div>
+
+                <aside class="case-study__story-aside">
+                    <SectionLabel number="02" label="De case" />
+                </aside>
+            </div>
+        </section>
+
+        <!-- Results -->
+        <Results results={results} />
+
+        <!-- Testimonial -->
+        <Testimonial
+            quote={quote}
+            author={quoteAuthor}
+            role={quoteAuthorFunction}
+        />
+    </article>
+
+    <CTA />
+</BaseLayout>
+
+<style lang="scss">
+    .case-study {
+        // =====================================================================
+        // Header
+        // =====================================================================
+
+        &__header {
+            display: flex;
+            flex-direction: column;
+        }
+
+        &__intro {
+            max-width: var(--container-l);
+        }
+
+        // =====================================================================
+        // Project details
+        // =====================================================================
+
+        &__details {
+            border-block: 1px solid var(--border-default);
+        }
+
+        &__meta {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            max-width: var(--container-l);
+
+            margin-block: 0;
+            margin-inline: auto;
+        }
+
+        &__meta-item {
+            padding: var(--space-m);
+
+            border-inline-start: 1px solid var(--border-default);
+
+            &:last-of-type {
+                border-inline-end: 1px solid var(--border-default);
+            }
+
+            dt {
+                margin-block-end: var(--space-3xs);
+
+                color: var(--text-primary);
+
+                font-family: var(--font-body);
+                font-size: var(--text-small);
+                font-weight: var(--fw-strong);
+                line-height: var(--lh-none);
+            }
+
+            dd {
+                margin: 0;
+
+                color: var(--text-secondary);
+
+                font-family: var(--font-body);
+                font-size: var(--text-small);
+                font-weight: var(--fw-body);
+                line-height: var(--lh-body);
+            }
+        }
+
+        // =====================================================================
+        // Main visual
+        // =====================================================================
+
+        &__image {
+            margin: 0;
+
+            background-color: var(--surface-subtle);
+
+            border-block-end: 1px solid var(--border-default);
+
+            img {
+                display: block;
+
+                width: 100%;
+                max-width: var(--container-l);
+                height: auto;
+
+                margin-inline: auto;
+            }
+        }
+
+        // =====================================================================
+        // Story
+        // =====================================================================
+
+        &__story-layout {
+            --with-aside-width: 14rem;
+            --with-aside-main-min-width: 60%;
+            --with-aside-gap: var(--space-xl-2xl);
+
+            align-items: flex-start;
+        }
+
+        &__story-aside {
+            position: sticky;
+            top: var(--space-xl);
+
+            align-self: flex-start;
+        }
+
+        &__content {
+            --prose-max-width: var(--container-m);
+        }
+    }
+
+    // =========================================================================
+    // Responsive
+    // =========================================================================
+
+    @media (max-width: 48rem) {
+        .case-study {
+            &__meta {
+                grid-template-columns: 1fr;
+            }
+
+            &__meta-item {
+                padding-inline: 0;
+
+                border-inline: 0;
+
+                &:last-of-type {
+                    border-inline-end: 0;
+                }
+
+                &:not(:first-of-type) {
+                    border-block-start: 1px solid var(--border-default);
+                }
+            }
+
+            &__story-aside {
+                position: static;
+            }
+        }
+    }
+</style>

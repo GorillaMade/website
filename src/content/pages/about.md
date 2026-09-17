@@ -22,7 +22,7 @@ person:
       role: "Founder · Designer & Developer"
       bio: "Van strategie en design tot development en oplevering: ik combineer de verschillende disciplines zodat het eindresultaat als één geheel voelt."
       image:
-          src: "/images/team/tjay.webp"
+          src: "../src/assets/images/about/timothy.jpg"
           alt: "Tjay, founder van GorillaMade"
 
 about:

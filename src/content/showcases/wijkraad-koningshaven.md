@@ -1,23 +1,27 @@
 ---
-title: "Frisse, snelle website die het klusbedrijf vooruit helpt"
-tagline: "Vakmanschap dat voor zichzelf spreekt"
-description: "Een allround klusbedrijf gespecialiseerd in renovatie, onderhoud en hoogwaardige afwerking voor woningen en bedrijfspanden."
+title: "Verbindende digitale aanwezigheid voor de lokale gemeenschap"
+tagline: "De stem van de wijk, online tot leven gebracht"
+description: "Een gebruiksvriendelijke website voor de wijkraad die inwoners informeert, betrekt en faciliteert bij gemeenschapsinitiatieven."
 
-client: "Polklusbedrijf"
-url: "https://polklusbedrijf.nl/"
+client: "Stichting Wijkraad Koningshaven"
+url: "https://wijkraadkoningshaven.nl/"
 year: "2025"
 category: "Web Design"
 
 image:
-  src: "https://images.unsplash.com/photo-1678690832311-bb6e361989ca?q=80&w=1524&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-  alt: "Polklusbedrijf"
+  src: "https://images.unsplash.com/photo-1609234656388-0ff363383899?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  alt: "Stichting Wijkraad Koningshaven"
+
+cover:
+  src: "https://images.unsplash.com/photo-1629752187687-3d3c7ea3a21b?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  alt: "Detail van het ontwerp"
 
 services: [ "Design", "Development" ]
 
-quote: "GorillaMade begreep meteen wat we nodig hadden. Het resultaat is een website die onze klanten direct vertrouwen geeft."
+quote: "De nieuwe website heeft de communicatie met inwoners enorm verbeterd. We bereiken nu veel meer mensen en krijgen actiever reacties op onze initiatieven."
 
-quoteAuthor: "Ricardo Pol"
-quoteAuthorFunction: "eigenaar van Polklusbedrijf"
+quoteAuthor: "Team Wijkraad Koningshaven"
+quoteAuthorFunction: "Stichting Wijkraad Koningshaven"
 
 results:
     - value: "0.8s"
@@ -49,18 +53,15 @@ een aanvraag stuurt.
 
 ## Strategie & aanpak
 
-### Heldere positionering
-
+**Heldere positionering** <br />
 De kernboodschap is teruggebracht tot wat voor potentiële klanten
 daadwerkelijk belangrijk is.
 
-### Conversiegerichte structuur
-
+**Conversiegerichte structuur** <br />
 De pagina's zijn opgebouwd rond duidelijke informatiehiërarchie en
 logische vervolgstappen.
 
-### Lichtgewicht development
-
+**Lichtgewicht development** <br />
 De technische implementatie is bewust compact gehouden om snelheid,
 stabiliteit en onderhoudbaarheid te behouden.
 

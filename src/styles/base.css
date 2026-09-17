@@ -253,7 +253,7 @@ textarea {
   --text-secondary: var(--color-neutral-700);
   --text-muted: var(--color-neutral-500);
   --text-inverse: var(--color-neutral-50);
-  --text-brand: var(--color-brand-700);
+  --text-brand: var(--color-brand-600);
   --border-default: var(--color-neutral-200);
   --border-strong: var(--color-neutral-400);
   --border-inverse: var(--color-neutral-700);

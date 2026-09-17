@@ -7,17 +7,17 @@ import SectionLabel from "@/components/section/SectionLabel.astro";
 import Person from "@/components/section/Person.astro";
 import CallToAction from "@/components/section/CTA.astro";
 
-import { frontmatter } from "@/content/pages/about-us.md";
+import { frontmatter } from "@/content/pages/about.md";
 
 const { seo, hero, about, person, values, cta } = frontmatter;
 ---
 
 <BaseLayout title={seo.title} description={seo.description}>
-    <section class="about-hero section" data-theme={hero.theme || undefined}>
+    <section class="hero section" data-theme={hero.theme || undefined}>
         <div class="wrapper flow">
             <SectionLabel number={hero.id} label={hero.label} />
 
-            <div class="about-hero__content">
+            <div class="hero__content">
                 <Heading tag="h1" variant="display">
                     {hero.title}
                 </Heading>
@@ -83,15 +83,20 @@ const { seo, hero, about, person, values, cta } = frontmatter;
 </BaseLayout>
 
 <style lang="scss">
-    .about-hero__content {
-        display: grid;
-        gap: var(--space-l);
+    .hero {
+        padding-block-end: 0;
 
-        @media (width > 48rem) {
-            grid-template-columns:
-                minmax(0, 2fr)
-                minmax(18rem, 1fr);
-            align-items: center;
+        &__content {
+            margin-block-start: var(--space-m);
+            display: grid;
+            gap: var(--space-l);
+
+            @media (width > 48rem) {
+                grid-template-columns:
+                    minmax(0, 2fr)
+                    minmax(18rem, 1fr);
+                align-items: center;
+            }
         }
     }
 
@@ -116,18 +121,17 @@ const { seo, hero, about, person, values, cta } = frontmatter;
 
     .about-value {
         padding-block-start: var(--space-m);
-
         border-top: 1px solid var(--border-default);
-
         --flow-space: var(--space-s);
     }
 
     .about-value__number {
         display: block;
 
-        color: var(--text-muted);
-
-        font-size: var(--text-small);
+        color: var(--text-brand);
+        font-family: var(--ff-sans);
+        font-size: var(--heading-h3);
+        font-weight: var(--fw-medium);
         font-variant-numeric: tabular-nums;
     }
 </style>

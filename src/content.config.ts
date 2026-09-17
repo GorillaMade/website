@@ -4,7 +4,7 @@ import { z } from "astro/zod";
 
 const showcase = defineCollection({
     loader: glob({
-        base: "./src/content/case-studies",
+        base: "./src/content/showcases",
         pattern: "**/*.{md,mdx}",
     }),
 

@@ -7,7 +7,7 @@ hero:
   id: "01"
   theme: "dark"
   label: "Webdesign & development · Tilburg"
-  title: "Een website die lokaal groei aanjaagt."
+  title: "Een website die lokale groei aanjaagt."
   text: "Premium websites voor Tilburgse ondernemers die meer klanten, meer zichtbaarheid en minder gedoe willen."
 
   primaryButton:
@@ -16,7 +16,7 @@ hero:
 
   secondaryButton:
       label: "Bekijk mijn werk"
-      href: "/case-studies"
+      href: "#work"
 
 showcases:
   id: "02"
@@ -31,7 +31,7 @@ story:
   text: "GorillaMade is bewust klein. Je werkt rechtstreeks met de persoon die je website ontwerpt en bouwt. Van het eerste idee tot de lancering en daarna."
   button:
       label: "Meer over GorillaMade"
-      href: "/about-us"
+      href: "/about"
       variant: "outline"
 
 services:

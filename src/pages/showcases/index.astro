@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 
 import BaseLayout from "@/layouts/BaseLayout.astro";
+
 import SectionLabel from "@/components/section/SectionLabel.astro";
 import Heading from "@/components/Typography/Heading.astro";
 import Paragraph from "@/components/Typography/Paragraph.astro";
@@ -10,7 +11,7 @@ import Card from "@/components/Card.astro";
 import CollectionFilter from "@/components/collection/CollectionFilter.astro";
 import CallToAction from "@/components/section/CTA.astro";
 
-import { frontmatter } from "@/content/pages/blog.md";
+import { frontmatter } from "@/content/pages/showcases.md";
 
 const { seo, hero } = frontmatter;
 
@@ -27,13 +28,12 @@ const structuredData = {
     },
 };
 
-// Nieuwste artikelen eerst.
-const posts = (await getCollection("blog")).sort(
-    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-);
+const showcases = await getCollection("showcase");
 
 // Unieke categorieën voor het filter.
-const categories = [...new Set(posts.map((post) => post.data.category))].sort();
+const categories = [
+    ...new Set(showcases.map((showcase) => showcase.data.category)),
+].sort();
 ---
 
 <BaseLayout
@@ -45,6 +45,7 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
     <section class="hero section" data-theme={hero.theme || undefined}>
         <div class="wrapper flow">
             <SectionLabel number={hero.id} label={hero.label} />
+
             <div class="hero__content flow">
                 <Heading tag="h1" variant="display">
                     {hero.title}
@@ -57,17 +58,17 @@ const categories = [...new Set(posts.map((post) => post.data.category))].sort();
         </div>
     </section>
 
-    <!-- Artikelen -->
-    <section class="collection section" aria-label="Blogartikelen">
+    <!-- Cases -->
+    <section class="collection section" aria-label="Case studies">
         <div class="wrapper">
             <CollectionFilter categories={categories} pageSize={6}>
                 <ul class="grid" role="list" data-layout="halves">
-                    {posts.map((post, index) => (
+                    {showcases.map((showcase, index) => (
                         <li
                             data-collection-item
-                            data-category={post.data.category}
+                            data-category={showcase.data.category}
                         >
-                            <Card entry={post} index={index + 1} />
+                            <Card entry={showcase} index={index + 1} />
                         </li>
                     ))}
                 </ul>
