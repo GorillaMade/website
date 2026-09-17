@@ -1,0 +1,145 @@
+---
+interface Props {
+    quote?: string;
+    author?: string;
+    role?: string;
+}
+
+const { quote, author, role } = Astro.props;
+---
+
+{quote && (
+    <section class="testimonial section" aria-label="Klanttestimonial">
+        <div class="wrapper">
+            <figure class="testimonial__inner">
+                <span class="testimonial__mark" aria-hidden="true">
+                    “
+                </span>
+
+                <blockquote class="testimonial__quote">
+                    <p>{quote}</p>
+                </blockquote>
+
+                {(author || role) && (
+                    <figcaption class="testimonial__author">
+                        {author && <strong>{author}</strong>}
+
+                        {role && <span>{role}</span>}
+                    </figcaption>
+                )}
+            </figure>
+        </div>
+    </section>
+)}
+
+<style lang="scss">
+    .testimonial {
+        background-color: var(--surface-page);
+        color: var(--text-primary);
+
+        // ---------------------------------------------------------------------
+        // Inner
+        // ---------------------------------------------------------------------
+
+        &__inner {
+            display: grid;
+            gap: var(--space-l);
+
+            max-width: var(--container-l);
+
+            margin: 0;
+            margin-inline: auto;
+        }
+
+        // ---------------------------------------------------------------------
+        // Quote mark
+        // ---------------------------------------------------------------------
+
+        &__mark {
+            height: 0.65em;
+
+            color: var(--text-brand);
+
+            font-family: var(--font-heading);
+            font-size: var(--heading-display);
+            font-weight: var(--fw-heading);
+            line-height: 1;
+
+            user-select: none;
+        }
+
+        // ---------------------------------------------------------------------
+        // Quote
+        // ---------------------------------------------------------------------
+
+        &__quote {
+            margin: 0;
+
+            p {
+                margin: 0;
+
+                color: var(--text-primary);
+
+                font-family: var(--font-heading);
+                font-size: var(--heading-h2);
+                font-weight: var(--fw-medium);
+                line-height: var(--lh-moderate);
+                letter-spacing: var(--ls-heading);
+
+                text-wrap: balance;
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Author
+        // ---------------------------------------------------------------------
+
+        &__author {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: var(--space-xs);
+
+            padding-block-start: var(--space-m);
+
+            border-block-start: 1px solid var(--border-default);
+
+            font-family: var(--font-body);
+
+            strong {
+                color: var(--text-primary);
+
+                font-size: var(--text-base);
+                font-weight: var(--fw-strong);
+            }
+
+            span {
+                color: var(--text-muted);
+
+                font-size: var(--text-small);
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Responsive
+        // ---------------------------------------------------------------------
+
+        @media (max-width: 48rem) {
+            &__inner {
+                gap: var(--space-m);
+            }
+
+            &__quote {
+                p {
+                    font-size: var(--heading-h3);
+                }
+            }
+
+            &__author {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: var(--space-3xs);
+            }
+        }
+    }
+</style>

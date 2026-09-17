@@ -14,7 +14,7 @@ const { entry, index, theme } = Astro.props;
 
 const isShowcase = entry.collection === "showcase";
 
-const href = isShowcase ? `/case-studies/${entry.id}` : `/blog/${entry.id}`;
+const href = isShowcase ? `/showcases/${entry.id}` : `/blog/${entry.id}`;
 
 const { title, description, category, image } = entry.data;
 

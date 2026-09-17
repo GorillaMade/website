@@ -28,8 +28,8 @@ const {
     theme,
     limit = 3,
     button = {
-        label: "Alle case studies",
-        href: "/case-studies",
+        label: "Alle showcases",
+        href: "/showcases",
     },
 } = Astro.props;
 
@@ -39,7 +39,11 @@ const items = showcases.slice(0, limit);
 ---
 
 {items.length > 0 && (
-    <section class="showcases section" data-theme={theme || undefined}>
+    <section
+        id="work"
+        class="showcases section"
+        data-theme={theme || undefined}
+    >
         <div class="wrapper flow">
             <div class="repel">
                 <header class="section__header">
@@ -55,7 +59,7 @@ const items = showcases.slice(0, limit);
                 </Button>
             </div>
 
-            <div class="grid" data-layout="thirds">
+            <div class="grid" data-layout="halves">
                 {items.map((item, index) => (
                     <Card entry={item} index={index + 1} />
                 ))}
@@ -65,7 +69,7 @@ const items = showcases.slice(0, limit);
 )}
 
 <style lang="scss">
-    .grid[data-layout="thirds"] {
+    .grid[data-layout="halves"] {
         --grid-placement: auto-fill;
     }
 </style>

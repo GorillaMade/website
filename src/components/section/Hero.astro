@@ -78,7 +78,7 @@ const {
 
                 <div class="hero__browser-content">
                     <div class="hero__mockup-nav">
-                        <span class="hero__mockup-logo">GM.</span>
+                        <span class="hero__mockup-logo">GorillaMade</span>
 
                         <div class="hero__mockup-links">
                             <span></span>
@@ -106,7 +106,7 @@ const {
                         <div class="hero__mockup-button"></div>
                     </div>
 
-                    <span class="hero__mockup-accent">013</span>
+                    <span class="hero__mockup-accent">GM</span>
                 </div>
             </div>
 
@@ -170,11 +170,11 @@ const {
         position: relative;
         z-index: var(--layer-raised);
 
-        display: grid;
-        align-items: center;
-        gap: var(--space-2xl-3xl);
-
-        min-height: min(50rem, 85svh);
+        @media (width > 976px) {
+            display: grid;
+            align-items: center;
+            gap: var(--space-xl);
+        }
 
         padding-block: var(--section-large);
     }
@@ -187,8 +187,8 @@ const {
     }
 
     .hero__title {
-        max-width: 12ch;
-
+        max-width: 20ch;
+        margin-block-start: var(--space-m);
         text-wrap: balance;
     }
 
@@ -211,6 +211,10 @@ const {
         max-width: 40rem;
 
         margin-inline: auto;
+
+        @media (width < 975px) {
+            display: none;
+        }
     }
 
     .hero__browser {

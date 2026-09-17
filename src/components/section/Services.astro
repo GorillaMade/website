@@ -76,7 +76,7 @@ const { id, label = "Services", title, theme, items = [] } = Astro.props;
 
     .services__header {
         --flow-space: var(--space-m);
-
+        margin-block-start: var(--space-m);
         max-width: var(--container-m);
     }
 
@@ -88,8 +88,8 @@ const { id, label = "Services", title, theme, items = [] } = Astro.props;
         display: grid;
         grid-template-columns:
             3rem
-            minmax(10rem, 1fr)
-            minmax(16rem, 1.5fr)
+            minmax(16rem, 2fr)
+            minmax(10rem, 1.5fr)
             auto;
 
         align-items: center;
@@ -106,31 +106,27 @@ const { id, label = "Services", title, theme, items = [] } = Astro.props;
         transition: border-color var(--duration-fast) var(--ease-out);
 
         &:hover {
-            border-color: var(--border-strong);
-
             .service__title {
                 color: var(--text-brand);
             }
 
             .service__arrow {
-                color: var(--text-brand);
                 transform: rotate(0);
             }
         }
 
         &:focus-visible {
             outline: var(--focus-width) solid var(--focus-ring);
-
             outline-offset: var(--focus-offset);
         }
     }
 
     .service__number {
-        align-self: start;
+        align-self: center;
 
         color: var(--text-muted);
 
-        font-size: var(--text-small);
+        font-size: var(--text-medium);
         font-variant-numeric: tabular-nums;
     }
 
@@ -151,8 +147,8 @@ const { id, label = "Services", title, theme, items = [] } = Astro.props;
         transform: rotate(-45deg);
 
         transition:
-            color var(--duration-fast) var(--ease-out),
-            transform var(--duration-normal) var(--ease-out);
+            color var(--duration-fast) var(--ease-ease-in-out),
+            transform var(--duration-normal) var(--ease-ease-in-out);
     }
 
     @media (width <= 48rem) {

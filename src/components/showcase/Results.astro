@@ -1,0 +1,258 @@
+---
+import Heading from "@/components/Typography/Heading.astro";
+import SectionLabel from "@/components/section/SectionLabel.astro";
+
+interface Result {
+    value: string;
+    label: string;
+}
+
+interface Props {
+    results: Result[];
+    id?: string;
+    label?: string;
+    title?: string;
+}
+
+const {
+    results,
+    id = "results",
+    label = "Resultaat",
+    title = "Meetbaar resultaat.",
+} = Astro.props;
+---
+
+{results.length > 0 && (
+    <section
+        class="results section"
+        aria-labelledby={`${id}-title`}
+        data-theme="dark"
+    >
+        <div class="wrapper">
+            <!-- Intro -->
+            <header class="results__header flow">
+                <SectionLabel number="03" label={label} />
+
+                <Heading tag="h2" variant="h2" id={`${id}-title`}>
+                    {title}
+                </Heading>
+            </header>
+
+            <!-- Resultaten -->
+            <div class="results__list">
+                {results.map((result, index) => (
+                    <dl class="results__item">
+                        <dt class="results__label">
+                            <span class="results__index" aria-hidden="true">
+                                {String(index + 1).padStart(2, "0")}
+                            </span>
+
+                            <span>{result.label}</span>
+                        </dt>
+
+                        <dd class="results__value">{result.value}</dd>
+                    </dl>
+                ))}
+            </div>
+        </div>
+    </section>
+)}
+
+<style lang="scss">
+    .results {
+        overflow: clip;
+
+        background-color: var(--surface-page);
+        color: var(--text-primary);
+
+        // ---------------------------------------------------------------------
+        // Header
+        // ---------------------------------------------------------------------
+
+        &__header {
+            max-inline-size: var(--container-m);
+
+            margin-block-end: var(--section-medium);
+
+            --flow-space: var(--space-m);
+
+            .heading {
+                margin-block-start: var(--space-m);
+                text-wrap: balance;
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // List
+        // ---------------------------------------------------------------------
+
+        &__list {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(min(18rem, 100%), 1fr)
+            );
+
+            border-block: 1px solid var(--border-default);
+        }
+
+        // ---------------------------------------------------------------------
+        // Result
+        // ---------------------------------------------------------------------
+
+        &__item {
+            position: relative;
+            isolation: isolate;
+
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xl);
+
+            min-width: 0;
+
+            margin: 0;
+            padding: var(--space-l);
+
+            border-inline-start: 1px solid var(--border-default);
+
+            transition:
+                background-color var(--duration-normal) var(--ease-ease-out),
+                border-color var(--duration-normal) var(--ease-ease-out);
+
+            &:last-child {
+                border-inline-end: 1px solid var(--border-default);
+            }
+
+            // Subtiel brand-accent.
+            &::before {
+                position: absolute;
+                z-index: 1;
+                inset-block-start: -1px;
+                inset-inline-start: var(--space-l);
+
+                width: var(--space-xl);
+                height: 2px;
+
+                background-color: var(--text-brand);
+
+                content: "";
+
+                transform: scaleX(0.4);
+                transform-origin: left;
+
+                transition: transform var(--duration-normal)
+                    var(--ease-ease-out);
+            }
+
+            @media (hover: hover) {
+                &:hover {
+                    background-color: var(--surface-subtle);
+
+                    &::before {
+                        transform: scaleX(1);
+                    }
+                }
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Label
+        // ---------------------------------------------------------------------
+
+        &__label {
+            display: grid;
+            gap: var(--space-xs);
+
+            max-inline-size: 20ch;
+
+            color: var(--text-secondary);
+
+            font-family: var(--font-body);
+            font-size: var(--text-base);
+            font-weight: var(--fw-body);
+            line-height: var(--lh-moderate);
+
+            text-wrap: pretty;
+        }
+
+        // ---------------------------------------------------------------------
+        // Index
+        // ---------------------------------------------------------------------
+
+        &__index {
+            color: var(--text-muted);
+
+            font-family: var(--ff-mono);
+            font-size: var(--text-small);
+            font-weight: var(--fw-body);
+            line-height: var(--lh-none);
+            letter-spacing: var(--ls-wide);
+        }
+
+        // ---------------------------------------------------------------------
+        // Value
+        // ---------------------------------------------------------------------
+
+        &__value {
+            min-width: 0;
+
+            margin: 0;
+
+            color: var(--text-primary);
+
+            font-family: var(--font-heading);
+            font-size: clamp(var(--heading-h2), 7vw, var(--heading-display));
+            font-weight: var(--fw-heading);
+            line-height: 0.85;
+            letter-spacing: var(--ls-tighter);
+
+            text-wrap: nowrap;
+        }
+
+        // ---------------------------------------------------------------------
+        // Responsive
+        // ---------------------------------------------------------------------
+
+        @media (max-width: 48rem) {
+            &__header {
+                margin-block-end: var(--space-xl-2xl);
+            }
+
+            &__list {
+                grid-template-columns: 1fr;
+            }
+
+            &__item {
+                padding-block: var(--space-l);
+                padding-inline: 0;
+
+                border-inline: 0;
+                border-block-end: 1px solid var(--border-default);
+
+                &:last-child {
+                    border-inline-end: 0;
+                    border-block-end: 0;
+                }
+
+                &::before {
+                    inset-inline-start: 0;
+                }
+            }
+
+            &__value {
+                font-size: var(--heading-display);
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Reduced motion
+        // ---------------------------------------------------------------------
+
+        @media (prefers-reduced-motion: reduce) {
+            &__item,
+            &__item::before {
+                transition: none;
+            }
+        }
+    }
+</style>

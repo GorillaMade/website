@@ -1,0 +1,381 @@
+---
+interface Props {
+    categories: string[];
+    pageSize?: number;
+    allLabel?: string;
+    loadMoreLabel?: string;
+    ariaLabel?: string;
+}
+
+const {
+    categories,
+    pageSize = 6,
+    allLabel = "Alles",
+    loadMoreLabel = "Toon meer",
+    ariaLabel = "Filter op categorie",
+} = Astro.props;
+---
+
+<div
+    class="collection-filter"
+    x-data={`{
+        active: 'all',
+        visible: ${pageSize},
+        pageSize: ${pageSize},
+
+        init() {
+            this.update();
+        },
+
+        setFilter(category) {
+            this.active = category;
+            this.visible = this.pageSize;
+
+            this.$nextTick(() => {
+                this.update();
+            });
+        },
+
+        loadMore() {
+            this.visible += this.pageSize;
+            this.update();
+        },
+
+        getItems() {
+            return Array.from(
+                this.$refs.collection.querySelectorAll(
+                    '[data-collection-item]'
+                )
+            );
+        },
+
+        getMatchingItems() {
+            return this.getItems().filter((item) => {
+                return (
+                    this.active === 'all' ||
+                    item.dataset.category === this.active
+                );
+            });
+        },
+
+        get total() {
+            return this.getMatchingItems().length;
+        },
+
+        get shown() {
+            return Math.min(this.visible, this.total);
+        },
+
+        get hasMore() {
+            return this.shown < this.total;
+        },
+
+        count(category) {
+            if (category === 'all') {
+                return this.getItems().length;
+            }
+
+            return this.getItems().filter(
+                (item) => item.dataset.category === category
+            ).length;
+        },
+
+        update() {
+            const matching = this.getMatchingItems();
+
+            this.getItems().forEach((item) => {
+                item.hidden = true;
+            });
+
+            matching
+                .slice(0, this.visible)
+                .forEach((item) => {
+                    item.hidden = false;
+                });
+        }
+    }`}
+>
+    <!-- Filter -->
+    <nav class="collection-filter__nav" aria-label={ariaLabel}>
+        <ul class="collection-filter__list" role="list">
+            <li>
+                <button
+                    class="collection-filter__button"
+                    type="button"
+                    :aria-pressed="active === 'all'"
+                    @click="setFilter('all')"
+                >
+                    <span>{allLabel}</span>
+
+                    <span
+                        class="collection-filter__count"
+                        aria-hidden="true"
+                        x-text="count('all')"
+                    ></span>
+                </button>
+            </li>
+
+            {categories.map((category) => (
+                <li>
+                    <button
+                        class="collection-filter__button"
+                        type="button"
+                        :aria-pressed={`active === ${JSON.stringify(category)}`}
+                        @click={`setFilter(${JSON.stringify(category)})`}
+                    >
+                        <span>{category}</span>
+
+                        <span
+                            class="collection-filter__count"
+                            aria-hidden="true"
+                            x-text={`count(${JSON.stringify(category)})`}
+                        ></span>
+                    </button>
+                </li>
+            ))}
+        </ul>
+    </nav>
+
+    <!-- Collection -->
+    <div class="collection-filter__collection" x-ref="collection">
+        <slot />
+    </div>
+
+    <!-- Footer -->
+    <footer class="collection-filter__footer" x-show="total > 0">
+        <p
+            class="collection-filter__status"
+            aria-live="polite"
+            aria-atomic="true"
+        >
+            <span x-text="shown"></span>
+            <span> van </span>
+            <span x-text="total"></span>
+        </p>
+
+        <button
+            class="collection-filter__more"
+            type="button"
+            x-show="hasMore"
+            @click="loadMore()"
+        >
+            <span>{loadMoreLabel}</span>
+
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+                <path
+                    d="M12 5v14M5 12l7 7 7-7"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                />
+            </svg>
+        </button>
+    </footer>
+</div>
+
+<style lang="scss">
+    .collection-filter {
+        // ---------------------------------------------------------------------
+        // Navigation
+        // ---------------------------------------------------------------------
+
+        &__nav {
+            margin-block-end: var(--space-xl-2xl);
+
+            border-block: 1px solid var(--border-default);
+        }
+
+        &__list {
+            display: flex;
+            gap: var(--space-2xs);
+
+            overflow-x: auto;
+
+            margin: 0;
+            padding: var(--space-xs) 0;
+
+            list-style: none;
+
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Filter button
+        // ---------------------------------------------------------------------
+
+        &__button {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+
+            min-height: 2.75rem;
+
+            padding-inline: var(--space-s);
+
+            color: var(--text-secondary);
+            background-color: transparent;
+
+            border: 0;
+            border-radius: var(--radius-pill);
+
+            font-family: var(--font-body);
+            font-size: var(--text-small);
+            font-weight: var(--fw-strong);
+            line-height: var(--lh-none);
+
+            white-space: nowrap;
+
+            cursor: pointer;
+
+            transition:
+                color var(--duration-normal) var(--ease-ease-out),
+                background-color var(--duration-normal) var(--ease-ease-out);
+
+            @media (hover: hover) {
+                &:hover {
+                    color: var(--text-primary);
+                    background-color: var(--surface-subtle);
+                }
+            }
+
+            &[aria-pressed="true"] {
+                color: var(--text-primary);
+                background-color: var(--surface-brand);
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--focus-ring);
+                outline-offset: 2px;
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Count
+        // ---------------------------------------------------------------------
+
+        &__count {
+            color: currentColor;
+
+            font-family: var(--ff-mono);
+            font-size: 0.75em;
+            font-weight: var(--fw-body);
+
+            opacity: 0.65;
+        }
+
+        // ---------------------------------------------------------------------
+        // Collection
+        // ---------------------------------------------------------------------
+
+        &__collection {
+            min-width: 0;
+        }
+
+        // ---------------------------------------------------------------------
+        // Footer
+        // ---------------------------------------------------------------------
+
+        &__footer {
+            display: grid;
+            justify-items: center;
+            gap: var(--space-m);
+
+            margin-block-start: var(--space-xl-2xl);
+        }
+
+        // ---------------------------------------------------------------------
+        // Status
+        // ---------------------------------------------------------------------
+
+        &__status {
+            margin: 0;
+
+            color: var(--text-muted);
+
+            font-family: var(--font-body);
+            font-size: var(--text-small);
+            font-weight: var(--fw-body);
+            line-height: var(--lh-body);
+        }
+
+        // ---------------------------------------------------------------------
+        // Load more
+        // ---------------------------------------------------------------------
+
+        &__more {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-s);
+
+            min-height: 3.25rem;
+
+            padding-inline: var(--space-m);
+
+            color: var(--text-primary);
+            background-color: transparent;
+
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-pill);
+
+            font-family: var(--font-body);
+            font-size: var(--text-base);
+            font-weight: var(--fw-strong);
+            line-height: var(--lh-none);
+
+            cursor: pointer;
+
+            transition:
+                color var(--duration-normal) var(--ease-ease-out),
+                background-color var(--duration-normal) var(--ease-ease-out),
+                border-color var(--duration-normal) var(--ease-ease-out);
+
+            svg {
+                flex-shrink: 0;
+
+                transition: transform var(--duration-normal)
+                    var(--ease-ease-out);
+            }
+
+            @media (hover: hover) {
+                &:hover {
+                    color: var(--text-inverse);
+                    background-color: var(--surface-brand);
+                    border-color: var(--border-brand);
+
+                    svg {
+                        transform: translateY(0.2rem);
+                    }
+                }
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--focus-ring);
+                outline-offset: 3px;
+            }
+        }
+
+        // ---------------------------------------------------------------------
+        // Reduced motion
+        // ---------------------------------------------------------------------
+
+        @media (prefers-reduced-motion: reduce) {
+            &__button,
+            &__more,
+            &__more svg {
+                transition: none;
+            }
+        }
+    }
+
+    // Voorkom Alpine-flash voor verborgen controls.
+    [x-cloak] {
+        display: none !important;
+    }
+</style>
