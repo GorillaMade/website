@@ -12,12 +12,12 @@ type BaseProps = {
 };
 
 type AnchorProps = BaseProps &
-    HTMLAttributes<"a"> & {
+    Omit<HTMLAttributes<"a">, "class"> & {
         href: string;
     };
 
 type ButtonProps = BaseProps &
-    HTMLAttributes<"button"> & {
+    Omit<HTMLAttributes<"button">, "class"> & {
         href?: never;
     };
 
@@ -31,13 +31,7 @@ const {
     ...props
 } = Astro.props;
 
-const classes = [
-    "button",
-    `button--${variant}`,
-    `button--${size}`,
-    fullWidth && "button--full",
-    className,
-];
+const classes = ["button", className];
 ---
 
 {
@@ -46,6 +40,9 @@ const classes = [
             {...(props as AnchorProps)}
             href={props.href}
             class:list={classes}
+            data-variant={variant}
+            data-size={size}
+            data-full-width={fullWidth || undefined}
         >
             <slot />
         </a>
@@ -54,6 +51,9 @@ const classes = [
             {...(props as ButtonProps)}
             type={(props as ButtonProps).type ?? "button"}
             class:list={classes}
+            data-variant={variant}
+            data-size={size}
+            data-full-width={fullWidth || undefined}
         >
             <slot />
         </button>
