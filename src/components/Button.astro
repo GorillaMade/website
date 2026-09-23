@@ -1,56 +1,64 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
+type Variant = "primary" | "secondary" | "outline" | "ghost";
+type Size = "small" | "medium" | "large";
 
-type ButtonSize = "small" | "medium" | "large";
-
-interface Props extends HTMLAttributes<"button"> {
-    /** Rendert als link wanneer href aanwezig is. */
-    href?: string;
-
-    /** Visuele variant. */
-    variant?: ButtonVariant;
-
-    /** Grootte van de button. */
-    size?: ButtonSize;
-
-    /** Vult de beschikbare breedte. */
+type BaseProps = {
+    variant?: Variant;
+    size?: Size;
     fullWidth?: boolean;
-
-    /** Schakelt de button uit. */
-    disabled?: boolean;
-
     class?: string;
-}
+};
+
+type AnchorProps = BaseProps &
+    HTMLAttributes<"a"> & {
+        href: string;
+    };
+
+type ButtonProps = BaseProps &
+    HTMLAttributes<"button"> & {
+        href?: never;
+    };
+
+type Props = AnchorProps | ButtonProps;
 
 const {
-    href,
     variant = "primary",
     size = "medium",
     fullWidth = false,
-    disabled = false,
     class: className,
-    ...rest
+    ...props
 } = Astro.props;
 
-const Tag = href ? "a" : "button";
+const classes = [
+    "button",
+    `button--${variant}`,
+    `button--${size}`,
+    fullWidth && "button--full",
+    className,
+];
 ---
 
-<Tag
-    class:list={["button", className]}
-    data-variant={variant}
-    data-size={size}
-    data-full-width={fullWidth || undefined}
-    href={href}
-    disabled={!href ? disabled : undefined}
-    aria-disabled={href && disabled ? "true" : undefined}
-    {...rest}
->
-    <span class="button__label">
-        <slot />
-    </span>
-</Tag>
+{
+    "href" in props && props.href ? (
+        <a
+            {...(props as AnchorProps)}
+            href={props.href}
+            class:list={classes}
+        >
+            <slot />
+        </a>
+    ) : (
+        <button
+            {...(props as ButtonProps)}
+            type={(props as ButtonProps).type ?? "button"}
+            class:list={classes}
+        >
+            <slot />
+        </button>
+    )
+}
 
 <style lang="scss">
     .button {

@@ -1,0 +1,16 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+export async function getStaticPaths() {
+  const services = await getCollection("services");
+  return services.map((service) => ({ params: { id: service.id }, props: { service } }));
+}
+interface Props { service: CollectionEntry<"services">; }
+const { service } = Astro.props;
+const { Content } = await render(service);
+const canonical = new URL(`/services/${service.id}/`, Astro.site).href;
+const schema = { "@type": "Service", "@id": `${canonical}#service`, name: service.data.title, description: service.data.description, url: canonical, provider: { "@id": `${new URL('/', Astro.site).href}#organization` } };
+---
+<BaseLayout title={service.data.seo?.title ?? service.data.title} description={service.data.seo?.description ?? service.data.description} noindex={service.data.seo?.noindex} structuredData={schema}>
+  <article class="section"><div class="wrapper prose flow"><h1>{service.data.title}</h1><p>{service.data.description}</p><Content /></div></article>
+</BaseLayout>

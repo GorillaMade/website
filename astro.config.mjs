@@ -2,11 +2,12 @@
 import { defineConfig, fontProviders } from "astro/config";
 
 import alpinejs from '@astrojs/alpinejs';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://gorillamade.nl",
-  integrations: [alpinejs()],
+  integrations: [alpinejs(), sitemap()],
   fonts: [
     {
         name: "Anybody",

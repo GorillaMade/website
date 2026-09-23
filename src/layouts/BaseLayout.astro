@@ -1,122 +1,33 @@
 ---
 import Header from "@/components/shared/Header.astro";
 import Footer from "@/components/shared/Footer.astro";
-import StructuredData from "@/components/shared/StructuredData.astro";
-
+import SEO from "@/components/seo/SEO.astro";
 import { Font } from "astro:assets";
-
 import "@/styles/global.css";
 
 interface Props {
-    title?: string;
-    description?: string;
-    image?: string;
-    url?: string;
-    noindex?: boolean;
-    structuredData?: Record<string, unknown> | Record<string, unknown>[];
+  title?: string; description?: string; image?: string; url?: string; noindex?: boolean; type?: "website" | "article";
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
-
-const {
-    title = "Webdesign & Development Tilburg",
-    description = "GorillaMade ontwikkelt moderne websites, maatwerk webapplicaties en digitale oplossingen voor ondernemers en bedrijven in Tilburg.",
-    image = "/og-image.jpg",
-    url = Astro.url.pathname,
-    noindex = false,
-    structuredData,
-} = Astro.props;
-
-const canonicalURL = new URL(url, Astro.site);
-const imageURL = new URL(image, Astro.site);
-
-const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": `${Astro.site}#website`,
-    name: "GorillaMade",
-    url: Astro.site,
-    inLanguage: "nl-NL",
-};
-
-const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": `${Astro.site}#organization`,
-    name: "GorillaMade",
-    url: Astro.site,
-    logo: new URL("/logo.svg", Astro.site).href,
-};
-
-const schemas = [
-    websiteSchema,
-    organizationSchema,
-    ...(Array.isArray(structuredData)
-        ? structuredData
-        : structuredData
-          ? [structuredData]
-          : []),
-];
+const props = Astro.props;
 ---
-
 <html lang="nl" data-theme="light">
-    <head>
-        <!-- Basic -->
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="generator" content={Astro.generator} />
-
-        <title>{title} | GorillaMade</title>
-
-        <meta name="description" content={description} />
-
-        <!-- Canonical -->
-        <link rel="canonical" href={canonicalURL} />
-
-        <!-- Indexing -->
-        <meta
-            name="robots"
-            content={noindex ? "noindex,nofollow" : "index,follow"}
-        />
-
-        <!-- Theme -->
-        <meta name="theme-color" content="#000000" />
-        <Font cssVariable="--font-anybody" preload />
-        <Font cssVariable="--font-geist" preload />
-
-        <!-- Favicon -->
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="icon" href="/favicon.ico" />
-
-        <!-- Open Graph -->
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={`${title} | GorillaMade`} />
-        <meta property="og:description" content={description} />
-        <meta property="og:url" content={canonicalURL} />
-        <meta property="og:image" content={imageURL} />
-        <meta property="og:site_name" content="GorillaMade" />
-        <meta property="og:locale" content="nl_NL" />
-
-        <!-- Twitter -->
-        <meta name="twitter:card" content="summary_large_image" />
-
-        <meta name="twitter:title" content={`${title} | GorillaMade`} />
-
-        <meta name="twitter:description" content={description} />
-
-        <meta name="twitter:image" content={imageURL} />
-
-        <!-- Structured data -->
-        <StructuredData data={schemas} />
-    </head>
-
-    <body>
-        <Header />
-
-        <main>
-            <slot />
-        </main>
-
-        <Footer />
-    </body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <SEO {...props} />
+    <meta name="theme-color" content="#000000" />
+    <Font cssVariable="--font-anybody" preload />
+    <Font cssVariable="--font-geist" preload />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+  <body>
+    <Header />
+    <main id="main"><slot /></main>
+    <Footer />
+  </body>
 </html>
 
 <style lang="scss" is:global>

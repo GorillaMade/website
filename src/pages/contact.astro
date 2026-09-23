@@ -59,7 +59,7 @@ const { seo, hero, contact } = frontmatter;
                         </Heading>
 
                         <ol class="contact__expectations">
-                            {contact.expectations.map((item, index) => (
+                            {contact.expectations.map((item: string, index: number) => (
                                 <li>
                                     <span>
                                         {String(index + 1).padStart(2, "0")}

@@ -44,3 +44,9 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+## Starterkit integration
+
+The Sass source now lives in `/sass` outside Astro's `/src`. Only `base.scss`, `patterns.scss`, `utilities.scss`, and `global.scss` are compiled into `/src/styles`. Astro components keep their own scoped component styles. `BaseLayout.astro` imports only `/src/styles/global.css`.
+
+SEO is centralized in `src/components/seo/SEO.astro` and emits canonical, robots, Open Graph, Twitter metadata and a single Schema.org `@graph`. The existing blog/showcase collections are retained, a services collection is added, and dynamic collection routes use `[...id].astro`.

@@ -15,7 +15,7 @@ const showcase = defineCollection({
             description: z.string(),
 
             client: z.string(),
-            url: z.string().url().optional(),
+            url: z.url().optional(),
             year: z.string(),
             category: z.string(),
 
@@ -23,7 +23,7 @@ const showcase = defineCollection({
                 .object({
                     src: z.union([
                         image(),
-                        z.string().url(),
+                        z.url(),
                         z.string(),
                     ]),
                     alt: z.string(),
@@ -34,7 +34,7 @@ const showcase = defineCollection({
                 .object({
                     src: z.union([
                         image(),
-                        z.string().url(),
+                        z.url(),
                         z.string(),
                     ]),
                     alt: z.string(),
@@ -72,7 +72,7 @@ const blog = defineCollection({
               .object({
                   src: z.union([
                       image(),
-                      z.string().url(),
+                      z.url(),
                       z.string(),
                   ]),
                   alt: z.string(),
@@ -93,7 +93,19 @@ const blog = defineCollection({
         }),
 });
 
+const services = defineCollection({
+    loader: glob({ base: "./src/content/services", pattern: "**/*.{md,mdx}" }),
+    schema: z.object({
+        title: z.string(),
+        description: z.string(),
+        category: z.string().optional(),
+        featured: z.boolean().default(false),
+        seo: z.object({ title: z.string().optional(), description: z.string().optional(), noindex: z.boolean().default(false) }).optional(),
+    }),
+});
+
 export const collections = {
     showcase,
     blog,
+    services,
 };

@@ -19,7 +19,7 @@ export async function getStaticPaths() {
 
     return showcases.map((showcase) => ({
         params: {
-            slug: showcase.id,
+            id: showcase.id,
         },
         props: {
             showcase,
@@ -174,7 +174,7 @@ const structuredData = {
         </section>
 
         <!-- Results -->
-        <Results results={results} />
+        <Results results={results ?? []} />
 
         <!-- Testimonial -->
         <Testimonial

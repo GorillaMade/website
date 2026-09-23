@@ -41,7 +41,7 @@ const { seo, hero, about, person, values, cta } = frontmatter;
                     {about.title}
                 </Heading>
 
-                {about.paragraphs.map((paragraph) => (
+                {about.paragraphs.map((paragraph: string) => (
                     <Paragraph maxWidth={50}>{paragraph}</Paragraph>
                 ))}
             </div>
@@ -62,7 +62,7 @@ const { seo, hero, about, person, values, cta } = frontmatter;
             </header>
 
             <div class="about-values__grid grid" data-layout="thirds">
-                {values.items.map((item, index) => (
+                {values.items.map((item: { title: string; text: string }, index: number) => (
                     <article class="about-value flow">
                         <span class="about-value__number">
                             {String(index + 1).padStart(2, "0")}

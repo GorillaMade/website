@@ -1,0 +1,42 @@
+---
+import StructuredData from "@/components/shared/StructuredData.astro";
+import { business } from "@/data/business";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  url?: string;
+  noindex?: boolean;
+  type?: "website" | "article";
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
+}
+const { title = "Webdesign & Development Tilburg", description = business.description, image = business.defaultImage, url = Astro.url.pathname, noindex = false, type = "website", structuredData } = Astro.props;
+const canonicalURL = new URL(url, Astro.site).href;
+const imageURL = new URL(image, Astro.site).href;
+const fullTitle = title.includes(business.name) ? title : `${title} | ${business.name}`;
+const root = new URL("/", Astro.site).href;
+const schemas = [
+  { "@type": "Organization", "@id": `${root}#organization`, name: business.name, url: root, logo: new URL(business.logo, Astro.site).href, email: business.email },
+  { "@type": "WebSite", "@id": `${root}#website`, name: business.name, url: root, inLanguage: business.locale, publisher: { "@id": `${root}#organization` } },
+  { "@type": "WebPage", "@id": `${canonicalURL}#webpage`, url: canonicalURL, name: fullTitle, description, inLanguage: business.locale, isPartOf: { "@id": `${root}#website` }, about: { "@id": `${root}#organization` } },
+  ...(Array.isArray(structuredData) ? structuredData : structuredData ? [structuredData] : []),
+];
+const graph = { "@context": "https://schema.org", "@graph": schemas };
+---
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+<meta name="robots" content={noindex ? "noindex,nofollow" : "index,follow"} />
+<meta property="og:type" content={type} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:image" content={imageURL} />
+<meta property="og:site_name" content={business.name} />
+<meta property="og:locale" content={business.ogLocale} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageURL} />
+<StructuredData data={graph} />

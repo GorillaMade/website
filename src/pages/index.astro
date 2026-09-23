@@ -1,12 +1,5 @@
 ---
-import { getCollection } from "astro:content";
-
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import SectionLabel from "@/components/section/SectionLabel.astro";
-import Heading from "@/components/Typography/Heading.astro";
-import Paragraph from "@/components/Typography/Paragraph.astro";
-import Button from "@/components/Button.astro";
-import Card from "@/components/Card.astro";
 
 import Hero from "@/components/section/Hero.astro";
 import Story from "@/components/section/Story.astro";
@@ -31,13 +24,6 @@ const {
     cta,
 } = frontmatter;
 
-/*
- * Featured case studies voor homepage
- */
-const featuredCaseStudies = await getCollection(
-    "showcase",
-    ({ data }) => data.featured,
-);
 ---
 
 <BaseLayout title={seo.title} description={seo.description}>
