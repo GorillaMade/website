@@ -42,19 +42,19 @@ services:
   items:
     - title: "Webdesign"
       description: "Digitale ervaringen die jouw merk sterk en helder neerzetten."
-      href: "/contact"
+      href: "/services/webdesign/"
 
     - title: "Development"
       description: "Snel, lichtgewicht en gebouwd zonder onnodige ballast."
-      href: "/contact"
+      href: "/services/development/"
 
     - title: "Search Engine Optimalisatie"
       description: "Een sterke technische basis om beter gevonden te worden."
-      href: "/contact"
+      href: "/services/search-engine-optimisation/"
 
     - title: "Hosting & onderhoud"
       description: "Hosting, updates en monitoring. Jij hoeft nergens naar om te kijken."
-      href: "/contact"
+      href: "/services/hosting-en-onderhoud/"
 
 statement:
   theme: "dark"
