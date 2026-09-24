@@ -25,7 +25,7 @@ const { id, label = "Services", title, theme, items = [] } = Astro.props;
 {items.length > 0 && (
     <section class="services section" data-theme={theme || undefined}>
         <div class="wrapper flow">
-            <header class="services__header flow">
+            <header class="section__header flow">
                 <SectionLabel number={id} label={label} />
 
                 <Heading tag="h2" variant="h1">
